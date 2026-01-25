@@ -8,12 +8,19 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
-        /* আপনার রিকোয়েস্ট করা ঐ বিশেষ হোভার লজিক বক্স */
+        /* Million Dollar Homepage Style Tooltip Logic */
         #legacy-tooltip { 
-            position: absolute; display: none; background: #ffffca; color: #000; 
-            padding: 2px 8px; border: 1px solid #333; z-index: 10000; 
-            pointer-events: none; font-size: 13px; font-family: Tahoma, sans-serif;
-            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            position: absolute; 
+            display: none; 
+            background: #FFFFE1; /* Classic Tooltip Yellow */
+            color: #000; 
+            padding: 2px 5px; 
+            border: 1px solid #333; 
+            z-index: 10000; 
+            pointer-events: none; 
+            font-size: 12px; 
+            font-family: 'Verdana', sans-serif;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
         #search-marker { position: absolute; width: 50px; height: 50px; border: 4px solid #00ff00; display: none; z-index: 1000; pointer-events: none; }
     </style>
@@ -27,12 +34,12 @@
         <input type="number" id="phSearch" style="padding:8px; background:#000; color:#fff; border:1px solid #444;" placeholder="Search Phone Number">
         <button onclick="searchByPhone()" style="background:#ff0000; color:#fff; border:none; padding:8px 12px; cursor:pointer;"><i class="fas fa-search"></i></button>
     </div>
-    <div class="pill" onclick="navigator.clipboard.writeText('01756206213'); alert('নম্বর কপি হয়েছে!')">BKASH: 01756206213</div>
+    <div class="pill" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">BKASH: 01756206213</div>
 </div>
 
 <div class="hero">
     <h1 class="shimmer-title">THE 36th JULY LEGACY</h1>
-    <p style="color: #FCD535; font-weight: bold;">"৳36 is not just a price, it's your signature on history."</p>
+    <p style="color: #FCD535; font-weight: bold;">"৳36 is not just a price, it's your signature on the history of Bangladesh."</p>
     <div class="actions">
         <a href="order.html" class="cta-gold">RESERVE MY PLOT (৳36)</a>
         <button onclick="downloadMap()" class="cta-outline"><i class="fas fa-camera"></i> DOWNLOAD MAP</button>
@@ -71,7 +78,7 @@
         });
     });
 
-    // মাউস হোভার লজিক (The logic you requested)
+    // হোভার লজিক: ছবির ওপর মাউস নিলে নাম শো করবে (Million Dollar Homepage Style)
     window.addEventListener('mousemove', (e) => {
         const rect = cv.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
@@ -87,17 +94,23 @@
                 if(canvasX >= px && canvasX <= px+bSize && canvasY >= py && canvasY <= py+bSize) {
                     const tt = document.getElementById('legacy-tooltip');
                     tt.style.display = 'block';
-                    tt.style.left = (e.pageX + 10) + 'px';
-                    tt.style.top = (e.pageY + 10) + 'px';
-                    tt.innerText = p.name; // শুধুমাত্র নাম দেখাবে
+                    tt.style.left = (e.pageX + 12) + 'px';
+                    tt.style.top = (e.pageY + 12) + 'px';
+                    tt.innerText = p.name; // এখানে কাস্টমারের ইউজারনেম শো হবে
                     cv.style.cursor = 'pointer';
                     found = true;
                 }
             });
-            if(!found) { document.getElementById('legacy-tooltip').style.display = 'none'; cv.style.cursor = 'default'; }
-        } else { document.getElementById('legacy-tooltip').style.display = 'none'; }
+            if(!found) {
+                document.getElementById('legacy-tooltip').style.display = 'none';
+                cv.style.cursor = 'default';
+            }
+        } else {
+            document.getElementById('legacy-tooltip').style.display = 'none';
+        }
     });
 
+    // ক্লিক করলে নতুন ড্যাশবোর্ড ট্যাব ওপেন হবে
     cv.addEventListener('click', (e) => {
         const rect = cv.getBoundingClientRect();
         const canvasX = (e.clientX - rect.left) / (rect.width / cv.width) * cv.width;
