@@ -2,64 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Digital Monument of Pride | THE 36th JULY LEGACY</title>
+    <title>Digital Monument of Pride | 64 Districts</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .hero-section { text-align: center; padding: 100px 20px; background: radial-gradient(circle, #1E2329 0%, #0B0E11 100%); }
-        .hero-section h1 { font-size: 56px; color: #FCD535; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
-        .hero-section p { font-size: 22px; color: #EAECEF; max-width: 900px; margin: 0 auto 40px auto; line-height: 1.6; }
-        
-        .search-container { position: sticky; top: 0; background: #0B0E11; padding: 20px; z-index: 1000; border-bottom: 1px solid #333; text-align: center; }
-        .search-container input { padding: 15px 30px; width: 450px; border-radius: 50px; border: 2px solid #FCD535; background: #1E2329; color: #fff; font-size: 16px; outline: none; }
-        
-        .districts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; padding: 50px 5%; max-width: 1400px; margin: 0 auto; }
-        .district-card { 
-            background: #1E2329; border: 1px solid #333; padding: 30px 10px; border-radius: 15px; text-align: center; 
-            cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden;
-        }
-        .district-card::after { content: "CLAIM PLOT"; position: absolute; bottom: -40px; left: 0; width: 100%; background: #FCD535; color: #000; font-weight: bold; padding: 8px 0; transition: 0.3s; }
-        .district-card:hover { border-color: #FCD535; transform: translateY(-10px); box-shadow: 0 10px 20px rgba(252, 213, 53, 0.2); }
-        .district-card:hover::after { bottom: 0; }
-        .district-card h3 { color: #fff; margin: 0; font-size: 18px; text-transform: uppercase; }
-        .district-card span { color: #848e9c; font-size: 11px; margin-top: 5px; display: block; }
-
-        .support-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: #fff; padding: 15px 25px; border-radius: 50px; font-weight: bold; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 2000; display: flex; align-items: center; gap: 10px; }
+        .hero { padding: 60px 20px; text-align: center; background: #0B0E11; }
+        .hero h1 { color: #FCD535; font-size: 45px; text-transform: uppercase; }
+        .search-container { position: sticky; top: 0; background: #1E2329; padding: 20px; z-index: 1000; text-align: center; border-bottom: 2px solid #FCD535; }
+        .search-container input { padding: 15px; width: 350px; border-radius: 30px; border: none; outline: none; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 40px; }
+        .card { background: #1E2329; border: 1px solid #333; padding: 25px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .card:hover { border-color: #FCD535; transform: scale(1.05); }
+        .card h3 { color: #fff; margin: 0; font-size: 16px; }
+        .card span { color: #FCD535; font-size: 11px; }
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
 
-<a href="support.html" class="support-float"><i class="fab fa-whatsapp"></i> CUSTOMER SUPPORT</a>
+<a href="support.html" class="wa-float"><i class="fab fa-whatsapp"></i> CUSTOMER SUPPORT</a>
 
-<div class="hero-section">
+<div class="hero">
     <h1>Digital Monument of Pride</h1>
-    <p>Represent your identity in the first-ever decentralized digital map of Bangladesh. <br> <span style="color: #FCD535;">Only 1,000 plots available per district.</span> Secure your legacy for just ৳36.</p>
-    <a href="#explore" class="cta-gold">EXPLORE DISTRICTS</a>
+    <p style="color:#848e9c;">Select your district and secure your spot in history for just ৳36.</p>
 </div>
 
-<div class="search-container" id="explore">
-    <input type="text" id="distInput" placeholder="Enter your District (e.g. Bogura, Dhaka, Sylhet)..." onkeyup="filterDistricts()">
+<div class="search-container">
+    <input type="text" id="distSearch" placeholder="Search your District..." onkeyup="filterDistricts()">
 </div>
 
-<div class="districts-grid" id="distList">
-    <div class="district-card" data-name="dhaka" onclick="location.href='dhaka.html'">
-        <h3>DHAKA</h3>
-        <span>1000 Plots Limited</span>
-    </div>
-    <div class="district-card" data-name="bogura" onclick="location.href='bogura.html'">
-        <h3>BOGURA</h3>
-        <span>1000 Plots Limited</span>
-    </div>
-    </div>
-
-<script>
-    function filterDistricts() {
-        let input = document.getElementById('distInput').value.toLowerCase();
-        let cards = document.querySelectorAll('.district-card');
-        cards.forEach(card => {
-            card.style.display = card.dataset.name.includes(input) ? 'block' : 'none';
+<div class="grid" id="distList">
+    <script>
+        const districts = [
+            "Dhaka", "Faridpur", "Gazipur", "Gopalganj", "Kishoreganj", "Madaripur", "Manikganj", "Munshiganj", "Narayanganj", "Narsingdi", "Rajbari", "Shariatpur", "Tangail",
+            "Bagerhat", "Chuadanga", "Jessore", "Jhenaidah", "Khulna", "Kushtia", "Magura", "Meherpur", "Narail", "Satkhira",
+            "Barguna", "Barisal", "Bhola", "Jhalokati", "Patuakhali", "Pirojpur",
+            "Bandarban", "Brahmanbaria", "Chandpur", "Chittagong", "Comilla", "Cox's Bazar", "Feni", "Khagrachhari", "Lakshmipur", "Noakhali", "Rangamati",
+            "Habiganj", "Moulvibazar", "Sunamganj", "Sylhet",
+            "Bogra", "Joypurhat", "Naogaon", "Natore", "Chapai Nawabganj", "Pabna", "Rajshahi", "Sirajganj",
+            "Dinajpur", "Gaibandha", "Kurigram", "Lalmonirhat", "Nilphamari", "Panchagarh", "Rangpur", "Thakurgaon",
+            "Jamalpur", "Mymensingh", "Netrokona", "Sherpur"
+        ];
+        districts.forEach(d => {
+            document.write(`
+                <div class="card" data-name="${d.toLowerCase()}" onclick="location.href='${d.toLowerCase()}.html'">
+                    <h3>${d.toUpperCase()}</h3>
+                    <span>1,000 PLOTS</span>
+                </div>
+            `);
         });
-    }
-</script>
+
+        function filterDistricts() {
+            let input = document.getElementById('distSearch').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.display = card.dataset.name.includes(input) ? 'block' : 'none';
+            });
+        }
+    </script>
+</div>
 </body>
 </html>
