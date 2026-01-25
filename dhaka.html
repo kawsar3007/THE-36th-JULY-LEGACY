@@ -7,76 +7,83 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
-        body { background: var(--b-bg); color: #fff; font-family: sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
-        .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 24px; font-weight: 900; letter-spacing: 2px; }
+        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
+        .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 22px; font-weight: 900; letter-spacing: 2px; }
         
-        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; gap: 10px; }
+        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
         
-        /* Left: Search Bar */
+        /* Left: Search */
+        .nav-left { display: flex; align-items: center; }
         .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
-        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 70px; outline: none; }
-        .search-box button { background: var(--b-yellow); border: none; padding: 0 10px; cursor: pointer; }
+        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 60px; outline: none; font-size: 13px; }
+        .search-box button { background: var(--b-yellow); border: none; padding: 0 10px; cursor: pointer; color: #000; }
 
         /* Middle: Back to Home & Payment */
-        .nav-center { display: flex; gap: 10px; align-items: center; }
-        .nav-btn { display: flex; align-items: center; gap: 8px; background: #161a1e; padding: 6px 12px; border-radius: 50px; border: 1px solid #333; cursor: pointer; text-decoration: none; color: #fff; font-size: 12px; }
-        .gold-icon { width: 28px; height: 28px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 12px; }
+        .nav-center { display: flex; gap: 8px; align-items: center; position: absolute; left: 50%; transform: translateX(-50%); }
+        .nav-btn { display: flex; align-items: center; gap: 6px; background: #161a1e; padding: 5px 12px; border-radius: 50px; border: 1px solid #333; cursor: pointer; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; }
+        .gold-icon { width: 25px; height: 25px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 11px; }
 
         /* Right: Buy Button */
-        .buy-btn { background: var(--b-yellow) !important; color: #000 !important; font-weight: bold; }
+        .nav-right { display: flex; align-items: center; }
+        .buy-btn { background: var(--b-yellow) !important; color: #000 !important; }
 
-        /* Canvas: Width 96% */
+        /* Canvas: Small Blocks, 25 Columns */
         .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 1px solid #ddd; }
         canvas { display: block; width: 100%; height: auto; }
-        #plotMarker { position: absolute; width: 40px; height: 40px; border: 3px solid var(--b-yellow); box-shadow: 0 0 15px var(--b-yellow); display: none; pointer-events: none; z-index: 10; background: rgba(252, 213, 53, 0.2); }
+        #plotMarker { position: absolute; width: 40px; height: 40px; border: 3px solid var(--b-yellow); box-shadow: 0 0 15px var(--b-yellow); display: none; pointer-events: none; z-index: 10; background: rgba(252, 213, 53, 0.2); box-sizing: border-box; }
 
-        /* Notice Section */
-        .footer-notice { width: 96%; margin: 20px auto; padding: 20px; background: #161a1e; border-radius: 10px; text-align: center; border: 1px solid #333; }
-        .footer-notice p { margin: 5px 0; font-size: 13px; color: #848e9c; font-weight: bold; }
-        .limited { color: var(--b-yellow); font-size: 16px !important; }
-
-        .download-btn { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #333; color: #fff; text-decoration: none; border-radius: 5px; font-size: 12px; }
+        /* Footer Notice (As requested) */
+        .footer-info { width: 96%; margin: 25px auto; padding: 20px; background: #161a1e; border-radius: 10px; text-align: center; border: 1px solid #333; }
+        .footer-info p { margin: 5px 0; font-size: 12px; color: #848e9c; }
+        .limited-tag { color: var(--b-yellow); font-size: 15px !important; font-weight: bold; margin-bottom: 10px !important; }
+        .dl-btn { display: inline-block; margin-top: 15px; padding: 8px 20px; background: #333; color: #fff; text-decoration: none; border-radius: 5px; font-size: 12px; transition: 0.3s; }
+        .dl-btn:hover { background: var(--b-yellow); color: #000; }
     </style>
 </head>
 <body>
 
-<div class="header">DHAKA DISTRICT</div>
+<div class="header">DHAKA DISTRICT MAP</div>
 
 <div class="top-nav">
-    <div class="search-box">
-        <input type="number" id="pID" placeholder="ID">
-        <button onclick="findPlot()"><i class="fas fa-search"></i></button>
-    </div>
-
-    <div class="nav-center">
-        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> HOME</a>
-        <div class="nav-btn" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">
-            <div class="gold-icon"><i class="fas fa-university"></i></div>
-            <div style="text-align: left;"><span style="font-size: 8px; color: var(--b-yellow);">BKASH/NAGAD</span><br><b>01756206213</b></div>
+    <div class="nav-left">
+        <div class="search-box">
+            <input type="number" id="plotInput" placeholder="ID">
+            <button onclick="locatePlot()"><i class="fas fa-search"></i></button>
         </div>
     </div>
 
-    <a href="order.html" class="nav-btn buy-btn">
-        <div class="gold-icon" style="background:#000; color:var(--b-yellow)"><i class="fas fa-cart-plus"></i></div>
-        BUY
-    </a>
+    <div class="nav-center">
+        <a href="index.html" class="nav-btn"><i class="fas fa-arrow-left"></i> HOME</a>
+        <div class="nav-btn" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">
+            <div class="gold-icon"><i class="fas fa-university"></i></div>
+            <div style="text-align: left;"><span style="font-size: 7px; color: var(--b-yellow);">BKASH/NAGAD</span><br><b>01756206213</b></div>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <a href="order.html" class="nav-btn buy-btn">
+            <div class="gold-icon" style="background:#000; color:var(--b-yellow)"><i class="fas fa-shopping-cart"></i></div>
+            BUY
+        </a>
+    </div>
 </div>
 
 <div class="canvas-container">
     <div id="plotMarker"></div>
-    <canvas id="mc"></canvas>
+    <canvas id="mapCanvas"></canvas>
 </div>
 
-<div class="footer-notice">
-    <p class="limited">⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.</p>
+<div class="footer-info">
+    <p class="limited-tag">⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.</p>
     <p>NUMBERS WILL NEVER BE INCREASED.</p>
     <p>THE DISTRICT LEGACY © 2026 KAWSAR AHMED</p>
-    <a href="#" class="download-btn" onclick="alert('Map generating...')"><i class="fas fa-download"></i> DOWNLOAD MAP</a>
+    <a href="#" class="dl-btn" onclick="alert('Preparing download...')"><i class="fas fa-download"></i> DOWNLOAD MAP</a>
 </div>
 
 <script>
-    const cv = document.getElementById('mc'), ctx = cv.getContext('2d'), bS = 40, cols = 25; // Small blocks (40px) & 25 columns
+    const cv = document.getElementById('mapCanvas'), ctx = cv.getContext('2d'), bS = 40, cols = 25;
     cv.width = 1000; cv.height = (10000/cols) * bS;
+
     function draw() {
         ctx.fillStyle = "#fff"; ctx.fillRect(0,0,cv.width, cv.height);
         ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
@@ -84,9 +91,10 @@
         for(let y=0; y<=cv.height; y+=bS){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cv.width,y); ctx.stroke(); }
     }
     draw();
-    function findPlot() {
-        const id = document.getElementById('pID').value;
-        if(!id || id<1 || id>10000) return alert("Enter 1-10000");
+
+    function locatePlot() {
+        const id = document.getElementById('plotInput').value;
+        if(!id || id < 1 || id > 10000) return alert("Enter Plot ID 1-10000");
         const r = Math.floor((id-1)/cols), c = (id-1)%cols;
         const m = document.getElementById('plotMarker');
         m.style.display = 'block'; m.style.left = (c*bS)+"px"; m.style.top = (r*bS)+"px";
