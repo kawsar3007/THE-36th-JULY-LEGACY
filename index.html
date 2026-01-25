@@ -2,68 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE 36th JULY LEGACY | OFFICIAL</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
-        #legacy-tooltip { position: absolute; display: none; background: rgba(0,0,0,0.9); color: #FCD535; padding: 8px 15px; border-radius: 5px; border: 1px solid #FCD535; z-index: 9999; pointer-events: none; font-size: 15px; font-weight: bold; white-space: nowrap; }
-        #search-marker { position: absolute; width: 50px; height: 50px; border: 4px solid #00ff00; display: none; z-index: 1000; pointer-events: none; animation: blink 0.5s infinite; box-shadow: 0 0 15px #00ff00; }
-        @keyframes blink { 50% { opacity: 0; } }
+        /* আপনার রিকোয়েস্ট করা ঐ বিশেষ হোভার লজিক বক্স */
+        #legacy-tooltip { 
+            position: absolute; display: none; background: #ffffca; color: #000; 
+            padding: 2px 8px; border: 1px solid #333; z-index: 10000; 
+            pointer-events: none; font-size: 13px; font-family: Tahoma, sans-serif;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        }
+        #search-marker { position: absolute; width: 50px; height: 50px; border: 4px solid #00ff00; display: none; z-index: 1000; pointer-events: none; }
     </style>
 </head>
 <body>
+
 <div id="legacy-tooltip"></div>
+
 <div class="top-nav">
     <div style="display:flex; gap:5px;">
-        <input type="number" id="phSearch" style="padding:8px; background:#000; color:#fff; border:1px solid #444; border-radius:4px;" placeholder="Search Phone">
-        <button onclick="searchByPhone()" style="background:#ff0000; color:#fff; border:none; padding:8px 12px; cursor:pointer; border-radius:4px;"><i class="fas fa-search"></i></button>
+        <input type="number" id="phSearch" style="padding:8px; background:#000; color:#fff; border:1px solid #444;" placeholder="Search Phone Number">
+        <button onclick="searchByPhone()" style="background:#ff0000; color:#fff; border:none; padding:8px 12px; cursor:pointer;"><i class="fas fa-search"></i></button>
     </div>
-    <div class="nav-right" style="display:flex; align-items:center; gap:15px;">
-        <div class="pill" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">BKASH/NAGAD: 01756206213</div>
-        <a href="https://facebook.com/the36thjulylegacy" target="_blank"><i class="fab fa-facebook" style="color:#FCD535; font-size:24px;"></i></a>
-    </div>
+    <div class="pill" onclick="navigator.clipboard.writeText('01756206213'); alert('নম্বর কপি হয়েছে!')">BKASH: 01756206213</div>
 </div>
 
 <div class="hero">
     <h1 class="shimmer-title">THE 36th JULY LEGACY</h1>
-    <p style="color: #FCD535; font-weight: bold;">"৳36 is not just a price, it's your signature on the history of Bangladesh."</p>
+    <p style="color: #FCD535; font-weight: bold;">"৳36 is not just a price, it's your signature on history."</p>
     <div class="actions">
         <a href="order.html" class="cta-gold">RESERVE MY PLOT (৳36)</a>
         <button onclick="downloadMap()" class="cta-outline"><i class="fas fa-camera"></i> DOWNLOAD MAP</button>
     </div>
 </div>
 
-<div class="map-container" id="map-scroll">
-    <div style="position:relative; width:4000px; height:40000px;">
+<div class="map-container">
+    <div style="position:relative; width:4000px;">
         <div id="search-marker"></div>
         <canvas id="mainCanvas"></canvas>
     </div>
 </div>
+
+<footer style="background: #0B0E11; color: #848e9c; padding: 30px; font-size: 13px; border-top: 1px solid #333; text-align: center;">
+    <p style="color: #FCD535; font-weight: bold;">THE 36th JULY LEGACY © 2026 KAWSAR AHMED. All rights reserved.</p>
+    <p>I am not responsible for the content of external sites. Images featured on homepage are © of their respective owners.</p>
+</footer>
 
 <script>
     const firebaseConfig = { 
         apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
         databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com" 
     };
-    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-    const db = firebase.database();
-    const cv = document.getElementById('mainCanvas'), ctx = cv.getContext('2d');
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(), cv = document.getElementById('mainCanvas'), ctx = cv.getContext('2d');
     const bSize = 50, cols = 80; cv.width = cols * bSize; cv.height = 800 * bSize;
     let pixels = {};
 
-    function drawGrid() {
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(0,0,cv.width,cv.height);
-        ctx.strokeStyle = "#eee"; ctx.lineWidth = 0.5;
-        for(let i=0; i<=cols; i++) { ctx.beginPath(); ctx.moveTo(i*bSize,0); ctx.lineTo(i*bSize,cv.height); ctx.stroke(); }
-        for(let j=0; j<=800; j++) { ctx.beginPath(); ctx.moveTo(0,j*bSize); ctx.lineTo(cv.width,j*bSize); ctx.stroke(); }
-    }
-
     db.ref('pixels').on('value', s => {
-        drawGrid();
         pixels = s.val() || {};
+        ctx.fillStyle = "#ffffff"; ctx.fillRect(0,0,cv.width,cv.height);
         Object.values(pixels).forEach(p => {
             const id = parseInt(p.plotID)-1, x = (id%cols)*bSize, y = Math.floor(id/cols)*bSize;
             let img = new Image(); img.crossOrigin="anonymous"; img.src=p.imageUrl;
@@ -71,30 +71,41 @@
         });
     });
 
-    cv.addEventListener('mousemove', (e) => {
+    // মাউস হোভার লজিক (The logic you requested)
+    window.addEventListener('mousemove', (e) => {
         const rect = cv.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / (rect.width / cv.width) * cv.width;
-        const y = (e.clientY - rect.top) / (rect.height / cv.height) * cv.height;
-        let found = false;
-        Object.values(pixels).forEach(p => {
-            const id = parseInt(p.plotID)-1, px = (id%cols)*bSize, py = Math.floor(id/cols)*bSize;
-            if(x >= px && x <= px+bSize && y >= py && y <= py+bSize) {
-                const tt = document.getElementById('legacy-tooltip');
-                tt.style.display = 'block'; tt.style.left = (e.pageX + 15) + 'px'; tt.style.top = (e.pageY + 15) + 'px';
-                tt.innerHTML = p.name; cv.style.cursor = 'pointer'; found = true;
-            }
-        });
-        if(!found) { document.getElementById('legacy-tooltip').style.display = 'none'; cv.style.cursor = 'default'; }
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        if (mouseX >= 0 && mouseY >= 0 && mouseX <= rect.width && mouseY <= rect.height) {
+            const canvasX = mouseX / (rect.width / cv.width) * cv.width;
+            const canvasY = mouseY / (rect.height / cv.height) * cv.height;
+            
+            let found = false;
+            Object.values(pixels).forEach(p => {
+                const id = parseInt(p.plotID)-1, px = (id%cols)*bSize, py = Math.floor(id/cols)*bSize;
+                if(canvasX >= px && canvasX <= px+bSize && canvasY >= py && canvasY <= py+bSize) {
+                    const tt = document.getElementById('legacy-tooltip');
+                    tt.style.display = 'block';
+                    tt.style.left = (e.pageX + 10) + 'px';
+                    tt.style.top = (e.pageY + 10) + 'px';
+                    tt.innerText = p.name; // শুধুমাত্র নাম দেখাবে
+                    cv.style.cursor = 'pointer';
+                    found = true;
+                }
+            });
+            if(!found) { document.getElementById('legacy-tooltip').style.display = 'none'; cv.style.cursor = 'default'; }
+        } else { document.getElementById('legacy-tooltip').style.display = 'none'; }
     });
 
     cv.addEventListener('click', (e) => {
         const rect = cv.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / (rect.width / cv.width) * cv.width;
-        const y = (e.clientY - rect.top) / (rect.height / cv.height) * cv.height;
+        const canvasX = (e.clientX - rect.left) / (rect.width / cv.width) * cv.width;
+        const canvasY = (e.clientY - rect.top) / (rect.height / cv.height) * cv.height;
         Object.values(pixels).forEach(p => {
             const id = parseInt(p.plotID)-1, px = (id%cols)*bSize, py = Math.floor(id/cols)*bSize;
-            if(x >= px && x <= px+bSize && y >= py && y <= py+bSize && p.link && p.link !== "#") {
-                window.open(p.link, '_blank');
+            if(canvasX >= px && canvasX <= px+bSize && canvasY >= py && canvasY <= py+bSize) {
+                if(p.link && p.link !== "#") window.open(p.link, '_blank');
             }
         });
     });
@@ -112,7 +123,7 @@
 
     function downloadMap() {
         const link = document.createElement('a');
-        link.download = 'legacy-map.png';
+        link.download = 'july-legacy.png';
         link.href = cv.toDataURL("image/png");
         link.click();
     }
