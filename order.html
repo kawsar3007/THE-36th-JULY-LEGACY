@@ -2,134 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RESERVE | THE 36th JULY LEGACY</title>
-    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <style>
-        body { background: #0B0E11; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .box { background: #1E2329; padding: 35px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 380px; position: relative; z-index: 10; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        input { width: 100%; padding: 14px; margin: 12px 0; background: #2B3139; border: 2px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #1E2329; padding: 30px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 350px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 5px; outline: none; }
         .valid { border-color: #2ebd85 !important; }
         .invalid { border-color: #ff0000 !important; }
-        #msg { font-size: 13px; height: 18px; margin-bottom: 5px; display: block; font-weight: bold; }
-        .btn { width: 100%; padding: 15px; background: #555; color: #fff; border: none; border-radius: 8px; cursor: not-allowed; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        #sBtn { width: 100%; padding: 15px; background: #555; color: #fff; border: none; border-radius: 5px; cursor: not-allowed; font-weight: bold; }
         .active-btn { background: #FCD535 !important; color: #000 !important; cursor: pointer !important; }
-        
-        /* Success Screen */
-        #success-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#FCD535; color:#000; flex-direction:column; justify-content:center; align-items:center; z-index:100; text-align:center; }
-        .watermark { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.12; overflow: hidden; font-size: 11px; pointer-events: none; padding: 15px; text-align: justify; font-weight: bold; line-height: 20px; color: #000; }
     </style>
 </head>
 <body>
-
     <div class="box" id="form-box">
-        <h2 style="color:#FCD535; margin-top:0;">RESERVE PLOT</h2>
-        <p style="font-size: 14px; color: #ff0000; font-weight: bold;">Price: ৳36 Only</p>
-        <input type="text" id="name" placeholder="Enter Your Name/Brand">
-        <input type="number" id="phone" placeholder="Mobile Number (11 Digit)" oninput="checkPhone()">
-        <span id="msg"></span>
-        <button id="sBtn" class="btn" disabled onclick="placeOrder()">SUBMIT ORDER</button>
-        <a href="index.html" style="display:block; margin-top:20px; color:#888; text-decoration:none; font-size: 14px;">← Back to Map</a>
+        <h2 style="color:#FCD535;">RESERVE PLOT</h2>
+        <input type="text" id="name" placeholder="Enter Brand/Your Name">
+        <input type="number" id="phone" placeholder="Your Phone Number" oninput="checkPhone()">
+        <p id="msg" style="font-size:12px; height:15px; margin:5px 0;"></p>
+        <button id="sBtn" disabled onclick="placeOrder()">SUBMIT ORDER</button>
     </div>
 
-    <div id="success-screen">
-        <div class="watermark">
-            DHAKA, CHATTOGRAM, RAJSHAHI, KHULNA, SYLHET, BARISHAL, RANGPUR, MYMENSINGH, COMILLA, NOAKHALI, FENI, COX'S BAZAR, BOGURA, GAZIPUR, TANGAIL, FARIDPUR, MUNSHIGANJ, NARSINGDI, RAJBARI, SHARIATPUR, GOPALGANJ, MADARIPUR, KISHOREGANJ, MANIKGANJ... (64 Districts)
-        </div>
-        <h1 style="font-size: 45px; margin:0;">CONGRATULATIONS!</h1>
-        <h2 id="uName" style="text-transform: uppercase; margin: 10px 0;"></h2>
-        <p style="font-size: 18px; font-weight: bold;">Order successful! Your phone is your Plot ID.</p>
-        <p>Redirecting to Homepage in 5 seconds...</p>
-    </div>
-
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"
-        };
-
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        firebase.initializeApp({databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"});
         const db = firebase.database();
-
         function checkPhone() {
-            const p = document.getElementById('phone').value;
-            const msg = document.getElementById('msg');
-            const btn = document.getElementById('sBtn');
-            const inp = document.getElementById('phone');
-
-            // মোবাইল নম্বর ১১ ডিজিটের হতে হবে
-            if(p.length < 11) {
-                msg.innerText = "";
-                inp.className = "";
-                btn.disabled = true;
-                btn.className = "btn";
-                return;
-            }
-
-            // ডাটাবেজে চেক করা
+            const p = document.getElementById('phone').value, msg = document.getElementById('msg'), btn = document.getElementById('sBtn'), inp = document.getElementById('phone');
+            if(p.length < 11) { msg.innerText = ""; inp.className = ""; btn.disabled = true; btn.className = ""; return; }
             db.ref('phones/' + p).once('value', s => {
                 if(s.exists()) {
-                    msg.innerText = "❌ এই নম্বরটি আগে ব্যবহৃত হয়েছে!";
-                    msg.style.color = "#ff4d4d";
-                    inp.className = "invalid";
-                    btn.disabled = true;
-                    btn.className = "btn";
+                    msg.innerText = "❌ এই নম্বরটি ব্যবহার করা হয়েছে!"; msg.style.color = "red"; inp.className = "invalid"; btn.disabled = true;
                 } else {
-                    msg.innerText = "✅ নম্বরটি সঠিক আছে!";
-                    msg.style.color = "#2ebd85";
-                    inp.className = "valid";
-                    btn.disabled = false;
-                    btn.className = "btn active-btn";
+                    msg.innerText = "✅ নম্বরটি সঠিক!"; msg.style.color = "#2ebd85"; inp.className = "valid"; btn.disabled = false; btn.className = "active-btn";
                 }
             });
         }
-
         function placeOrder() {
-            const p = document.getElementById('phone').value;
-            const n = document.getElementById('name').value;
-            
-            if(!n) {
-                alert("অনুগ্রহ করে আপনার নাম দিন");
-                return;
-            }
-
-            // ডাটা সেভ করা
-            db.ref('orders/' + p).set({
-                name: n,
-                phone: p,
-                status: "Pending",
-                timestamp: Date.now()
-            }).then(() => {
-                // নম্বরটি ব্লক করা যাতে ২য় বার না হয়
+            const p = document.getElementById('phone').value, n = document.getElementById('name').value;
+            db.ref('orders/' + p).set({ name: n, phone: p, status: "Pending" }).then(() => {
                 db.ref('phones/' + p).set(true);
-
-                // সাকসেস স্ক্রিন দেখানো
-                document.getElementById('form-box').style.display = 'none';
-                document.getElementById('success-screen').style.display = 'flex';
-                document.getElementById('uName').innerText = n;
-                
-                // কনফেটি (কাগজ ওড়ানো) অ্যানিমেশন
-                confetti({
-                    particleCount: 150,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#ff0000', '#000000', '#ffffff']
-                });
-
-                // ৫ সেকেন্ড পর রিডাইরেক্ট
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 5000);
-            }).catch((error) => {
-                alert("Error: " + error.message);
+                alert("Order Successful!");
+                window.location.href = "index.html";
             });
         }
     </script>
