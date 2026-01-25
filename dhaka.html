@@ -10,60 +10,61 @@
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
         body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
 
-        /* হেডার ও নোটিশ */
-        .header-title { padding: 20px; color: var(--b-yellow); font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
-        
+        /* হেডার ও পেমেন্ট সেকশন */
         .top-nav {
-            position: sticky; top: 0; background: var(--b-card); padding: 15px 5%;
+            position: sticky; top: 0; background: var(--b-card); padding: 15px 2%;
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 2px solid var(--b-yellow); z-index: 1000;
         }
 
-        /* পেমেন্ট নম্বর কপি স্টাইল */
-        .pay-number { cursor: pointer; color: var(--b-yellow); font-size: 18px; font-weight: bold; border: 1px dashed var(--b-yellow); padding: 5px 10px; border-radius: 5px; transition: 0.3s; }
-        .pay-number:hover { background: rgba(252, 213, 53, 0.1); }
+        .payment-icons { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .payment-icons img { height: 30px; border-radius: 5px; }
+        .copy-tag { font-size: 14px; color: var(--b-yellow); font-weight: bold; display: block; margin-top: 5px; }
 
-        .btn-group { display: flex; gap: 10px; }
-        .action-btn { padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; border: none; font-size: 16px; transition: 0.3s; }
+        .btn-group { display: flex; gap: 8px; }
+        .action-btn { padding: 10px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; border: none; font-size: 14px; transition: 0.3s; }
         .buy-now { background: var(--b-yellow); color: #000; }
-        .download-map { background: #333; color: #fff; border: 1px solid #555; }
+        .back-home { background: #333; color: #fff; text-decoration: none; padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; }
 
-        /* ক্যানভাস: ডানে-বামে ১ ইঞ্চি (প্রায় ৪০-৫০px) গ্যাপ */
+        /* ক্যানভাস: পুরো স্ক্রিন ফিলাপ করবে */
         .canvas-container {
-            width: calc(100% - 100px); /* ডানে-বামে ১ ইঞ্চি করে গ্যাপ */
-            margin: 20px auto; overflow-x: hidden;
-            border: 5px solid #1E2329; background: #fff;
+            width: 100%; margin: 10px 0; background: #fff;
+            border-top: 2px solid #333; border-bottom: 2px solid #333;
         }
-        canvas { display: block; width: 1000px; margin: 0 auto; }
+        canvas { display: block; width: 100%; height: auto; }
 
-        /* পপআপ */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; }
-        .modal-box { background: var(--b-card); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; border: 1px solid var(--b-yellow); }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 5px; box-sizing: border-box; }
+        /* পপআপ ডিজাইন (অর্ডার ও সাপোর্ট) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-box { background: var(--b-card); padding: 30px; border-radius: 20px; width: 90%; max-width: 420px; border: 2px solid var(--b-yellow); text-align: left; }
+        
+        .success-bg { background: var(--b-yellow) !important; color: #000 !important; }
+        
+        input { width: 100%; padding: 14px; margin: 12px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; }
+        
+        .info-list { list-style: none; padding: 0; }
+        .info-list li { margin: 10px 0; background: #0B0E11; padding: 12px; border-radius: 8px; border-left: 5px solid var(--b-yellow); font-size: 13px; color: #fff; }
 
-        /* হোয়াটসঅ্যাপ লোগো (মেইন পেজের মতো) */
+        /* ফ্লোটিং সাপোর্ট বাটন */
         .wa-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-
-        .bottom-notice { padding: 40px 20px; background: #000; border-top: 1px solid #333; }
-        .warning { color: #ff0000; font-weight: bold; font-size: 18px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<a href="https://wa.me/8801576940717" class="wa-float" target="_blank">
+<a href="javascript:void(0)" class="wa-float" onclick="openSupportModal()">
     <i class="fab fa-whatsapp" style="font-size: 24px;"></i> LIVE SUPPORT
 </a>
 
-<div class="header-title">DHAKA DISTRICT LEGACY MAP</div>
-
 <div class="top-nav">
-    <div class="payment-box" onclick="copyNumber()">
-        <span style="font-size: 12px; color: #848e9c;">CLICK TO COPY (Bkash/Nagad/Rocket)</span><br>
-        <span class="pay-number" id="payNum">01756206213</span>
+    <div class="payment-icons" onclick="copyNum()">
+        <img src="https://i.ibb.co/vYm0F4H/bkash-nagad-rocket.png" alt="Payment"> <div>
+            <span id="p-num" style="display:none;">01756206213</span>
+            <span class="copy-tag">CLICK TO COPY NUMBER</span>
+        </div>
     </div>
+
     <div class="btn-group">
-        <button class="action-btn download-map" onclick="downloadCanvas()">DOWNLOAD MAP</button>
-        <button class="action-btn buy-now" onclick="openBuyModal()">BUY PLOT (৳36)</button>
+        <a href="index.html" class="back-home">← BACK TO HOME</a>
+        <button class="action-btn buy-now" onclick="openOrderModal()">BUY PLOT (৳36)</button>
     </div>
 </div>
 
@@ -71,101 +72,93 @@
     <canvas id="legacyCanvas"></canvas>
 </div>
 
-<div id="buyModal" class="modal">
-    <div class="modal-box">
-        <h2 style="color: var(--b-yellow);">RESERVE YOUR PLOT</h2>
-        <input type="text" id="brandName" placeholder="Enter Your Brand Name" required>
-        <input type="number" id="plotNumber" placeholder="Plot Number (1-10000)" required>
-        <button class="action-btn buy-now" style="width: 100%; margin-top: 10px;" onclick="processOrder()">SUBMIT ORDER</button>
-        <p onclick="closeModal()" style="color: #666; margin-top: 15px; cursor: pointer;">Cancel</p>
+<div id="orderModal" class="modal">
+    <div class="modal-box" style="text-align:center;">
+        <div style="background: rgba(252, 213, 53, 0.1); color: #FCD535; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; border: 1px solid #FCD535; text-align: left;">
+            ⚠️ <strong>IMPORTANT:</strong> Plot Price: <strong>৳36</strong>. After payment, submit details for activation.
+        </div>
+        <h2 style="color:var(--b-yellow); margin:0;">RESERVE PLOT</h2>
+        <input type="text" id="brandName" placeholder="Your Brand Name">
+        <input type="number" id="plotNum" placeholder="Plot ID (1-10000)">
+        <button class="action-btn buy-now" style="width:100%; padding:15px; margin-top:10px;" onclick="submitOrder()">SUBMIT REQUEST</button>
+        <p onclick="closeModals()" style="color:#848e9c; cursor:pointer; margin-top:15px;">Cancel</p>
     </div>
 </div>
 
 <div id="supportModal" class="modal">
-    <div class="modal-box">
-        <h2 id="congratsMsg" style="color: var(--b-yellow);"></h2>
-        <p style="color: #ff0000; font-weight: bold;">PLEASE CONTACT SUPPORT NOW!</p>
-        <div style="text-align: left; background: #000; padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.8;">
-            1. Brand Name | 2. Plot Number <br>
-            3. Payment Screenshot | 4. Your Image <br>
-            5. Website/Social Link
+    <div class="modal-box" id="modalContent">
+        <h1 id="statusTitle" style="color:var(--b-yellow); text-align:center; margin-top:0;">CREATOR SUPPORT</h1>
+        <p style="font-size:14px; margin-bottom:15px;">Submit these via WhatsApp for activation:</p>
+        <div class="info-list">
+            <li><strong>1. Payment:</strong> Screenshot of ৳36 Transfer.</li>
+            <li><strong>2. Order:</strong> Brand Name & Reserved Plot ID.</li>
+            <li><strong>3. Asset:</strong> High-Quality Square Logo.</li>
+            <li><strong>4. Link:</strong> Target Social/Website Link.</li>
         </div>
-        <button class="action-btn buy-now" style="width: 100%; margin-top: 20px; background: #2ebd85; color: #fff;" onclick="window.open('https://wa.me/8801576940717')">GO TO WHATSAPP</button>
-        <p onclick="location.reload()" style="color: #666; margin-top: 15px; cursor: pointer;">Back to Map</p>
+        <a href="https://wa.me/8801576940717" target="_blank" class="action-btn" style="background:#2ebd85; color:#fff; display:block; text-align:center; margin-top:20px; text-decoration:none;">CHAT ON WHATSAPP</a>
+        <div style="display:flex; justify-content:center; gap:20px; margin-top:20px;">
+             <a href="index.html" style="color:var(--b-yellow); text-decoration:none; font-size:14px;">← Home Page</a>
+             <span onclick="location.reload()" style="color:#848e9c; cursor:pointer; font-size:14px;">Back to Map</span>
+        </div>
     </div>
-</div>
-
-<div class="bottom-notice">
-    <div class="warning">⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.</div>
-    <div style="color: #666; font-size: 14px;">NUMBERS WILL NEVER BE INCREASED. <br> THE DISTRICT LEGACY © 2026 KAWSAR AHMED</div>
 </div>
 
 <script>
     const cv = document.getElementById('legacyCanvas');
     const ctx = cv.getContext('2d');
-    const bSize = 50; // প্রতিটি ব্লক ৫০ পিক্সেল
-    const cols = 20;  // এক সারিতে ২০টি ব্লক (২০ * ৫০ = ১০০০ পিক্সেল প্রস্থ)
-    const rows = 500; // ৫০০ সারি (৫০০ * ২০ = ১০,০০০ প্লট)
+    const bSize = 50; 
 
-    cv.width = 1000;
-    cv.height = rows * bSize; // ২৫,০০০ পিক্সেল লম্বা
+    // ক্যানভাস সাইজ: পুরো স্ক্রিন চওড়া
+    cv.width = window.innerWidth;
+    cv.height = 25000; 
 
     function drawGrid() {
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, cv.width, cv.height);
-        
-        ctx.strokeStyle = "#CCCCCC"; // গ্রিড লাইনের রঙ
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0,0,cv.width, cv.height);
+        ctx.strokeStyle = "#ddd";
         ctx.lineWidth = 1;
-
-        for (let i = 0; i <= cols; i++) {
-            ctx.beginPath();
-            ctx.moveTo(i * bSize, 0);
-            ctx.lineTo(i * bSize, cv.height);
-            ctx.stroke();
-        }
-        for (let j = 0; j <= rows; j++) {
-            ctx.beginPath();
-            ctx.moveTo(0, j * bSize);
-            ctx.lineTo(cv.width, j * bSize);
-            ctx.stroke();
-        }
+        for(let x=0; x<cv.width; x+=bSize){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,cv.height); ctx.stroke(); }
+        for(let y=0; y<cv.height; y+=bSize){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cv.width,y); ctx.stroke(); }
     }
     drawGrid();
 
-    function copyNumber() {
-        const num = document.getElementById('payNum').innerText;
-        navigator.clipboard.writeText(num);
-        alert("Number Copied: " + num);
+    function copyNum() {
+        navigator.clipboard.writeText("01756206213");
+        alert("Payment Number Copied!");
     }
 
-    function openBuyModal() { document.getElementById('buyModal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('buyModal').style.display = 'none'; }
+    function openOrderModal() { document.getElementById('orderModal').style.display='flex'; }
+    function openSupportModal() { document.getElementById('supportModal').style.display='flex'; }
+    function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display='none'); }
 
-    function processOrder() {
-        const name = document.getElementById('brandName').value;
-        const pNum = document.getElementById('plotNumber').value;
-        if(!name || !pNum) { alert("Fill all fields!"); return; }
+    function submitOrder() {
+        const n = document.getElementById('brandName').value, p = document.getElementById('plotNum').value;
+        if(!n || !p) return alert("Enter all details!");
 
-        document.getElementById('buyModal').style.display = 'none';
-        document.getElementById('congratsMsg').innerText = "CONGRATS " + name.toUpperCase() + "!";
-        document.getElementById('supportModal').style.display = 'flex';
+        // সাকসেস ইফেক্ট
+        document.getElementById('orderModal').style.display='none';
+        const mContent = document.getElementById('modalContent');
+        const sModal = document.getElementById('supportModal');
+        
+        sModal.style.display='flex';
+        sModal.style.background = "#FCD535"; // পুরো ব্যাকগ্রাউন্ড হলুদ
+        document.getElementById('statusTitle').innerText = "SUCCESS! 🎉";
+        document.getElementById('statusTitle').style.color = "#000";
 
-        // ৪ সেকেন্ড রঙিন কাগজ ওড়ানো
         var end = Date.now() + 4000;
         (function frame() {
-            confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#FCD535', '#ff0000'] });
-            confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FCD535', '#ff0000'] });
+            confetti({ particleCount: 10, angle: 60, spread: 70, origin: { x: 0 }, colors:['#000','#fff'] });
+            confetti({ particleCount: 10, angle: 120, spread: 70, origin: { x: 1 }, colors:['#000','#fff'] });
             if (Date.now() < end) requestAnimationFrame(frame);
         }());
-    }
 
-    function downloadCanvas() {
-        const link = document.createElement('a');
-        link.download = 'District_Map.png';
-        link.href = cv.toDataURL();
-        link.click();
+        // ৪ সেকেন্ড পর অটো কাস্টমার সাপোর্ট লিস্টে ফোকাস
+        setTimeout(() => {
+            sModal.style.background = "rgba(0,0,0,0.9)";
+            document.getElementById('statusTitle').innerText = "CREATOR SUPPORT";
+            document.getElementById('statusTitle').style.color = "var(--b-yellow)";
+        }, 4000);
     }
 </script>
-
 </body>
 </html>
