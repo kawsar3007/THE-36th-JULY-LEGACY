@@ -6,7 +6,6 @@
     <title>THE DISTRICT LEGACY | 64 Districts</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* বাইনান্স কালার থিম */
         :root {
             --binance-bg: #0B0E11;
             --binance-card: #1E2329;
@@ -18,143 +17,188 @@
         body {
             background-color: var(--binance-bg);
             color: var(--binance-text);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             margin: 0;
             padding: 0;
         }
 
-        /* হিরো সেকশন */
+        /* হিরো সেকশন - আকর্ষণীয় লেখা */
         .hero {
             text-align: center;
-            padding: 80px 20px;
+            padding: 100px 20px;
+            background: radial-gradient(circle at center, #1e2329 0%, #0b0e11 100%);
         }
 
         .hero h1 {
-            font-size: 50px;
+            font-size: 60px;
             color: var(--binance-yellow);
             margin: 0;
-            letter-spacing: 1px;
             text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(252, 213, 53, 0.4);
+        }
+
+        .hero h2 {
+            color: #fff;
+            font-size: 24px;
+            margin: 20px 0;
+            font-weight: 400;
         }
 
         .hero p {
             color: var(--binance-gray);
-            font-size: 18px;
-            margin-top: 10px;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.6;
         }
 
-        /* সার্চ বার */
+        /* সার্চ কন্টেইনার */
         .search-container {
             position: sticky;
             top: 0;
-            background: var(--binance-bg);
+            background: rgba(11, 14, 17, 0.95);
             padding: 20px;
             z-index: 1000;
             display: flex;
             justify-content: center;
             border-bottom: 1px solid #333;
-        }
-
-        .search-box {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
+            backdrop-filter: blur(10px);
         }
 
         .search-box input {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 8px;
+            width: 400px;
+            padding: 15px 25px;
+            border-radius: 50px;
             border: 1px solid #444;
             background: var(--binance-card);
             color: white;
-            font-size: 16px;
             outline: none;
             transition: 0.3s;
         }
 
         .search-box input:focus {
             border-color: var(--binance-yellow);
+            box-shadow: 0 0 15px rgba(252, 213, 53, 0.2);
         }
 
-        /* জেলা গ্রিড */
+        /* জেলা গ্রিড এবং হোভার ইফেক্ট */
         .district-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-            padding: 40px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            padding: 50px 8%;
         }
 
         .district-card {
             background: var(--binance-card);
-            padding: 30px 15px;
-            border-radius: 12px;
+            padding: 40px 20px;
+            border-radius: 15px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #333;
+            position: relative;
         }
 
+        /* মাউস নিলে যা হবে (বাইনান্স থিম ইফেক্ট) */
         .district-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--binance-yellow);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            background-color: var(--binance-yellow);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(252, 213, 53, 0.3);
         }
 
         .district-card h3 {
             margin: 0;
-            font-size: 18px;
+            font-size: 22px;
             color: var(--binance-text);
+            transition: 0.3s;
+            letter-spacing: 1px;
+        }
+
+        /* হোভার করলে টেক্সট কালার কালো হবে */
+        .district-card:hover h3 {
+            color: #000;
+            font-weight: 900;
         }
 
         .district-card span {
             display: block;
-            margin-top: 8px;
+            margin-top: 10px;
             color: var(--binance-yellow);
             font-size: 12px;
             font-weight: bold;
+            transition: 0.3s;
         }
 
-        /* কাস্টমার সাপোর্ট ফ্লোটিং বাটন */
-        .wa-support {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #2ebd85;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 50px;
-            text-decoration: none;
+        .district-card:hover span {
+            color: rgba(0,0,0,0.7);
+        }
+
+        /* ফুটার এবং ওয়ার্নিং টেক্সট */
+        .footer-warning {
+            text-align: center;
+            padding: 60px 20px;
+            background: #000;
+            border-top: 1px solid #333;
+        }
+
+        .warning-text {
+            color: #FF0000;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            z-index: 2000;
+            font-size: 18px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            line-height: 1.6;
+        }
+
+        .copyright {
+            color: var(--binance-gray);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .wa-support {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #2ebd85; color: white; padding: 15px 25px;
+            border-radius: 50px; text-decoration: none; font-weight: bold;
+            display: flex; align-items: center; gap: 10px; z-index: 2000;
         }
     </style>
 </head>
 <body>
 
 <a href="https://wa.me/8801756206213" class="wa-support" target="_blank">
-    <i class="fab fa-whatsapp"></i> CUSTOMER SUPPORT
+    <i class="fab fa-whatsapp"></i> LIVE SUPPORT
 </a>
 
 <div class="hero">
     <h1>THE DISTRICT LEGACY</h1>
-    <p>Permanent Digital Monument of Bangladesh</p>
+    <h2>BECOME A PART OF YOUR DISTRICT'S DIGITAL HISTORY</h2>
+    <p>
+        Don't just be a citizen, be a part of the monument. For the first time in history, 
+        own a permanent digital plot in your district map. Your identity, your pride, 
+        preserved forever in the Digital Archive of Bangladesh.
+    </p>
 </div>
 
 <div class="search-container">
     <div class="search-box">
-        <input type="text" id="distSearch" placeholder="Find your District..." onkeyup="searchDistrict()">
+        <input type="text" id="distSearch" placeholder="Type your District (e.g. Sylhet)..." onkeyup="searchDistrict()">
     </div>
 </div>
 
 <div class="district-grid" id="grid">
     </div>
+
+<div class="footer-warning">
+    <div class="warning-text">
+        ⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.<br>
+        PLOTS WILL NEVER BE INCREASED. ONCE SOLD OUT, IT'S GONE FOREVER.
+    </div>
+    <div class="copyright">
+        THE DISTRICT LEGACY © 2026 KAWSAR AHMED
+    </div>
+</div>
 
 <script>
     const districts = [
