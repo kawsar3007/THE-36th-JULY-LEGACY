@@ -5,61 +5,85 @@
     <title>RESERVE | THE 36th JULY LEGACY</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .box { background: #1E2329; padding: 35px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 380px; position: relative; z-index: 10; }
-        input { width: 100%; padding: 14px; margin: 12px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #FCD535; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #1E2329; padding: 35px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 380px; }
+        input { width: 100%; padding: 14px; margin: 12px 0; background: #2B3139; border: 2px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; }
+        .valid { border-color: #2ebd85 !important; box-shadow: 0 0 10px rgba(46, 189, 133, 0.3); }
+        .invalid { border-color: #ff0000 !important; box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); }
+        #msg { font-size: 13px; margin-bottom: 10px; display: block; font-weight: bold; }
+        .btn { width: 100%; padding: 15px; background: #555; color: #fff; border: none; border-radius: 8px; cursor: not-allowed; font-weight: bold; }
+        .active-btn { background: #FCD535 !important; color: #000 !important; cursor: pointer !important; }
         
-        /* অভিনন্দন স্ক্রিন ও জলছাপ */
-        #success-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#FCD535; color:#000; flex-direction:column; justify-content:center; align-items:center; text-align:center; z-index:100; }
-        #watermark-bg { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.1; font-size: 12px; line-height: 20px; overflow: hidden; pointer-events: none; padding: 15px; text-align: justify; color: #000; font-weight: bold; }
+        #success-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#FCD535; color:#000; flex-direction:column; justify-content:center; align-items:center; z-index:100; text-align:center; }
+        .watermark { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.1; overflow: hidden; font-size: 12px; pointer-events: none; padding: 10px; text-align: justify; font-weight: bold; line-height: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="box" id="order-box">
+    <div class="box" id="form-box">
         <h2 style="color:#FCD535;">RESERVE YOUR PLOT</h2>
-        <p style="font-size: 14px; color: #ff0000; font-weight: bold;">"৳36 is not just a price, it's your signature on history."</p>
-        <input type="text" id="bn" placeholder="Enter Your Brand Name">
-        <input type="number" id="pn" placeholder="Plot ID (1-64000)">
-        <button class="btn" onclick="submitOrder()">SUBMIT ORDER</button>
-        <a href="index.html" style="display:block; margin-top:20px; color:#888; text-decoration:none;">← Back to Map</a>
+        <p style="font-size: 13px; color: #ff0000;">"৳36 is your signature on history"</p>
+        <input type="text" id="name" placeholder="Enter Brand Name">
+        <input type="number" id="phone" placeholder="Enter Mobile Number (11 Digit)" oninput="checkPhone()">
+        <span id="msg"></span>
+        <button id="sBtn" class="btn" disabled onclick="placeOrder()">SUBMIT ORDER</button>
     </div>
 
     <div id="success-screen">
-        <div id="watermark-bg">
-            DHAKA, CHATTOGRAM, RAJSHAHI, KHULNA, SYLHET, BARISHAL, RANGPUR, MYMENSINGH, COMILLA, NOAKHALI, FENI, COX'S BAZAR, BOGURA, GAZIPUR, NARAYANGANJ, TANGAIL, FARIDPUR, MUNSHIGANJ, NARSINGDI, RAJBARI, SHARIATPUR, GOPALGANJ, MADARIPUR, KISHOREGANJ, MANIKGANJ, BRAHMANBARIA, CHANDPUR, LAKSHMIPUR, RANGAMATI, KHAGRACHARI, BANDARBAN, SIRAJGANJ, PABNA, NATORE, NAOGAON, CHAPAINAWABGANJ, JOYPURHAT, KURIGRAM, GAIBANDHA, LALMONIRHAT, DINAJPUR, THAKURGAON, PANCHAGARH, NILPHAMARI, BHOLA, PATUAKHALI, PIROJPUR, JHALOKATI, BARGUNA, AMATOLI, JESSORE, JHENAIDAH, MAGURA, NARAIL, KUSHTIA, CHUADANGA, MEHERPUR, SATKHIRA, BAGERHAT, HABIGANJ, MOULVIBAZAR, SUNAMGANJ, NETROKONA, SHERPUR... (Repeated)
-        </div>
-        <h1 style="font-size: 45px; margin-bottom: 10px;">CONGRATULATIONS!</h1>
-        <h2 id="congrats-name" style="text-transform: uppercase; margin-bottom: 20px;"></h2>
-        <p style="font-size: 20px; font-weight: bold;">Order Submitted Successfully!</p>
-        <p>Redirecting to Homepage in 5 seconds...</p>
+        <div class="watermark">DHAKA, CHATTOGRAM, RAJSHAHI, KHULNA, SYLHET, BARISHAL, RANGPUR, MYMENSINGH, COMILLA, NOAKHALI, FENI, COX'S BAZAR, BOGURA, GAZIPUR, TANGAIL, FARIDPUR... (Repeated 64 Districts)</div>
+        <h1 style="font-size: 40px; margin:0;">CONGRATULATIONS!</h1>
+        <h2 id="uName" style="text-transform: uppercase;"></h2>
+        <p style="font-size: 18px; font-weight: bold;">Order successful! Your number is your Plot ID.</p>
+        <p>Returning to home in 5 seconds...</p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
         firebase.initializeApp({databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"});
-        
-        function submitOrder() {
-            const name = document.getElementById('bn').value;
-            const plot = document.getElementById('pn').value;
-            if(!name || !plot) return alert("সব তথ্য দিন");
+        const db = firebase.database();
 
-            firebase.database().ref('orders/' + plot).set({name: name, plotID: plot}).then(() => {
-                document.getElementById('order-box').style.display = 'none';
+        function checkPhone() {
+            const p = document.getElementById('phone').value;
+            const msg = document.getElementById('msg');
+            const btn = document.getElementById('sBtn');
+            const inp = document.getElementById('phone');
+
+            if(p.length < 11) { msg.innerText = ""; inp.className = ""; return; }
+
+            db.ref('phones/' + p).once('value', s => {
+                if(s.exists()) {
+                    msg.innerText = "❌ এই নম্বরটি আগে ব্যবহার করা হয়েছে!";
+                    msg.style.color = "red";
+                    inp.className = "invalid";
+                    btn.disabled = true; btn.className = "btn";
+                } else {
+                    msg.innerText = "✅ নম্বরটি সঠিক আছে!";
+                    msg.style.color = "#2ebd85";
+                    inp.className = "valid";
+                    btn.disabled = false; btn.className = "btn active-btn";
+                }
+            });
+        }
+
+        function placeOrder() {
+            const p = document.getElementById('phone').value;
+            const n = document.getElementById('name').value;
+            if(!n) return alert("আপনার নাম দিন");
+
+            db.ref('orders/' + p).set({ name: n, phone: p, status: "Pending" }).then(() => {
+                db.ref('phones/' + p).set(true);
+                document.getElementById('form-box').style.display = 'none';
                 document.getElementById('success-screen').style.display = 'flex';
-                document.getElementById('congrats-name').innerText = name;
+                document.getElementById('uName').innerText = n;
                 
-                // কনফেটি অ্যানিমেশন
-                var end = Date.now() + (5 * 1000);
+                var end = Date.now() + 5000;
                 (function frame() {
                     confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff0000', '#000000'] });
                     confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff0000', '#000000'] });
-                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                    if (Date.now() < end) requestAnimationFrame(frame);
                 }());
 
-                // ৫ সেকেন্ড পর অটো রিডাইরেক্ট
                 setTimeout(() => { window.location.href = "index.html"; }, 5000);
             });
         }
