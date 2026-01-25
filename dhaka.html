@@ -8,141 +8,166 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
-        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; scroll-behavior: smooth; overflow-x: hidden; }
+        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
 
-        .main-headline { background: #000; color: var(--b-yellow); padding: 15px; font-size: 26px; font-weight: 900; text-transform: uppercase; border-bottom: 1px solid #333; }
-
-        /* পেমেন্ট ও বাই সেকশন লোগো স্টাইল */
-        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 12px 3%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
+        /* ছোট সার্চবার ও নেভিগেশন */
+        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; gap: 10px; }
         
-        .legacy-btn { display: flex; align-items: center; gap: 10px; background: #161a1e; padding: 8px 15px; border-radius: 50px; border: 1px solid #333; cursor: pointer; transition: 0.3s; text-decoration: none; color: #fff; }
-        .legacy-btn:hover { border-color: var(--b-yellow); }
-        .gold-icon { width: 35px; height: 35px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 18px; box-shadow: 0 0 10px rgba(252, 213, 53, 0.5); }
-
-        /* সার্চবার */
-        .search-bar { background: #0b0e11; padding: 15px; display: flex; justify-content: center; gap: 5px; border-bottom: 1px solid #222; }
-        .search-bar input { width: 200px; padding: 12px; border-radius: 5px; border: 1px solid #444; background: #1e2329; color: #fff; outline: none; }
-        .search-bar button { background: var(--b-yellow); border: none; padding: 12px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-
-        /* ক্যানভাস ও ফিক্সড হাইলাইট */
-        .canvas-container { width: 1000px; margin: 0 auto; background: #fff; position: relative; border-left: 1px solid #ddd; border-right: 1px solid #ddd; }
-        canvas { display: block; }
-        #plotMarker { 
-            position: absolute; width: 46px; height: 46px; 
-            border: 4px solid var(--b-yellow); 
-            box-shadow: 0 0 25px var(--b-yellow); 
-            display: none; pointer-events: none; z-index: 100;
-            background: rgba(252, 213, 53, 0.2);
-        }
-
-        /* মোডাল ও সাপোর্ট */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
-        .modal-box { background: var(--b-card); padding: 30px; border-radius: 15px; width: 350px; border: 1px solid var(--b-yellow); }
-        input[type="text"], input[type="number"] { width: 100%; padding: 12px; margin: 10px 0; background: #2b3139; border: 1px solid #444; color: #fff; border-radius: 5px; box-sizing: border-box; }
+        .nav-item { display: flex; align-items: center; gap: 8px; background: #161a1e; padding: 6px 12px; border-radius: 50px; border: 1px solid #333; cursor: pointer; }
+        .gold-icon { width: 30px; height: 30px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 14px; }
         
-        .wa-support { position: fixed; bottom: 25px; right: 25px; background: #2ebd85; color: #fff; padding: 12px 22px; border-radius: 50px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 2000; }
+        /* ছোট সার্চ ইনপুট */
+        .mini-search { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
+        .mini-search input { background: transparent; border: none; padding: 8px; color: #fff; width: 100px; outline: none; font-size: 13px; }
+        .mini-search button { background: var(--b-yellow); border: none; padding: 0 10px; cursor: pointer; font-weight: bold; }
+
+        /* ক্যানভাস: প্রস্থ বাড়ানো হয়েছে */
+        .canvas-container { width: calc(100% - 20px); max-width: 1200px; margin: 10px auto; background: #fff; position: relative; border: 1px solid #ddd; }
+        canvas { display: block; width: 100%; height: auto; }
+        #plotMarker { position: absolute; width: 46px; height: 46px; border: 4px solid var(--b-yellow); box-shadow: 0 0 20px var(--b-yellow); display: none; pointer-events: none; z-index: 10; }
+
+        /* পপআপ ও সাকসেস স্ক্রিন */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; justify-content: center; align-items: center; }
+        .full-yellow-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--b-yellow); display: none; z-index: 9998; }
+        .modal-box { background: var(--b-card); padding: 25px; border-radius: 15px; width: 90%; max-width: 380px; border: 2px solid var(--b-yellow); text-align: left; }
+        
+        input[type="text"], input[type="number"] { width: 100%; padding: 12px; margin: 10px 0; background: #2b3139; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        
+        .support-list { background: #0B0E11; padding: 15px; border-radius: 10px; font-size: 14px; margin: 15px 0; border-left: 5px solid var(--b-yellow); }
+        .support-list li { margin-bottom: 8px; list-style: none; color: #EAECEF; }
+
+        .wa-float { position: fixed; bottom: 25px; right: 25px; background: #2ebd85; color: #fff; padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
-<body id="b">
-
-<div class="main-headline">DHAKA DISTRICT LEGACY</div>
-
-<div class="search-bar">
-    <input type="number" id="ps" placeholder="Enter Plot ID (1-10000)">
-    <button onclick="findP()">FIND PLOT</button>
-</div>
+<body id="pageBody">
 
 <div class="top-nav">
-    <div class="legacy-btn" onclick="copyN()">
+    <div class="nav-item" onclick="copyPay()">
         <div class="gold-icon"><i class="fas fa-university"></i></div>
-        <div style="text-align: left;"><span style="font-size: 10px; color: #848e9c; display: block;">PAYMENT NUMBER</span><b>01756206213</b></div>
-    </div>
-    
-    <div class="legacy-btn" onclick="openO()" style="background: var(--b-yellow); color: #000;">
-        <div class="gold-icon" style="background: #000; color: var(--b-yellow);"><i class="fas fa-shopping-cart"></i></div>
-        <b>BUY PLOT (৳36)</b>
-    </div>
-</div>
-
-<div class="canvas-container" id="cc">
-    <div id="plotMarker"></div>
-    <canvas id="lc"></canvas>
-</div>
-
-<div id="om" class="modal">
-    <div class="modal-box">
-        <h2 style="color:var(--b-yellow);">RESERVE PLOT</h2>
-        <input type="text" id="bn" placeholder="Your Brand Name">
-        <input type="number" id="pn" placeholder="Plot ID (1-10000)">
-        <button onclick="subO()" style="width:100%; background:var(--b-yellow); border:none; padding:15px; border-radius:5px; font-weight:bold; cursor:pointer;">SUBMIT ORDER</button>
-        <p onclick="closeO()" style="color:#666; cursor:pointer; margin-top:15px;">Cancel</p>
-    </div>
-</div>
-
-<div id="sm" class="modal">
-    <div class="modal-box" id="sb" style="text-align:left;">
-        <h2 id="st" style="text-align:center;">CREATOR SUPPORT</h2>
-        <div style="background:#0b0e11; padding:15px; border-radius:8px; font-size:13px; margin-bottom:15px;">
-            1. Payment Screenshot (৳36)<br>
-            2. Brand Name & Plot ID<br>
-            3. Image & Link for Plot
+        <div style="text-align: left; line-height: 1.2;">
+            <span style="font-size: 9px; color: var(--b-yellow); font-weight: bold;">BKASH, NAGAD, ROCKET</span><br>
+            <b style="font-size: 13px;">01756206213</b>
         </div>
-        <a href="https://wa.me/8801576940717" target="_blank" style="display:block; background:#2ebd85; color:#fff; text-align:center; padding:15px; border-radius:5px; text-decoration:none; font-weight:bold;">CONTACT WHATSAPP</a>
-        <p onclick="location.reload()" style="text-align:center; color:#666; cursor:pointer; margin-top:15px;">Back to Map</p>
+    </div>
+
+    <div class="mini-search">
+        <input type="number" id="plotInput" placeholder="Plot ID">
+        <button onclick="searchPlot()"><i class="fas fa-search"></i></button>
+    </div>
+
+    <div class="nav-item" style="background: var(--b-yellow); border: none;" onclick="openBuy()">
+        <div class="gold-icon" style="background: #000; color: var(--b-yellow);"><i class="fas fa-cart-plus"></i></div>
+        <b style="color: #000; font-size: 13px;">BUY PLOT (৳36)</b>
     </div>
 </div>
 
-<a href="https://wa.me/8801576940717" class="wa-support" target="_blank">
-    <i class="fab fa-whatsapp" style="font-size: 22px;"></i> LIVE SUPPORT
+<div class="canvas-container">
+    <div id="plotMarker"></div>
+    <canvas id="legacyCanvas"></canvas>
+</div>
+
+<div id="yellowOverlay" class="full-yellow-overlay"></div>
+
+<div id="buyModal" class="modal">
+    <div class="modal-box">
+        <h2 style="color:var(--b-yellow); text-align:center;">RESERVE PLOT</h2>
+        <input type="text" id="bName" placeholder="Enter Brand Name">
+        <input type="number" id="pID" placeholder="Enter Plot ID (1-10000)">
+        <button onclick="handleOrder()" style="width:100%; background:var(--b-yellow); border:none; padding:15px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 16px;">SUBMIT ORDER</button>
+        <p onclick="closeModals()" style="text-align:center; color:#848e9c; cursor:pointer; margin-top:15px;">Cancel</p>
+    </div>
+</div>
+
+<div id="supportModal" class="modal">
+    <div class="modal-box" id="supportContent">
+        <h2 id="modalTitle" style="color:var(--b-yellow); text-align:center;">CREATOR SUPPORT</h2>
+        <p style="font-size: 14px; text-align:center;">Submit these details via WhatsApp:</p>
+        <div class="support-list">
+            <li><strong>1. Payment:</strong> Screenshot of ৳36 Transfer.</li>
+            <li><strong>2. Order Info:</strong> Brand Name & Reserved Plot ID.</li>
+            <li><strong>3. Image:</strong> Your Logo or Photo for the Plot.</li>
+            <li><strong>4. Link:</strong> Website or Social Media URL.</li>
+        </div>
+        <a href="https://wa.me/8801576940717" target="_blank" style="display:block; background:#2ebd85; color:#fff; text-align:center; padding:15px; border-radius:10px; text-decoration:none; font-weight:bold;">OPEN WHATSAPP</a>
+        
+        <div style="display:flex; justify-content:space-between; margin-top:20px;">
+            <a href="index.html" style="color:var(--b-yellow); text-decoration:none; font-size:14px;">← Home Page</a>
+            <span onclick="location.reload()" style="color:#848e9c; cursor:pointer; font-size:14px;">Back to Map</span>
+        </div>
+    </div>
+</div>
+
+<a href="javascript:void(0)" class="wa-float" onclick="openSupport()">
+    <i class="fab fa-whatsapp" style="font-size: 24px;"></i> LIVE SUPPORT
 </a>
 
 <script>
-    const c = document.getElementById('lc'), ctx = c.getContext('2d'), bS = 50;
-    const cols = 20; // ১০০০ পিক্সেল / ৫০ = ২০টি কলাম (ফিক্সড ক্যালকুলেশন)
-    c.width = 1000; c.height = (10000/cols) * bS;
+    const cv = document.getElementById('legacyCanvas');
+    const ctx = cv.getContext('2d');
+    const bSize = 50; 
+    const cols = 20; // ১০০০ পিক্সেল প্রস্থের জন্য ২০টি কলাম
 
-    function draw() {
-        ctx.fillStyle = "#fff"; ctx.fillRect(0,0,c.width, c.height);
+    cv.width = 1000;
+    cv.height = (10000/cols) * bSize;
+
+    function drawGrid() {
+        ctx.fillStyle = "#fff"; ctx.fillRect(0,0,cv.width, cv.height);
         ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
-        for(let x=0; x<=c.width; x+=bS){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,c.height); ctx.stroke(); }
-        for(let y=0; y<=c.height; y+=bS){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(c.width,y); ctx.stroke(); }
+        for(let x=0; x<=cv.width; x+=bSize){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,cv.height); ctx.stroke(); }
+        for(let y=0; y<=cv.height; y+=bSize){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cv.width,y); ctx.stroke(); }
     }
-    draw();
+    drawGrid();
 
-    // নিখুঁত সার্চ ক্যালকুলেশন
-    function findP() {
-        const n = document.getElementById('ps').value;
-        if(!n || n<1 || n>10000) return alert("Enter 1-10000");
-        const row = Math.floor((n-1)/cols), col = (n-1)%cols;
-        const m = document.getElementById('plotMarker');
-        m.style.display = 'block';
-        m.style.left = (col * bS) + "px";
-        m.style.top = (row * bS) + "px";
-        window.scrollTo({ top: c.offsetTop + (row * bS) - 250, behavior: 'smooth' });
+    // সার্চ ফাংশন
+    function searchPlot() {
+        const pNum = document.getElementById('plotInput').value;
+        if(!pNum || pNum < 1 || pNum > 10000) return alert("Valid ID 1-10000!");
+        const r = Math.floor((pNum-1)/cols), c = (pNum-1)%cols;
+        const marker = document.getElementById('plotMarker');
+        marker.style.display = 'block';
+        marker.style.left = (c * bSize) + "px";
+        marker.style.top = (r * bSize) + "px";
+        window.scrollTo({ top: cv.offsetTop + (r * bSize) - 200, behavior: 'smooth' });
     }
 
-    function copyN() { navigator.clipboard.writeText("01756206213"); alert("Number Copied!"); }
-    function openO() { document.getElementById('om').style.display='flex'; }
-    function closeO() { document.getElementById('om').style.display='none'; }
+    function copyPay() { navigator.clipboard.writeText("01756206213"); alert("Payment Number Copied!"); }
+    function openBuy() { document.getElementById('buyModal').style.display='flex'; }
+    function openSupport() { document.getElementById('supportModal').style.display='flex'; }
+    function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display='none'); }
 
-    function subO() {
-        const n = document.getElementById('bn').value, p = document.getElementById('pn').value;
-        if(!n || !p) return alert("Fill all!");
-        document.getElementById('om').style.display='none';
-        const sm = document.getElementById('sm'), sb = document.getElementById('sb'), bd = document.getElementById('b');
-        sm.style.display='flex'; sb.style.background = "var(--b-yellow)"; bd.style.background = "var(--b-yellow)";
-        document.getElementById('st').innerText = "SUCCESS! 🎉"; document.getElementById('st').style.color="#000";
-        
+    // অর্ডার হ্যান্ডেলিং ও ইয়েলো পেজ ইফেক্ট
+    function handleOrder() {
+        const name = document.getElementById('bName').value, plot = document.getElementById('pID').value;
+        if(!name || !plot) return alert("Fill all fields!");
+
+        document.getElementById('buyModal').style.display = 'none';
+        const overlay = document.getElementById('yellowOverlay');
+        const sModal = document.getElementById('supportModal');
+        const sBox = document.getElementById('supportContent');
+
+        // ১. ইয়েলো পেজ দিয়ে ক্যানভাস ঢেকে ফেলা
+        overlay.style.display = 'block';
+        sModal.style.display = 'flex';
+        sBox.style.background = "var(--b-yellow)";
+        sBox.style.color = "#000";
+        document.getElementById('modalTitle').innerText = "SUCCESS! 🎉";
+        document.getElementById('modalTitle').style.color = "#000";
+
+        // ২. রঙিন কনফেটি
         var end = Date.now() + 4000;
-        (function f() {
-            confetti({ particleCount: 10, angle: 60, spread: 70, origin: { x: 0, y: 0.6 }, colors:['#ff0000','#000'] });
-            confetti({ particleCount: 10, angle: 120, spread: 70, origin: { x: 1, y: 0.6 }, colors:['#ff0000','#000'] });
-            if (Date.now() < end) requestAnimationFrame(f);
+        (function frame() {
+            confetti({ particleCount: 10, angle: 60, spread: 70, origin: { x: 0, y: 0.6 }, colors: ['#ff0000', '#0000ff', '#ffffff', '#000'] });
+            confetti({ particleCount: 10, angle: 120, spread: 70, origin: { x: 1, y: 0.6 }, colors: ['#ff0000', '#0000ff', '#ffffff', '#000'] });
+            if (Date.now() < end) requestAnimationFrame(frame);
         }());
-        
-        setTimeout(() => { 
-            bd.style.background = "#0B0E11"; sb.style.background = "#1E2329"; 
-            document.getElementById('st').innerText = "CREATOR SUPPORT"; document.getElementById('st').style.color="var(--b-yellow)";
+
+        // ৩. ৪ সেকেন্ড পর ব্যাকগ্রাউন্ড ঠিক করা ও সাপোর্ট লিস্ট দেখানো
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            sBox.style.background = "var(--b-card)";
+            sBox.style.color = "#fff";
+            document.getElementById('modalTitle').innerText = "CREATOR SUPPORT";
+            document.getElementById('modalTitle').style.color = "var(--b-yellow)";
         }, 4000);
     }
 </script>
