@@ -8,81 +8,163 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
-        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; }
+        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
 
-        /* পেমেন্ট ও অ্যাকশন বার */
+        /* হেডার ও নোটিশ */
+        .header-title { padding: 20px; color: var(--b-yellow); font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+        
         .top-nav {
             position: sticky; top: 0; background: var(--b-card); padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 2px solid var(--b-yellow); z-index: 1000;
         }
-        
-        .payment-box { font-size: 13px; color: #ddd; }
-        .payment-box b { color: var(--b-yellow); font-size: 16px; }
+
+        /* পেমেন্ট নম্বর কপি স্টাইল */
+        .pay-number { cursor: pointer; color: var(--b-yellow); font-size: 18px; font-weight: bold; border: 1px dashed var(--b-yellow); padding: 5px 10px; border-radius: 5px; transition: 0.3s; }
+        .pay-number:hover { background: rgba(252, 213, 53, 0.1); }
 
         .btn-group { display: flex; gap: 10px; }
-        
-        .action-btn {
-            padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; border: none;
-            display: flex; align-items: center; gap: 8px; transition: 0.3s;
-        }
+        .action-btn { padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; border: none; font-size: 16px; transition: 0.3s; }
         .buy-now { background: var(--b-yellow); color: #000; }
         .download-map { background: #333; color: #fff; border: 1px solid #555; }
-        .download-map:hover { background: #444; border-color: var(--b-yellow); }
 
-        /* ক্যানভাস লেআউট */
-        .canvas-wrapper {
-            width: calc(100% - 60px); /* ডানে বামে এক আঙ্গুল জায়গা */
-            max-width: 1000px; margin: 20px auto;
-            border: 2px solid #333; background: #fff;
+        /* ক্যানভাস: ডানে-বামে ১ ইঞ্চি (প্রায় ৪০-৫০px) গ্যাপ */
+        .canvas-container {
+            width: calc(100% - 100px); /* ডানে-বামে ১ ইঞ্চি করে গ্যাপ */
+            margin: 20px auto; overflow-x: hidden;
+            border: 5px solid #1E2329; background: #fff;
         }
-        canvas { display: block; width: 100%; height: auto; }
+        canvas { display: block; width: 1000px; margin: 0 auto; }
 
-        /* পপআপ ও কনফেটি স্টাইল আগে যা ছিল তাই থাকবে... */
+        /* পপআপ */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-box { background: var(--b-card); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; border: 1px solid var(--b-yellow); }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 5px; box-sizing: border-box; }
+
+        /* হোয়াটসঅ্যাপ লোগো (মেইন পেজের মতো) */
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+
+        .bottom-notice { padding: 40px 20px; background: #000; border-top: 1px solid #333; }
+        .warning { color: #ff0000; font-weight: bold; font-size: 18px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
+<a href="https://wa.me/8801576940717" class="wa-float" target="_blank">
+    <i class="fab fa-whatsapp" style="font-size: 24px;"></i> LIVE SUPPORT
+</a>
+
+<div class="header-title">DHAKA DISTRICT LEGACY MAP</div>
+
 <div class="top-nav">
-    <div class="payment-box">
-        <i class="fas fa-university"></i> BKASH / NAGAD / ROCKET<br>
-        <b>01756206213</b>
+    <div class="payment-box" onclick="copyNumber()">
+        <span style="font-size: 12px; color: #848e9c;">CLICK TO COPY (Bkash/Nagad/Rocket)</span><br>
+        <span class="pay-number" id="payNum">01756206213</span>
     </div>
-    
     <div class="btn-group">
-        <button class="action-btn download-map" onclick="downloadCanvas()">
-            <i class="fas fa-download"></i> DOWNLOAD MAP
-        </button>
-        <button class="action-btn buy-now" onclick="openModal()">
-            BUY PLOT (৳36)
-        </button>
+        <button class="action-btn download-map" onclick="downloadCanvas()">DOWNLOAD MAP</button>
+        <button class="action-btn buy-now" onclick="openBuyModal()">BUY PLOT (৳36)</button>
     </div>
 </div>
 
-<div class="canvas-wrapper">
+<div class="canvas-container">
     <canvas id="legacyCanvas"></canvas>
+</div>
+
+<div id="buyModal" class="modal">
+    <div class="modal-box">
+        <h2 style="color: var(--b-yellow);">RESERVE YOUR PLOT</h2>
+        <input type="text" id="brandName" placeholder="Enter Your Brand Name" required>
+        <input type="number" id="plotNumber" placeholder="Plot Number (1-10000)" required>
+        <button class="action-btn buy-now" style="width: 100%; margin-top: 10px;" onclick="processOrder()">SUBMIT ORDER</button>
+        <p onclick="closeModal()" style="color: #666; margin-top: 15px; cursor: pointer;">Cancel</p>
+    </div>
+</div>
+
+<div id="supportModal" class="modal">
+    <div class="modal-box">
+        <h2 id="congratsMsg" style="color: var(--b-yellow);"></h2>
+        <p style="color: #ff0000; font-weight: bold;">PLEASE CONTACT SUPPORT NOW!</p>
+        <div style="text-align: left; background: #000; padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.8;">
+            1. Brand Name | 2. Plot Number <br>
+            3. Payment Screenshot | 4. Your Image <br>
+            5. Website/Social Link
+        </div>
+        <button class="action-btn buy-now" style="width: 100%; margin-top: 20px; background: #2ebd85; color: #fff;" onclick="window.open('https://wa.me/8801576940717')">GO TO WHATSAPP</button>
+        <p onclick="location.reload()" style="color: #666; margin-top: 15px; cursor: pointer;">Back to Map</p>
+    </div>
+</div>
+
+<div class="bottom-notice">
+    <div class="warning">⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.</div>
+    <div style="color: #666; font-size: 14px;">NUMBERS WILL NEVER BE INCREASED. <br> THE DISTRICT LEGACY © 2026 KAWSAR AHMED</div>
 </div>
 
 <script>
     const cv = document.getElementById('legacyCanvas');
     const ctx = cv.getContext('2d');
-    
-    // ক্যানভাস সাইজ আগের মতোই ২৫,০০০ পিক্সেল লম্বা
+    const bSize = 50; // প্রতিটি ব্লক ৫০ পিক্সেল
+    const cols = 20;  // এক সারিতে ২০টি ব্লক (২০ * ৫০ = ১০০০ পিক্সেল প্রস্থ)
+    const rows = 500; // ৫০০ সারি (৫০০ * ২০ = ১০,০০০ প্লট)
+
     cv.width = 1000;
-    cv.height = 25000; 
+    cv.height = rows * bSize; // ২৫,০০০ পিক্সেল লম্বা
 
-    // ডামি গ্রিড ড্রয়িং
-    ctx.fillStyle = "#fff"; ctx.fillRect(0,0,cv.width, cv.height);
+    function drawGrid() {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, cv.width, cv.height);
+        
+        ctx.strokeStyle = "#CCCCCC"; // গ্রিড লাইনের রঙ
+        ctx.lineWidth = 1;
 
-    // ডাউনলোড ফাংশন
+        for (let i = 0; i <= cols; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * bSize, 0);
+            ctx.lineTo(i * bSize, cv.height);
+            ctx.stroke();
+        }
+        for (let j = 0; j <= rows; j++) {
+            ctx.beginPath();
+            ctx.moveTo(0, j * bSize);
+            ctx.lineTo(cv.width, j * bSize);
+            ctx.stroke();
+        }
+    }
+    drawGrid();
+
+    function copyNumber() {
+        const num = document.getElementById('payNum').innerText;
+        navigator.clipboard.writeText(num);
+        alert("Number Copied: " + num);
+    }
+
+    function openBuyModal() { document.getElementById('buyModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('buyModal').style.display = 'none'; }
+
+    function processOrder() {
+        const name = document.getElementById('brandName').value;
+        const pNum = document.getElementById('plotNumber').value;
+        if(!name || !pNum) { alert("Fill all fields!"); return; }
+
+        document.getElementById('buyModal').style.display = 'none';
+        document.getElementById('congratsMsg').innerText = "CONGRATS " + name.toUpperCase() + "!";
+        document.getElementById('supportModal').style.display = 'flex';
+
+        // ৪ সেকেন্ড রঙিন কাগজ ওড়ানো
+        var end = Date.now() + 4000;
+        (function frame() {
+            confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#FCD535', '#ff0000'] });
+            confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FCD535', '#ff0000'] });
+            if (Date.now() < end) requestAnimationFrame(frame);
+        }());
+    }
+
     function downloadCanvas() {
         const link = document.createElement('a');
-        link.download = 'District_Legacy_Map.png';
+        link.download = 'District_Map.png';
         link.href = cv.toDataURL();
         link.click();
     }
-
-    // আগের প্রসেস অর্ডার ও কনফেটি ফাংশনগুলো এখানে থাকবে...
 </script>
 
 </body>
