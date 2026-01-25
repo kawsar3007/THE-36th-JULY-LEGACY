@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RESERVE | THE 36th JULY LEGACY</title>
+    <style>
+        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #1E2329; padding: 35px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 340px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 5px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: #FCD535; color: #000; font-weight: bold; cursor: pointer; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2 style="color:#FCD535;">RESERVE PLOT</h2>
+        <p style="font-size: 13px; color: #ff0000;">Price: ৳36 only</p>
+        <input type="text" id="bn" placeholder="Your Brand Name">
+        <input type="number" id="pn" placeholder="Plot ID (1-64000)">
+        <button class="btn" onclick="submit()">SUBMIT ORDER</button>
+        <a href="index.html" style="display:block; margin-top:15px; color:#888; text-decoration:none; font-size:12px;">← Back</a>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script>
+        firebase.initializeApp({databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"});
+        function submit() {
+            const n = document.getElementById('bn').value, p = document.getElementById('pn').value;
+            if(!n || !p) return alert("সব তথ্য দিন");
+            firebase.database().ref('orders/'+p).set({name:n, plotID:p}).then(() => {
+                alert("অর্ডার হয়েছে! পেমেন্ট করে হোয়াটসঅ্যাপে জানান।");
+                window.location.href = "support.html";
+            });
+        }
+    </script>
+</body>
+</html>
