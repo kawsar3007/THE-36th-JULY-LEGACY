@@ -6,32 +6,29 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: #1E2329; padding: 35px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 380px; position: relative; z-index: 10; }
-        input { width: 100%; padding: 14px; margin: 12px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; }
+        .box { background: #1E2329; padding: 30px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 350px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 5px; box-sizing: border-box; }
         .valid { border-color: #2ebd85 !important; }
         .invalid { border-color: #ff0000 !important; }
-        #msg { font-size: 13px; margin-bottom: 10px; display: block; }
-        .btn { width: 100%; padding: 15px; background: #555; color: #fff; border: none; border-radius: 8px; cursor: not-allowed; font-weight: bold; }
+        #sBtn { width: 100%; padding: 15px; background: #555; color: #fff; border: none; border-radius: 5px; cursor: not-allowed; font-weight: bold; }
         .active-btn { background: #FCD535 !important; color: #000 !important; cursor: pointer !important; }
-        #success-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#FCD535; color:#000; flex-direction:column; justify-content:center; align-items:center; z-index:100; text-align:center; }
-        .watermark { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.1; overflow: hidden; font-size: 11px; pointer-events: none; padding: 10px; text-align: justify; font-weight: bold; line-height: 18px; color: #000; }
+        #success { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#FCD535; color:#000; flex-direction:column; justify-content:center; align-items:center; z-index:100; text-align:center; }
     </style>
 </head>
 <body>
     <div class="box" id="form-box">
         <h2 style="color:#FCD535;">RESERVE PLOT</h2>
-        <input type="text" id="name" placeholder="Enter Brand/Your Name">
-        <input type="number" id="phone" placeholder="Enter Mobile Number (11 Digit)" oninput="checkPhone()">
-        <span id="msg"></span>
-        <button id="sBtn" class="btn" disabled onclick="placeOrder()">SUBMIT ORDER</button>
+        <input type="text" id="name" placeholder="Your Name">
+        <input type="number" id="phone" placeholder="Mobile Number (11 Digit)" oninput="checkPhone()">
+        <p id="msg" style="font-size:12px; height:15px; margin:5px 0;"></p>
+        <button id="sBtn" disabled onclick="placeOrder()">SUBMIT ORDER</button>
     </div>
 
-    <div id="success-screen">
-        <div class="watermark">DHAKA, CHATTOGRAM, RAJSHAHI, KHULNA, SYLHET, BARISHAL, RANGPUR, MYMENSINGH, COMILLA, NOAKHALI, FENI, COX'S BAZAR, BOGURA, GAZIPUR, TANGAIL, FARIDPUR...</div>
-        <h1 style="font-size: 40px; margin:0;">CONGRATULATIONS!</h1>
-        <h2 id="uName" style="text-transform: uppercase;"></h2>
-        <p style="font-size: 18px; font-weight: bold;">Order successful! Your number is your identity.</p>
-        <p>Redirecting to Homepage in 5 seconds...</p>
+    <div id="success">
+        <h1 style="font-size: 40px;">CONGRATULATIONS!</h1>
+        <h2 id="uName"></h2>
+        <p>Order successful! Number is saved.</p>
+        <p>Redirecting in 5s...</p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -41,14 +38,12 @@
         const db = firebase.database();
         function checkPhone() {
             const p = document.getElementById('phone').value, msg = document.getElementById('msg'), btn = document.getElementById('sBtn'), inp = document.getElementById('phone');
-            if(p.length < 11) { msg.innerText = ""; inp.className = ""; return; }
+            if(p.length < 11) { msg.innerText = ""; inp.className = ""; btn.disabled = true; btn.className = ""; return; }
             db.ref('phones/' + p).once('value', s => {
                 if(s.exists()) {
-                    msg.innerText = "❌ এই নম্বরটি দিয়ে ইতিমধ্যে অর্ডার করা হয়েছে!";
-                    msg.style.color = "red"; inp.className = "invalid"; btn.disabled = true; btn.className = "btn";
+                    msg.innerText = "❌ নম্বরটি ইতিমধ্যে ব্যবহৃত!"; msg.style.color = "red"; inp.className = "invalid"; btn.disabled = true;
                 } else {
-                    msg.innerText = "✅ নম্বরটি সঠিক আছে!";
-                    msg.style.color = "#2ebd85"; inp.className = "valid"; btn.disabled = false; btn.className = "btn active-btn";
+                    msg.innerText = "✅ নম্বরটি সঠিক!"; msg.style.color = "#2ebd85"; inp.className = "valid"; btn.disabled = false; btn.className = "active-btn";
                 }
             });
         }
@@ -57,14 +52,9 @@
             db.ref('orders/' + p).set({ name: n, phone: p, status: "Pending" }).then(() => {
                 db.ref('phones/' + p).set(true);
                 document.getElementById('form-box').style.display = 'none';
-                document.getElementById('success-screen').style.display = 'flex';
+                document.getElementById('success').style.display = 'flex';
                 document.getElementById('uName').innerText = n;
-                var end = Date.now() + 5000;
-                (function frame() {
-                    confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff0000', '#000000'] });
-                    confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff0000', '#000000'] });
-                    if (Date.now() < end) requestAnimationFrame(frame);
-                }());
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                 setTimeout(() => { window.location.href = "index.html"; }, 5000);
             });
         }
