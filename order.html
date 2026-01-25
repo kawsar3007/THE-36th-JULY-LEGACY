@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>RESERVE PLOT</title>
@@ -9,24 +9,34 @@
         .box { background: #1E2329; padding: 30px; border-radius: 15px; border: 2px solid #FCD535; width: 350px; text-align: center; }
         input { width: 100%; padding: 12px; margin: 10px 0; background: #2b3139; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
         .btn { width: 100%; padding: 15px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 8px; }
-        #success { display: none; position: fixed; inset: 0; background: #FCD535; color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 100; }
+        #success { display: none; position: fixed; inset: 0; background: #FCD535; color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
-    <div class="box" id="o-box">
-        <h2 style="color:#FCD535;">RESERVE PLOT (৳36)</h2>
-        <input type="text" id="bn" placeholder="ব্র্যান্ডের নাম">
-        <input type="number" id="pn" placeholder="প্লট নম্বর (১-১০০০০)">
-        <button class="btn" onclick="order()">SUBMIT ORDER</button>
+    <div class="box" id="ob">
+        <h2 style="color:#FCD535;">ORDER PLOT</h2>
+        <input type="text" id="bn" placeholder="Your Brand Name">
+        <input type="number" id="pn" placeholder="Plot ID (1-10000)">
+        <button class="btn" onclick="send()">SUBMIT ORDER</button>
     </div>
-    <div id="success"><h1>SUCCESS! 🎉</h1><p>অপেক্ষা করুন, আপনাকে সাপোর্ট পেজে নিয়ে যাওয়া হচ্ছে...</p></div>
+
+    <div id="success">
+        <h1 id="msg">CONGRATULATIONS!</h1>
+        <p style="font-size: 20px; font-weight: bold;">Your order is received.</p>
+        <p style="background: #000; color: #fff; padding: 10px; border-radius: 5px;">PLEASE CONTACT WHATSAPP SUPPORT NOW!</p>
+    </div>
+
     <script>
-        function order() {
-            if(!document.getElementById('bn').value || !document.getElementById('pn').value) return alert("তথ্য দিন!");
-            document.getElementById('o-box').style.display='none';
+        function send() {
+            const name = document.getElementById('bn').value;
+            if(!name || !document.getElementById('pn').value) return alert("Fill all!");
+            document.getElementById('ob').style.display='none';
             document.getElementById('success').style.display='flex';
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            setTimeout(() => window.location.href="support.html", 4000);
+            document.getElementById('msg').innerText = "CONGRATS, " + name.toUpperCase() + "!";
+            
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+            
+            setTimeout(() => { window.location.href="dhaka.html"; }, 4500);
         }
     </script>
 </body>
