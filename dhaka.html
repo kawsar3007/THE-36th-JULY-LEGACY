@@ -7,85 +7,140 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
-        body { background: var(--b-bg); color: #fff; font-family: sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
+        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
         
-        /* জেলার নাম বা হেডলাইন */
-        .district-name { background: #000; color: var(--b-yellow); padding: 15px; font-size: 28px; font-weight: 900; text-transform: uppercase; border-bottom: 1px solid #333; letter-spacing: 2px; }
+        /* জেলার নাম হেডলাইন */
+        .district-header { background: #000; color: var(--b-yellow); padding: 20px; font-size: 30px; font-weight: 900; text-transform: uppercase; border-bottom: 1px solid #333; letter-spacing: 3px; }
 
-        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
-        .nav-item { display: flex; align-items: center; gap: 8px; background: #161a1e; padding: 6px 12px; border-radius: 50px; border: 1px solid #333; cursor: pointer; text-decoration: none; color: #fff; }
-        .gold-icon { width: 30px; height: 30px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 14px; }
+        /* নেভিগেশন বার */
+        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 12px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
+        .nav-item { display: flex; align-items: center; gap: 8px; background: #161a1e; padding: 6px 15px; border-radius: 50px; border: 1px solid #333; cursor: pointer; text-decoration: none; color: #fff; }
+        .gold-icon { width: 32px; height: 32px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 14px; box-shadow: 0 0 10px rgba(252, 213, 53, 0.3); }
         
+        /* ছোট সার্চবার */
         .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
-        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 80px; outline: none; }
-        .search-box button { background: var(--b-yellow); border: none; padding: 0 12px; cursor: pointer; }
+        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 80px; outline: none; font-size: 14px; }
+        .search-box button { background: var(--b-yellow); border: none; padding: 0 12px; cursor: pointer; color: #000; font-weight: bold; }
 
-        /* ক্যানভাস: দুই পাশে হাফ আঙুল পরিমাণ জায়গা */
-        .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 1px solid #ddd; }
-        canvas { display: block; width: 100%; height: auto; }
+        /* ক্যানভাস: দুই পাশে হাফ আঙুল ফাঁকা (৯৬% উইডথ) */
+        .canvas-container { width: 96%; margin: 20px auto; background: #fff; position: relative; border: 1px solid #ddd; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
         
-        #plotMarker { position: absolute; width: 46px; height: 46px; border: 4px solid var(--b-yellow); box-shadow: 0 0 20px var(--b-yellow); display: none; pointer-events: none; z-index: 10; background: rgba(252, 213, 53, 0.2); }
+        /* সার্চ হাইলাইট মার্কার */
+        #plotMarker { 
+            position: absolute; width: 46px; height: 46px; 
+            border: 4px solid var(--b-yellow); 
+            box-shadow: 0 0 25px var(--b-yellow); 
+            display: none; pointer-events: none; z-index: 10; 
+            background: rgba(252, 213, 53, 0.2);
+            box-sizing: border-box;
+        }
 
-        /* ক্যানভাসের নিচের নোটিশ */
-        .bottom-notice { width: 96%; margin: 20px auto; background: var(--b-card); border-left: 5px solid var(--b-yellow); padding: 20px; text-align: left; border-radius: 8px; box-sizing: border-box; }
-        .bottom-notice h4 { margin: 0 0 10px 0; color: var(--b-yellow); font-size: 18px; }
-        .bottom-notice p { margin: 5px 0; font-size: 14px; color: #EAECEF; line-height: 1.6; }
+        /* ক্যানভাসের নিচের বিশেষ নোটিশ */
+        .bottom-notice { width: 96%; margin: 30px auto; background: var(--b-card); border-left: 6px solid var(--b-yellow); padding: 25px; text-align: left; border-radius: 10px; box-sizing: border-box; }
+        .bottom-notice h4 { margin: 0 0 12px 0; color: var(--b-yellow); font-size: 20px; text-transform: uppercase; }
+        .bottom-notice p { margin: 8px 0; font-size: 15px; color: #ced4da; line-height: 1.7; }
 
-        .wa-float { position: fixed; bottom: 25px; right: 25px; background: #2ebd85; color: #fff; padding: 12px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 2000; }
+        /* ফ্লোটিং হোয়াটসঅ্যাপ */
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: #fff; padding: 14px 22px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .wa-float:hover { transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-<div class="district-name">DHAKA DISTRICT</div>
+<div class="district-header">DHAKA DISTRICT</div>
 
 <div class="top-nav">
-    <div class="nav-item" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">
+    <div class="nav-item" onclick="copyNum()">
         <div class="gold-icon"><i class="fas fa-university"></i></div>
-        <div style="text-align: left;"><span style="font-size: 9px; color: var(--b-yellow);">BKASH, NAGAD, ROCKET</span><br><b style="font-size: 13px;">01756206213</b></div>
+        <div style="text-align: left; line-height: 1.2;">
+            <span style="font-size: 9px; color: var(--b-yellow); font-weight: bold;">BKASH, NAGAD, ROCKET</span><br>
+            <b style="font-size: 13px;">01756206213</b>
+        </div>
     </div>
+
     <div class="search-box">
-        <input type="number" id="pID" placeholder="ID">
-        <button onclick="findPlot()"><i class="fas fa-search"></i></button>
+        <input type="number" id="plotInput" placeholder="Plot ID">
+        <button onclick="findMyPlot()"><i class="fas fa-search"></i></button>
     </div>
-    <a href="order.html" class="nav-item" style="background: var(--b-yellow); color: #000;">
+
+    <a href="order.html" class="nav-item" style="background: var(--b-yellow); color: #000; border: none;">
         <div class="gold-icon" style="background: #000; color: var(--b-yellow);"><i class="fas fa-cart-plus"></i></div>
-        <b>BUY PLOT (৳36)</b>
+        <b style="font-size: 13px;">BUY PLOT (৳36)</b>
     </a>
 </div>
 
-<div class="canvas-container">
+<div class="canvas-container" id="canvasWrapper">
     <div id="plotMarker"></div>
-    <canvas id="mapCanvas"></canvas>
+    <canvas id="legacyCanvas"></canvas>
 </div>
 
 <div class="bottom-notice">
-    <h4>⚠️ গুরুত্বপূর্ণ নির্দেশনা</h4>
-    <p>১. এটি একটি ডিজিটাল ল্যান্ড ম্যাপ, যেখানে আপনি আপনার ব্র্যান্ড বা পরিচয় স্থায়ীভাবে তুলে ধরতে পারেন।</p>
-    <p>২. প্রতিটি ব্লকের (Plot) জন্য একবার পেমেন্ট করলে সেটি আপনার জন্য আজীবনের জন্য সংরক্ষিত থাকবে।</p>
-    <p>৩. আপনার প্লটটি সক্রিয় করতে সাপোর্ট টিমের সাথে যোগাযোগ করুন।</p>
+    <h4>⚠️ প্লট মালিকদের জন্য নির্দেশনা:</h4>
+    <p>• আপনার পছন্দের প্লট নম্বরটি উপরে সার্চ করে নিশ্চিত হয়ে নিন সেটি খালি আছে কি না।</p>
+    <p>• প্রতিটি প্লটের আজীবন মালিকানা ফি মাত্র ৩৬ টাকা। একবার পেমেন্ট করলে আর কোনো চার্জ নেই।</p>
+    <p>• পেমেন্টের পর অবশ্যই হোয়াটসঅ্যাপ সাপোর্টে আপনার ব্র্যান্ডের নাম, লোগো এবং প্লট আইডি জমা দিবেন।</p>
+    <p>• আপনার ব্র্যান্ডের লোগো ২৪ ঘণ্টার মধ্যে ম্যাপে যুক্ত করে দেওয়া হবে।</p>
 </div>
 
-<a href="support.html" class="wa-float"><i class="fab fa-whatsapp"></i> LIVE SUPPORT</a>
+<a href="support.html" class="wa-float">
+    <i class="fab fa-whatsapp" style="font-size: 24px;"></i> LIVE SUPPORT
+</a>
 
 <script>
-    const cv = document.getElementById('mapCanvas'), ctx = cv.getContext('2d'), bS = 50, cols = 20;
-    cv.width = 1000; cv.height = (10000/cols) * bS;
-    function draw() {
-        ctx.fillStyle = "#fff"; ctx.fillRect(0,0,cv.width, cv.height);
-        ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
-        for(let x=0; x<=cv.width; x+=bS){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,cv.height); ctx.stroke(); }
-        for(let y=0; y<=cv.height; y+=bS){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cv.width,y); ctx.stroke(); }
-    }
-    draw();
+    const canvas = document.getElementById('legacyCanvas');
+    const ctx = canvas.getContext('2d');
+    const blockSize = 50; 
+    const totalColumns = 20; // ১০০০ পিক্সেল / ৫০ = ২০টি ফিক্সড কলাম
 
-    function findPlot() {
-        const id = document.getElementById('pID').value;
-        if(!id || id<1 || id>10000) return alert("১-১০০০০ এর মধ্যে আইডি দিন");
-        const r = Math.floor((id-1)/cols), c = (id-1)%cols;
-        const m = document.getElementById('plotMarker');
-        m.style.display = 'block'; m.style.left = (c*bS)+"px"; m.style.top = (r*bS)+"px";
-        window.scrollTo({ top: cv.offsetTop + (r*bS) - 200, behavior: 'smooth' });
+    // ক্যানভাস সাইজ ক্যালকুলেশন (১০,০০০ প্লট)
+    canvas.width = 1000;
+    canvas.height = (10000 / totalColumns) * blockSize; 
+
+    // গ্রিড ড্রয়িং ফাংশন
+    function drawMap() {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = "#e9ecef";
+        ctx.lineWidth = 1;
+
+        for (let x = 0; x <= canvas.width; x += blockSize) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+        }
+        for (let y = 0; y <= canvas.height; y += blockSize) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+        }
+    }
+    drawMap();
+
+    // নিখুঁত সার্চ ক্যালকুলেশন
+    function findMyPlot() {
+        const id = document.getElementById('plotInput').value;
+        if(!id || id < 1 || id > 10000) {
+            alert("অনুগ্রহ করে ১ থেকে ১০,০০০ এর মধ্যে একটি নম্বর দিন।");
+            return;
+        }
+
+        const row = Math.floor((id - 1) / totalColumns);
+        const col = (id - 1) % totalColumns;
+
+        const marker = document.getElementById('plotMarker');
+        marker.style.display = 'block';
+        marker.style.left = (col * blockSize) + "px";
+        marker.style.top = (row * blockSize) + "px";
+
+        // স্ক্রল করে প্লটের কাছে নিয়ে যাওয়া
+        window.scrollTo({
+            top: canvas.offsetTop + (row * blockSize) - 250,
+            behavior: 'smooth'
+        });
+    }
+
+    function copyNum() {
+        navigator.clipboard.writeText("01756206213");
+        alert("পেমেন্ট নম্বর কপি হয়েছে!");
     }
 </script>
+
 </body>
 </html>
