@@ -7,24 +7,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --binance-bg: #0B0E11;
-            --binance-card: #1E2329;
-            --binance-yellow: #FCD535;
-            --binance-text: #EAECEF;
-            --binance-gray: #848E9C;
+            --b-bg: #0B0E11;
+            --b-card: #1E2329;
+            --b-yellow: #FCD535;
+            --b-text: #EAECEF;
+            --b-gray: #848E9C;
         }
 
         body {
             background-color: var(--binance-bg);
             color: var(--binance-text);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             margin: 0;
             overflow-x: hidden;
         }
 
-        /* টপ বার: কমিউনিটি ও মেইনটেন্যান্স ফি */
+        /* টপ বার */
         .top-nav {
-            background: var(--binance-card);
+            background: var(--b-card);
             padding: 12px 5%;
             display: flex;
             justify-content: space-between;
@@ -35,203 +35,181 @@
             z-index: 1000;
         }
 
-        .community-link {
-            background: var(--binance-yellow);
+        .community-btn {
+            background: var(--b-yellow);
             color: #000;
             padding: 10px 20px;
-            border-radius: 6px;
+            border-radius: 5px;
             text-decoration: none;
-            font-weight: 800;
+            font-weight: bold;
             font-size: 13px;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: 0.3s ease;
+            transition: 0.3s;
         }
 
-        .community-link:hover {
-            box-shadow: 0 0 20px rgba(252, 213, 53, 0.4);
-            transform: scale(1.03);
+        .community-btn:hover {
+            box-shadow: 0 0 20px var(--b-yellow);
+            transform: scale(1.05);
         }
 
-        .fee-info {
-            color: var(--binance-yellow);
+        .maintenance-tag {
+            color: var(--b-yellow);
             font-size: 13px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            border: 1px dashed rgba(252, 213, 51, 0.5);
+            font-weight: 600;
+            border: 1px solid rgba(252, 213, 53, 0.3);
             padding: 8px 15px;
             border-radius: 4px;
         }
 
-        /* হিরো সেকশন */
-        .hero-banner {
+        /* হিরো */
+        .hero {
             text-align: center;
             padding: 80px 20px;
-            background: radial-gradient(circle at center, #1E2329 0%, #0B0E11 100%);
+            background: radial-gradient(circle at center, #1e2329 0%, #0b0e11 100%);
         }
 
-        .hero-banner h1 {
-            font-size: 55px;
-            color: var(--binance-yellow);
+        .hero h1 {
+            font-size: 60px;
+            color: var(--b-yellow);
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 30px rgba(252, 213, 53, 0.2);
+            letter-spacing: 2px;
         }
 
-        .hero-banner p {
-            color: var(--binance-gray);
-            max-width: 700px;
-            margin: 20px auto 0;
+        .hero p {
+            color: var(--b-gray);
+            max-width: 650px;
+            margin: 15px auto;
             font-size: 18px;
             line-height: 1.6;
         }
 
-        /* সার্চ সেকশন */
-        .search-area {
-            display: flex;
-            justify-content: center;
-            padding: 30px;
-        }
-
-        .search-area input {
-            width: 450px;
-            padding: 15px 25px;
-            border-radius: 50px;
-            border: 1px solid #444;
-            background: var(--binance-card);
-            color: #fff;
-            outline: none;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-
-        .search-area input:focus {
-            border-color: var(--binance-yellow);
-            box-shadow: 0 0 15px rgba(252, 213, 53, 0.1);
-        }
-
-        /* জেলা কার্ড গ্রিড */
-        .grid-container {
+        /* জেলা গ্রিড */
+        .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 25px;
             padding: 40px 8%;
         }
 
-        .dist-card {
-            background: var(--binance-card);
+        .card {
+            background: var(--b-card);
             padding: 50px 20px;
-            border-radius: 15px;
+            border-radius: 12px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid #333;
+            transition: all 0.4s ease; /* স্মুথ ট্রানজিশন */
         }
 
-        /* হোভার ইফেক্ট: বক্স হলুদ, টেক্সট কালো */
-        .dist-card:hover {
-            background-color: var(--binance-yellow);
+        /* মাউসের পয়েন্টার জেলার নামের উপরে নিলে যা হবে */
+        .card:hover {
+            background-color: var(--b-yellow) !important; /* কালো জায়গা হলুদ হবে */
             transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 0 30px rgba(252, 213, 53, 0.6); /* হলুদ উজ্জ্বল ইফেক্ট */
         }
 
-        .dist-card h3 {
+        .card h3 {
             margin: 0;
             font-size: 24px;
             color: #fff;
             transition: 0.3s;
+            text-transform: uppercase;
         }
 
-        .dist-card:hover h3 {
+        /* হোভার করলে টেক্সট জ্বলজ্বল করবে এবং কালো হয়ে যাবে */
+        .card:hover h3 {
             color: #000;
             font-weight: 900;
+            text-shadow: 0 0 5px rgba(0,0,0,0.2);
         }
 
-        .dist-card span {
+        .card span {
             display: block;
-            margin-top: 12px;
-            color: var(--binance-yellow);
-            font-size: 13px;
+            margin-top: 10px;
+            color: var(--b-yellow);
+            font-size: 12px;
             font-weight: bold;
             transition: 0.3s;
         }
 
-        .dist-card:hover span {
-            color: rgba(0,0,0,0.6);
+        .card:hover span {
+            color: rgba(0,0,0,0.7);
         }
 
-        /* ফুটার ওয়ার্নিং ও কপিরাইট */
-        .site-footer {
+        /* ফুটার */
+        .footer {
             text-align: center;
             padding: 80px 20px;
             background: #000;
             border-top: 1px solid #222;
         }
 
-        .limit-notice {
+        .warning-text {
             color: #FF0000;
-            font-weight: 900;
+            font-weight: bold;
             font-size: 18px;
-            margin-bottom: 25px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            margin-bottom: 15px;
+            line-height: 1.5;
         }
 
-        .copy-text {
+        .copy-info {
             color: #444;
             font-size: 14px;
             letter-spacing: 1px;
         }
 
-        /* সাপোর্ট বাটন */
-        .support-btn {
-            position: fixed; bottom: 30px; right: 30px;
-            background: #2ebd85; color: white; padding: 15px 25px;
-            border-radius: 50px; text-decoration: none; font-weight: bold;
-            display: flex; align-items: center; gap: 10px; z-index: 2000;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        /* কাস্টমার সাপোর্ট হোয়াটসঅ্যাপ (নম্বর আপডেট করা হয়েছে) */
+        .wa-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2ebd85;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
         }
     </style>
 </head>
 <body>
 
-<a href="https://wa.me/8801576940717" class="support-btn" target="_blank">
-    <i class="fab fa-whatsapp"></i> LIVE SUPPORT
+<a href="https://wa.me/8801576940717" class="wa-float" target="_blank">
+    <i class="fab fa-whatsapp" style="font-size: 24px;"></i> LIVE SUPPORT
 </a>
 
 <div class="top-nav">
-    <a href="#" class="community-link">
+    <a href="#" class="community-btn">
         <i class="fab fa-facebook-square"></i> JOIN COMMUNITY
     </a>
-    <div class="fee-info">
-        <i class="fas fa-gas-pump"></i> MAINTENANCE FEE: NOMINAL COST ONLY
+    <div class="maintenance-tag">
+        <i class="fas fa-tools"></i> MAINTENANCE FEE: NOMINAL COST
     </div>
 </div>
 
-<div class="hero-banner">
+<div class="hero">
     <h1>THE DISTRICT LEGACY</h1>
-    <p>
-        Claim your spot on the digital map of your pride. A permanent monument where 
-        every plot tells a story. Secure your legacy in the district archive today.
-    </p>
+    <p>The first and largest digital monument of Bangladesh. Secure your place in history through your district map.</p>
 </div>
 
-<div class="search-area">
-    <input type="text" id="findDistrict" placeholder="Search your District name..." onkeyup="filterGrid()">
-</div>
-
-<div class="grid-container" id="mainGrid">
+<div class="grid" id="district-list">
     </div>
 
-<div class="site-footer">
-    <div class="limit-notice">
+<div class="footer">
+    <div class="warning-text">
         ⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.<br>
         NUMBERS WILL NEVER BE INCREASED.
     </div>
-    <div class="copy-text">
-        THE DISTRICT LEGACY © 2026 KAWSAR AHMED | SUPPORT: 01576940717
+    <div class="copy-info">
+        THE DISTRICT LEGACY © 2026 KAWSAR AHMED
     </div>
 </div>
 
@@ -247,27 +225,14 @@
         "Jamalpur", "Mymensingh", "Netrokona", "Sherpur"
     ];
 
-    const grid = document.getElementById('mainGrid');
-
-    function init() {
-        districts.sort().forEach(d => {
-            const card = document.createElement('div');
-            card.className = 'dist-card';
-            card.setAttribute('data-name', d.toLowerCase());
-            card.onclick = () => location.href = `${d.toLowerCase()}.html`;
-            card.innerHTML = `<h3>${d.toUpperCase()}</h3><span>10,000 LIMITED PLOTS</span>`;
-            grid.appendChild(card);
-        });
-    }
-
-    function filterGrid() {
-        let val = document.getElementById('findDistrict').value.toLowerCase();
-        document.querySelectorAll('.dist-card').forEach(card => {
-            card.style.display = card.dataset.name.includes(val) ? 'block' : 'none';
-        });
-    }
-
-    init();
+    const list = document.getElementById('district-list');
+    districts.forEach(d => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => location.href = `${d.toLowerCase()}.html`;
+        card.innerHTML = `<h3>${d.toUpperCase()}</h3><span>10,000 LIMITED PLOTS</span>`;
+        list.appendChild(card);
+    });
 </script>
 
 </body>
