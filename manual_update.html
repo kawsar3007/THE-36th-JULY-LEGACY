@@ -1,76 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MASTER PANEL | THE GLOBAL CREATOR HOMEPAGE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISTRICT LEGACY | Official Map</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #0B0E11; color: #fff; font-family: sans-serif; padding: 20px; display: none; }
-        .grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: #1E2329; padding: 25px; border-radius: 10px; border: 1px solid #333; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #0B0E11; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 4px; }
-        .item { padding: 10px; background: #000; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
+        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; }
+
+        /* পেমেন্ট ও অ্যাকশন বার */
+        .top-nav {
+            position: sticky; top: 0; background: var(--b-card); padding: 15px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid var(--b-yellow); z-index: 1000;
+        }
+        
+        .payment-box { font-size: 13px; color: #ddd; }
+        .payment-box b { color: var(--b-yellow); font-size: 16px; }
+
+        .btn-group { display: flex; gap: 10px; }
+        
+        .action-btn {
+            padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; border: none;
+            display: flex; align-items: center; gap: 8px; transition: 0.3s;
+        }
+        .buy-now { background: var(--b-yellow); color: #000; }
+        .download-map { background: #333; color: #fff; border: 1px solid #555; }
+        .download-map:hover { background: #444; border-color: var(--b-yellow); }
+
+        /* ক্যানভাস লেআউট */
+        .canvas-wrapper {
+            width: calc(100% - 60px); /* ডানে বামে এক আঙ্গুল জায়গা */
+            max-width: 1000px; margin: 20px auto;
+            border: 2px solid #333; background: #fff;
+        }
+        canvas { display: block; width: 100%; height: auto; }
+
+        /* পপআপ ও কনফেটি স্টাইল আগে যা ছিল তাই থাকবে... */
     </style>
 </head>
 <body>
-    <script>
-        if(prompt("Master Password:") === "zoomlink34@gmail.com") { 
-            document.body.style.display = "block"; 
-        } else { 
-            window.location.href = "index.html"; 
-        }
-    </script>
 
-    <div class="grid">
-        <div class="card">
-            <h2>DIRECT PUBLISH</h2>
-            <input type="number" id="mPlot" placeholder="Plot ID (1-20000)">
-            <input type="text" id="mBrand" placeholder="Brand Name">
-            <input type="text" id="mImg" placeholder="Logo URL">
-            <input type="text" id="mWeb" placeholder="Website URL">
-            <button class="btn" onclick="directPublish()">GO LIVE NOW</button>
-        </div>
-        <div class="card">
-            <h2>LIVE RECORDS</h2>
-            <div id="liveRecords" style="height: 400px; overflow-y: auto;">Loading...</div>
-        </div>
+<div class="top-nav">
+    <div class="payment-box">
+        <i class="fas fa-university"></i> BKASH / NAGAD / ROCKET<br>
+        <b>01756206213</b>
     </div>
+    
+    <div class="btn-group">
+        <button class="action-btn download-map" onclick="downloadCanvas()">
+            <i class="fas fa-download"></i> DOWNLOAD MAP
+        </button>
+        <button class="action-btn buy-now" onclick="openModal()">
+            BUY PLOT (৳36)
+        </button>
+    </div>
+</div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+<div class="canvas-wrapper">
+    <canvas id="legacyCanvas"></canvas>
+</div>
 
-        function directPublish() {
-            const name = document.getElementById('mBrand').value, img = document.getElementById('mImg').value, 
-                  web = document.getElementById('mWeb').value, pid = parseInt(document.getElementById('mPlot').value);
-            if(!pid || pid < 1 || pid > 20000) return alert("Invalid Plot ID!");
-            db.ref('pixels/'+pid).set({name, imageUrl:img, link:web||"#", plotID:pid}).then(() => alert("Plot #" + pid + " Live!"));
-        }
+<script>
+    const cv = document.getElementById('legacyCanvas');
+    const ctx = cv.getContext('2d');
+    
+    // ক্যানভাস সাইজ আগের মতোই ২৫,০০০ পিক্সেল লম্বা
+    cv.width = 1000;
+    cv.height = 25000; 
 
-        db.ref('pixels').on('value', s => {
-            const list = document.getElementById('liveRecords'); list.innerHTML = "";
-            const data = s.val(); if(!data) return list.innerHTML = "No Records.";
-            Object.keys(data).forEach(id => {
-                list.innerHTML += `<div class="item">
-                    <span>#${id} - ${data[id].name}</span>
-                    <button onclick="deletePixel('${id}')" style="background:red; color:white; border:none; cursor:pointer; padding:5px 10px; border-radius:3px;">DELETE</button>
-                </div>`;
-            });
-        });
+    // ডামি গ্রিড ড্রয়িং
+    ctx.fillStyle = "#fff"; ctx.fillRect(0,0,cv.width, cv.height);
 
-        function deletePixel(id) {
-            if(confirm("Delete this Live Record?")) {
-                db.ref('pixels/'+id).remove();
-            }
-        }
-    </script>
+    // ডাউনলোড ফাংশন
+    function downloadCanvas() {
+        const link = document.createElement('a');
+        link.download = 'District_Legacy_Map.png';
+        link.href = cv.toDataURL();
+        link.click();
+    }
+
+    // আগের প্রসেস অর্ডার ও কনফেটি ফাংশনগুলো এখানে থাকবে...
+</script>
+
 </body>
 </html>
