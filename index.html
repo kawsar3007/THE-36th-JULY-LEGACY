@@ -6,59 +6,57 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .hero { padding: 60px 20px; text-align: center; background: #0B0E11; }
-        .hero h1 { color: #FCD535; font-size: 45px; text-transform: uppercase; }
-        .search-container { position: sticky; top: 0; background: #1E2329; padding: 20px; z-index: 1000; text-align: center; border-bottom: 2px solid #FCD535; }
-        .search-container input { padding: 15px; width: 350px; border-radius: 30px; border: none; outline: none; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 40px; }
-        .card { background: #1E2329; border: 1px solid #333; padding: 25px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .card:hover { border-color: #FCD535; transform: scale(1.05); }
-        .card h3 { color: #fff; margin: 0; font-size: 16px; }
-        .card span { color: #FCD535; font-size: 11px; }
-        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        body { background: #0B0E11; position: relative; overflow-x: hidden; }
+        
+        /* ৬৪ জেলার জলছাপ ব্যাকগ্রাউন্ড */
+        .watermark-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            color: rgba(255, 255, 255, 0.03); font-size: 14px; line-height: 30px;
+            pointer-events: none; text-align: justify; padding: 10px; z-index: 1;
+            font-family: 'serif'; text-transform: uppercase;
+        }
+
+        .content-area { position: relative; z-index: 10; }
+        
+        /* আন্দোলনের লাল রঙ */
+        .legacy-title { color: #FF0000 !important; font-size: 55px; font-weight: 900; text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.3); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 40px; }
+        .card { background: rgba(30, 35, 41, 0.8); border: 1px solid #333; padding: 25px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .card:hover { border-color: #FF0000; transform: scale(1.05); box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); }
+        .card h3 { color: #fff; margin: 0; }
     </style>
 </head>
 <body>
 
-<a href="support.html" class="wa-float"><i class="fab fa-whatsapp"></i> CUSTOMER SUPPORT</a>
+<div class="watermark-bg" id="districtWatermark"></div>
 
-<div class="hero">
-    <h1>Digital Monument of Pride</h1>
-    <p style="color:#848e9c;">Select your district and secure your spot in history for just ৳36.</p>
+<div class="content-area">
+    <div style="text-align: center; padding: 60px 20px;">
+        <h1 class="legacy-title">THE 36th JULY LEGACY</h1>
+        <p style="color:#EAECEF; font-size: 20px;">Digital Monument of Pride: Secure Your District's History</p>
+    </div>
+
+    <div class="grid" id="distList">
+        </div>
 </div>
 
-<div class="search-container">
-    <input type="text" id="distSearch" placeholder="Search your District..." onkeyup="filterDistricts()">
-</div>
+<script>
+    const districts = ["Dhaka", "Faridpur", "Gazipur", "Gopalganj", "Kishoreganj", "Madaripur", "Manikganj", "Munshiganj", "Narayanganj", "Narsingdi", "Rajbari", "Shariatpur", "Tangail", "Bagerhat", "Chuadanga", "Jessore", "Jhenaidah", "Khulna", "Kushtia", "Magura", "Meherpur", "Narail", "Satkhira", "Barguna", "Barisal", "Bhola", "Jhalokati", "Patuakhali", "Pirojpur", "Bandarban", "Brahmanbaria", "Chandpur", "Chittagong", "Comilla", "Cox's Bazar", "Feni", "Khagrachhari", "Lakshmipur", "Noakhali", "Rangamati", "Habiganj", "Moulvibazar", "Sunamganj", "Sylhet", "Bogra", "Joypurhat", "Naogaon", "Natore", "Chapai Nawabganj", "Pabna", "Rajshahi", "Sirajganj", "Dinajpur", "Gaibandha", "Kurigram", "Lalmonirhat", "Nilphamari", "Panchagarh", "Rangpur", "Thakurgaon", "Jamalpur", "Mymensingh", "Netrokona", "Sherpur"];
 
-<div class="grid" id="distList">
-    <script>
-        const districts = [
-            "Dhaka", "Faridpur", "Gazipur", "Gopalganj", "Kishoreganj", "Madaripur", "Manikganj", "Munshiganj", "Narayanganj", "Narsingdi", "Rajbari", "Shariatpur", "Tangail",
-            "Bagerhat", "Chuadanga", "Jessore", "Jhenaidah", "Khulna", "Kushtia", "Magura", "Meherpur", "Narail", "Satkhira",
-            "Barguna", "Barisal", "Bhola", "Jhalokati", "Patuakhali", "Pirojpur",
-            "Bandarban", "Brahmanbaria", "Chandpur", "Chittagong", "Comilla", "Cox's Bazar", "Feni", "Khagrachhari", "Lakshmipur", "Noakhali", "Rangamati",
-            "Habiganj", "Moulvibazar", "Sunamganj", "Sylhet",
-            "Bogra", "Joypurhat", "Naogaon", "Natore", "Chapai Nawabganj", "Pabna", "Rajshahi", "Sirajganj",
-            "Dinajpur", "Gaibandha", "Kurigram", "Lalmonirhat", "Nilphamari", "Panchagarh", "Rangpur", "Thakurgaon",
-            "Jamalpur", "Mymensingh", "Netrokona", "Sherpur"
-        ];
-        districts.forEach(d => {
-            document.write(`
-                <div class="card" data-name="${d.toLowerCase()}" onclick="location.href='${d.toLowerCase()}.html'">
-                    <h3>${d.toUpperCase()}</h3>
-                    <span>1,000 PLOTS</span>
-                </div>
-            `);
-        });
+    // জলছাপ তৈরি
+    document.getElementById('districtWatermark').innerText = (districts.join(' ') + ' ').repeat(100);
 
-        function filterDistricts() {
-            let input = document.getElementById('distSearch').value.toLowerCase();
-            document.querySelectorAll('.card').forEach(card => {
-                card.style.display = card.dataset.name.includes(input) ? 'block' : 'none';
-            });
-        }
-    </script>
-</div>
+    // কার্ড তৈরি
+    const list = document.getElementById('distList');
+    districts.forEach(d => {
+        list.innerHTML += `
+            <div class="card" onclick="location.href='${d.toLowerCase()}.html'">
+                <h3>${d.toUpperCase()}</h3>
+                <span style="color:#FCD535">1,000 PLOTS</span>
+            </div>
+        `;
+    });
+</script>
 </body>
 </html>
