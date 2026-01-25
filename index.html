@@ -17,186 +17,221 @@
         body {
             background-color: var(--binance-bg);
             color: var(--binance-text);
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            overflow-x: hidden;
         }
 
-        /* হিরো সেকশন - আকর্ষণীয় লেখা */
-        .hero {
+        /* টপ বার: কমিউনিটি ও মেইনটেন্যান্স ফি */
+        .top-nav {
+            background: var(--binance-card);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .community-link {
+            background: var(--binance-yellow);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s ease;
+        }
+
+        .community-link:hover {
+            box-shadow: 0 0 20px rgba(252, 213, 53, 0.4);
+            transform: scale(1.03);
+        }
+
+        .fee-info {
+            color: var(--binance-yellow);
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            border: 1px dashed rgba(252, 213, 51, 0.5);
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+
+        /* হিরো সেকশন */
+        .hero-banner {
             text-align: center;
-            padding: 100px 20px;
-            background: radial-gradient(circle at center, #1e2329 0%, #0b0e11 100%);
+            padding: 80px 20px;
+            background: radial-gradient(circle at center, #1E2329 0%, #0B0E11 100%);
         }
 
-        .hero h1 {
-            font-size: 60px;
+        .hero-banner h1 {
+            font-size: 55px;
             color: var(--binance-yellow);
             margin: 0;
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(252, 213, 53, 0.4);
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(252, 213, 53, 0.2);
         }
 
-        .hero h2 {
-            color: #fff;
-            font-size: 24px;
-            margin: 20px 0;
-            font-weight: 400;
-        }
-
-        .hero p {
+        .hero-banner p {
             color: var(--binance-gray);
             max-width: 700px;
-            margin: 0 auto;
-            font-size: 16px;
+            margin: 20px auto 0;
+            font-size: 18px;
             line-height: 1.6;
         }
 
-        /* সার্চ কন্টেইনার */
-        .search-container {
-            position: sticky;
-            top: 0;
-            background: rgba(11, 14, 17, 0.95);
-            padding: 20px;
-            z-index: 1000;
+        /* সার্চ সেকশন */
+        .search-area {
             display: flex;
             justify-content: center;
-            border-bottom: 1px solid #333;
-            backdrop-filter: blur(10px);
+            padding: 30px;
         }
 
-        .search-box input {
-            width: 400px;
+        .search-area input {
+            width: 450px;
             padding: 15px 25px;
             border-radius: 50px;
             border: 1px solid #444;
             background: var(--binance-card);
-            color: white;
+            color: #fff;
             outline: none;
+            font-size: 16px;
             transition: 0.3s;
         }
 
-        .search-box input:focus {
+        .search-area input:focus {
             border-color: var(--binance-yellow);
-            box-shadow: 0 0 15px rgba(252, 213, 53, 0.2);
+            box-shadow: 0 0 15px rgba(252, 213, 53, 0.1);
         }
 
-        /* জেলা গ্রিড এবং হোভার ইফেক্ট */
-        .district-grid {
+        /* জেলা কার্ড গ্রিড */
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 25px;
-            padding: 50px 8%;
+            padding: 40px 8%;
         }
 
-        .district-card {
+        .dist-card {
             background: var(--binance-card);
-            padding: 40px 20px;
+            padding: 50px 20px;
             border-radius: 15px;
             text-align: center;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid #333;
-            position: relative;
         }
 
-        /* মাউস নিলে যা হবে (বাইনান্স থিম ইফেক্ট) */
-        .district-card:hover {
+        /* হোভার ইফেক্ট: বক্স হলুদ, টেক্সট কালো */
+        .dist-card:hover {
             background-color: var(--binance-yellow);
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(252, 213, 53, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        .district-card h3 {
+        .dist-card h3 {
             margin: 0;
-            font-size: 22px;
-            color: var(--binance-text);
+            font-size: 24px;
+            color: #fff;
             transition: 0.3s;
-            letter-spacing: 1px;
         }
 
-        /* হোভার করলে টেক্সট কালার কালো হবে */
-        .district-card:hover h3 {
+        .dist-card:hover h3 {
             color: #000;
             font-weight: 900;
         }
 
-        .district-card span {
+        .dist-card span {
             display: block;
-            margin-top: 10px;
+            margin-top: 12px;
             color: var(--binance-yellow);
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             transition: 0.3s;
         }
 
-        .district-card:hover span {
-            color: rgba(0,0,0,0.7);
+        .dist-card:hover span {
+            color: rgba(0,0,0,0.6);
         }
 
-        /* ফুটার এবং ওয়ার্নিং টেক্সট */
-        .footer-warning {
+        /* ফুটার ওয়ার্নিং ও কপিরাইট */
+        .site-footer {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             background: #000;
-            border-top: 1px solid #333;
+            border-top: 1px solid #222;
         }
 
-        .warning-text {
+        .limit-notice {
             color: #FF0000;
-            font-weight: bold;
+            font-weight: 900;
             font-size: 18px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             letter-spacing: 1px;
-            line-height: 1.6;
+            text-transform: uppercase;
         }
 
-        .copyright {
-            color: var(--binance-gray);
+        .copy-text {
+            color: #444;
             font-size: 14px;
-            margin-top: 20px;
+            letter-spacing: 1px;
         }
 
-        .wa-support {
+        /* সাপোর্ট বাটন */
+        .support-btn {
             position: fixed; bottom: 30px; right: 30px;
             background: #2ebd85; color: white; padding: 15px 25px;
             border-radius: 50px; text-decoration: none; font-weight: bold;
             display: flex; align-items: center; gap: 10px; z-index: 2000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
     </style>
 </head>
 <body>
 
-<a href="https://wa.me/8801756206213" class="wa-support" target="_blank">
+<a href="https://wa.me/8801576940717" class="support-btn" target="_blank">
     <i class="fab fa-whatsapp"></i> LIVE SUPPORT
 </a>
 
-<div class="hero">
+<div class="top-nav">
+    <a href="#" class="community-link">
+        <i class="fab fa-facebook-square"></i> JOIN COMMUNITY
+    </a>
+    <div class="fee-info">
+        <i class="fas fa-gas-pump"></i> MAINTENANCE FEE: NOMINAL COST ONLY
+    </div>
+</div>
+
+<div class="hero-banner">
     <h1>THE DISTRICT LEGACY</h1>
-    <h2>BECOME A PART OF YOUR DISTRICT'S DIGITAL HISTORY</h2>
     <p>
-        Don't just be a citizen, be a part of the monument. For the first time in history, 
-        own a permanent digital plot in your district map. Your identity, your pride, 
-        preserved forever in the Digital Archive of Bangladesh.
+        Claim your spot on the digital map of your pride. A permanent monument where 
+        every plot tells a story. Secure your legacy in the district archive today.
     </p>
 </div>
 
-<div class="search-container">
-    <div class="search-box">
-        <input type="text" id="distSearch" placeholder="Type your District (e.g. Sylhet)..." onkeyup="searchDistrict()">
-    </div>
+<div class="search-area">
+    <input type="text" id="findDistrict" placeholder="Search your District name..." onkeyup="filterGrid()">
 </div>
 
-<div class="district-grid" id="grid">
+<div class="grid-container" id="mainGrid">
     </div>
 
-<div class="footer-warning">
-    <div class="warning-text">
+<div class="site-footer">
+    <div class="limit-notice">
         ⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.<br>
-        PLOTS WILL NEVER BE INCREASED. ONCE SOLD OUT, IT'S GONE FOREVER.
+        NUMBERS WILL NEVER BE INCREASED.
     </div>
-    <div class="copyright">
-        THE DISTRICT LEGACY © 2026 KAWSAR AHMED
+    <div class="copy-text">
+        THE DISTRICT LEGACY © 2026 KAWSAR AHMED | SUPPORT: 01576940717
     </div>
 </div>
 
@@ -212,32 +247,27 @@
         "Jamalpur", "Mymensingh", "Netrokona", "Sherpur"
     ];
 
-    const grid = document.getElementById('grid');
-    
-    function loadDistricts() {
-        districts.forEach(d => {
+    const grid = document.getElementById('mainGrid');
+
+    function init() {
+        districts.sort().forEach(d => {
             const card = document.createElement('div');
-            card.className = 'district-card';
+            card.className = 'dist-card';
             card.setAttribute('data-name', d.toLowerCase());
             card.onclick = () => location.href = `${d.toLowerCase()}.html`;
-            card.innerHTML = `<h3>${d.toUpperCase()}</h3><span>10,000 PLOTS</span>`;
+            card.innerHTML = `<h3>${d.toUpperCase()}</h3><span>10,000 LIMITED PLOTS</span>`;
             grid.appendChild(card);
         });
     }
 
-    function searchDistrict() {
-        let input = document.getElementById('distSearch').value.toLowerCase();
-        let cards = document.querySelectorAll('.district-card');
-        cards.forEach(card => {
-            if(card.getAttribute('data-name').includes(input)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
+    function filterGrid() {
+        let val = document.getElementById('findDistrict').value.toLowerCase();
+        document.querySelectorAll('.dist-card').forEach(card => {
+            card.style.display = card.dataset.name.includes(val) ? 'block' : 'none';
         });
     }
 
-    loadDistricts();
+    init();
 </script>
 
 </body>
