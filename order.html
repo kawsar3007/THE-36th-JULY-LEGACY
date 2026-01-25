@@ -1,33 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>RESERVE | THE 36th JULY LEGACY</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: #1E2329; padding: 35px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 340px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 5px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #FCD535; color: #000; font-weight: bold; cursor: pointer; border: none; border-radius: 5px; }
+        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .box { background: #1E2329; padding: 35px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 380px; position: relative; z-index: 10; }
+        input { width: 100%; padding: 14px; margin: 12px 0; background: #2B3139; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: #FCD535; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        
+        /* অভিনন্দন স্ক্রিন ও জলছাপ */
+        #success-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#FCD535; color:#000; flex-direction:column; justify-content:center; align-items:center; text-align:center; z-index:100; }
+        #watermark-bg { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.1; font-size: 12px; line-height: 20px; overflow: hidden; pointer-events: none; padding: 15px; text-align: justify; color: #000; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2 style="color:#FCD535;">RESERVE PLOT</h2>
-        <p style="font-size: 13px; color: #ff0000;">Price: ৳36 only</p>
-        <input type="text" id="bn" placeholder="Your Brand Name">
+
+    <div class="box" id="order-box">
+        <h2 style="color:#FCD535;">RESERVE YOUR PLOT</h2>
+        <p style="font-size: 14px; color: #ff0000; font-weight: bold;">"৳36 is not just a price, it's your signature on history."</p>
+        <input type="text" id="bn" placeholder="Enter Your Brand Name">
         <input type="number" id="pn" placeholder="Plot ID (1-64000)">
-        <button class="btn" onclick="submit()">SUBMIT ORDER</button>
-        <a href="index.html" style="display:block; margin-top:15px; color:#888; text-decoration:none; font-size:12px;">← Back</a>
+        <button class="btn" onclick="submitOrder()">SUBMIT ORDER</button>
+        <a href="index.html" style="display:block; margin-top:20px; color:#888; text-decoration:none;">← Back to Map</a>
     </div>
+
+    <div id="success-screen">
+        <div id="watermark-bg">
+            DHAKA, CHATTOGRAM, RAJSHAHI, KHULNA, SYLHET, BARISHAL, RANGPUR, MYMENSINGH, COMILLA, NOAKHALI, FENI, COX'S BAZAR, BOGURA, GAZIPUR, NARAYANGANJ, TANGAIL, FARIDPUR, MUNSHIGANJ, NARSINGDI, RAJBARI, SHARIATPUR, GOPALGANJ, MADARIPUR, KISHOREGANJ, MANIKGANJ, BRAHMANBARIA, CHANDPUR, LAKSHMIPUR, RANGAMATI, KHAGRACHARI, BANDARBAN, SIRAJGANJ, PABNA, NATORE, NAOGAON, CHAPAINAWABGANJ, JOYPURHAT, KURIGRAM, GAIBANDHA, LALMONIRHAT, DINAJPUR, THAKURGAON, PANCHAGARH, NILPHAMARI, BHOLA, PATUAKHALI, PIROJPUR, JHALOKATI, BARGUNA, AMATOLI, JESSORE, JHENAIDAH, MAGURA, NARAIL, KUSHTIA, CHUADANGA, MEHERPUR, SATKHIRA, BAGERHAT, HABIGANJ, MOULVIBAZAR, SUNAMGANJ, NETROKONA, SHERPUR... (Repeated)
+        </div>
+        <h1 style="font-size: 45px; margin-bottom: 10px;">CONGRATULATIONS!</h1>
+        <h2 id="congrats-name" style="text-transform: uppercase; margin-bottom: 20px;"></h2>
+        <p style="font-size: 20px; font-weight: bold;">Order Submitted Successfully!</p>
+        <p>Redirecting to Homepage in 5 seconds...</p>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
         firebase.initializeApp({databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com"});
-        function submit() {
-            const n = document.getElementById('bn').value, p = document.getElementById('pn').value;
-            if(!n || !p) return alert("সব তথ্য দিন");
-            firebase.database().ref('orders/'+p).set({name:n, plotID:p}).then(() => {
-                alert("অর্ডার হয়েছে! পেমেন্ট করে হোয়াটসঅ্যাপে জানান।");
-                window.location.href = "support.html";
+        
+        function submitOrder() {
+            const name = document.getElementById('bn').value;
+            const plot = document.getElementById('pn').value;
+            if(!name || !plot) return alert("সব তথ্য দিন");
+
+            firebase.database().ref('orders/' + plot).set({name: name, plotID: plot}).then(() => {
+                document.getElementById('order-box').style.display = 'none';
+                document.getElementById('success-screen').style.display = 'flex';
+                document.getElementById('congrats-name').innerText = name;
+                
+                // কনফেটি অ্যানিমেশন
+                var end = Date.now() + (5 * 1000);
+                (function frame() {
+                    confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff0000', '#000000'] });
+                    confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff0000', '#000000'] });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+
+                // ৫ সেকেন্ড পর অটো রিডাইরেক্ট
+                setTimeout(() => { window.location.href = "index.html"; }, 5000);
             });
         }
     </script>
