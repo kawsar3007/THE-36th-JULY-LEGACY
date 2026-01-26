@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DHAKA DISTRICT MAP</title>
+    <title>DHAKA | THE DISTRICT LEGACY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
-        body { background: var(--b-bg); color: #fff; font-family: sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
+        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
         .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 22px; font-weight: 900; letter-spacing: 2px; }
         .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
         
-        /* Layout Setup */
         .nav-left { flex: 1; display: flex; }
         .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; }
         .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 60px; outline: none; }
         .search-box button { background: var(--b-yellow); border: none; padding: 0 10px; cursor: pointer; color: #000; }
 
-        .nav-center { flex: 2; display: flex; gap: 10px; justify-content: center; }
-        .nav-btn { display: flex; align-items: center; gap: 6px; background: #161a1e; padding: 5px 12px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; }
-        .gold-icon { width: 25px; height: 25px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 12px; }
+        .nav-center { flex: 2; display: flex; gap: 8px; justify-content: center; align-items: center; }
+        .nav-btn { display: flex; align-items: center; gap: 6px; background: #161a1e; padding: 5px 12px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .gold-icon { width: 25px; height: 25px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 11px; }
 
-        /* Canvas Setup */
         .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 1px solid #ddd; }
-        canvas { display: block; width: 100%; height: auto; }
+        canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
         #plotMarker { position: absolute; border: 2px solid var(--b-yellow); box-shadow: 0 0 15px var(--b-yellow); display: none; pointer-events: none; z-index: 10; background: rgba(252, 213, 53, 0.2); box-sizing: border-box; }
-        
+
+        /* Floating Support Logo */
+        .support-float { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: #2ebd85; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 2000; text-decoration: none; border: 2px solid #fff; transition: 0.3s; }
+        .support-float:hover { transform: scale(1.1); }
+        .support-float i { color: #fff; font-size: 28px; }
+
         .footer-info { width: 96%; margin: 25px auto; padding: 20px; background: #161a1e; border-radius: 10px; border: 1px solid #333; }
     </style>
 </head>
@@ -37,22 +40,20 @@
     <div class="nav-left">
         <div class="search-box">
             <input type="number" id="plotInput" placeholder="ID">
-            <button onclick="searchPlot()"><i class="fas fa-search"></i></button>
+            <button onclick="locatePlot()"><i class="fas fa-search"></i></button>
         </div>
     </div>
     <div class="nav-center">
-        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> HOME</a>
+        <a href="index.html" class="nav-btn"><i class="fas fa-arrow-left"></i> HOME</a>
         <div class="nav-btn" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">
-            <div class="gold-icon"><i class="fas fa-wallet"></i></div>
-            <div style="text-align: left;"><span style="font-size: 7px; color: var(--b-yellow);">BKASH/NAGAD/ROCKET</span><br><b>01756206213</b></div>
+            <div class="gold-icon"><i class="fas fa-university"></i></div>
+            <div style="text-align: left;"><span style="font-size: 7px; color: var(--b-yellow);">BKASH / NAGAD / ROCKET</span><br><b>01756206213</b></div>
         </div>
     </div>
-    <div class="nav-right">
-        <a href="order.html" class="nav-btn" style="background:var(--b-yellow); color:#000;"><i class="fas fa-shopping-cart"></i> BUY</a>
-    </div>
+    <div class="nav-right"><a href="order.html" class="nav-btn" style="background:var(--b-yellow); color:#000;">BUY</a></div>
 </div>
 
-<div class="canvas-container" id="mapWrapper">
+<div class="canvas-container" id="cWrapper">
     <div id="plotMarker"></div>
     <canvas id="mapCanvas"></canvas>
 </div>
@@ -62,9 +63,8 @@
     <p style="font-size:12px; color:#848e9c;">THE DISTRICT LEGACY © 2026 KAWSAR AHMED</p>
 </div>
 
-<a href="support.html" style="position:fixed; bottom:20px; right:20px; z-index:2000;">
-    <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" width="60" style="filter: drop-shadow(0 0 10px #2ebd85);">
-</a>
+<a href="support.html" class="support-float"><i class="fas fa-headset"></i></a>
 
-<script src="map-logic.js"></script> </body>
+<script src="map-logic.js"></script>
+</body>
 </html>
