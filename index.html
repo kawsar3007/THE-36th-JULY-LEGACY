@@ -21,7 +21,7 @@
             overflow-x: hidden; 
         }
         
-        /* Top Navigation */
+        /* Navigation */
         .top-nav { 
             background: var(--b-card); 
             padding: 12px 5%; 
@@ -34,21 +34,40 @@
             z-index: 1000; 
         }
 
+        .nav-links { display: flex; gap: 15px; }
+
         .community-btn { 
             background: #1877F2; 
             color: #fff; 
-            padding: 10px 20px; 
+            padding: 10px 18px; 
             border-radius: 5px; 
             text-decoration: none; 
             font-weight: bold; 
-            font-size: 13px; 
+            font-size: 12px; 
             display: flex; 
             align-items: center; 
             gap: 8px; 
             transition: 0.3s; 
         }
 
-        /* Highlighted Premium Title Effect */
+        /* নিউজ বাটন স্টাইল */
+        .news-btn { 
+            background: var(--b-yellow); 
+            color: #000; 
+            padding: 10px 18px; 
+            border-radius: 5px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            transition: 0.3s; 
+            box-shadow: 0 0 10px rgba(252, 213, 53, 0.3);
+        }
+        .news-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(252, 213, 53, 0.5); }
+
+        /* Premium Highlighted Title */
         .hero { text-align: center; padding: 70px 20px; }
         .hero h1 { 
             font-size: clamp(32px, 8vw, 60px); 
@@ -59,38 +78,28 @@
             cursor: pointer;
             transition: all 0.4s ease;
             display: inline-block;
-            /* Constant Soft Glow */
             text-shadow: 0 0 15px rgba(252, 213, 53, 0.4);
             animation: pulseGlow 2s infinite alternate;
         }
 
         @keyframes pulseGlow {
             from { text-shadow: 0 0 10px rgba(252, 213, 53, 0.4); }
-            to { text-shadow: 0 0 25px rgba(252, 213, 53, 0.7); }
+            to { text-shadow: 0 0 30px rgba(252, 213, 53, 0.8); }
         }
 
         .hero h1:hover {
-            text-shadow: 0 0 30px var(--b-yellow), 0 0 60px var(--b-yellow);
-            transform: scale(1.05);
-            letter-spacing: 8px;
+            text-shadow: 0 0 40px var(--b-yellow), 0 0 80px var(--b-yellow);
+            transform: scale(1.03);
         }
 
-        /* Search Box */
         .search-container { display: flex; justify-content: center; padding: 20px; }
         .search-box input { 
-            width: 100%; 
-            max-width: 500px; 
-            padding: 16px 25px; 
-            border-radius: 50px; 
-            border: 1px solid #333; 
-            background: var(--b-card); 
-            color: #fff; 
-            outline: none; 
-            text-align: center; 
-            font-size: 16px;
+            width: 100%; max-width: 500px; padding: 16px 25px; 
+            border-radius: 50px; border: 1px solid #333; 
+            background: var(--b-card); color: #fff; outline: none; 
+            text-align: center; font-size: 16px; 
         }
 
-        /* District Grid */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
@@ -99,11 +108,8 @@
         }
 
         .card { 
-            background: var(--b-card); 
-            padding: 45px 15px; 
-            border-radius: 15px; 
-            text-align: center; 
-            cursor: pointer; 
+            background: var(--b-card); padding: 45px 15px; 
+            border-radius: 15px; text-align: center; cursor: pointer; 
             border: 1px solid #222; 
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
@@ -114,88 +120,22 @@
             box-shadow: 0 15px 35px rgba(252, 213, 53, 0.3); 
         }
 
-        .card h3 { margin: 0; font-size: 22px; color: #fff; transition: 0.3s; }
+        .card h3 { margin: 0; font-size: 20px; color: #fff; transition: 0.3s; }
         .card:hover h3 { color: #000; font-weight: 900; }
 
-        .notice { 
-            display: block; 
-            margin-top: 10px; 
-            font-size: 11px; 
-            font-weight: bold; 
-            color: var(--b-yellow); 
-            letter-spacing: 1px;
-        }
+        .notice { display: block; margin-top: 10px; font-size: 10px; font-weight: bold; color: var(--b-yellow); letter-spacing: 1px;}
         .card:hover .notice { color: #000; }
 
-        /* Pop-up UI */
-        #waPopup { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.95); 
-            z-index: 9999; 
-            justify-content: center; 
-            align-items: center; 
-        }
-
-        .popup-box { 
-            background: #1E2329; 
-            border: 2px solid var(--b-yellow); 
-            padding: 35px; 
-            border-radius: 25px; 
-            max-width: 380px; 
-            width: 90%;
-            text-align: center; 
-            position: relative; 
-        }
-
-        .info-box { 
-            text-align: left; 
-            background: #000; 
-            padding: 20px; 
-            border-radius: 15px; 
-            margin: 20px 0; 
-            border-left: 5px solid var(--b-yellow); 
-        }
-
+        /* Pop-up */
+        #waPopup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; }
+        .popup-box { background: #1E2329; border: 2px solid var(--b-yellow); padding: 35px; border-radius: 25px; max-width: 380px; width: 90%; text-align: center; position: relative; }
+        .info-box { text-align: left; background: #000; padding: 20px; border-radius: 15px; margin: 20px 0; border-left: 5px solid var(--b-yellow); }
         .info-box p { font-size: 14px; margin: 10px 0; color: #fff; line-height: 1.5; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #666; }
 
-        /* Floating Buttons */
-        .float-cs { 
-            position: fixed; 
-            bottom: 100px; 
-            right: 30px; 
-            background: var(--b-yellow); 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: #000; 
-            font-size: 25px; 
-            cursor: pointer; 
-            z-index: 4000; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5); 
-        }
-
-        .support-btn { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 30px; 
-            background: #2ebd85; 
-            color: white; 
-            padding: 15px 25px; 
-            border-radius: 50px; 
-            text-decoration: none; 
-            font-weight: bold; 
-            z-index: 4000; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
-        }
+        /* Floating buttons */
+        .float-cs { position: fixed; bottom: 100px; right: 30px; background: var(--b-yellow); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 25px; cursor: pointer; z-index: 4000; box-shadow: 0 8px 20px rgba(0,0,0,0.5); }
+        .support-btn { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 4000; display: flex; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -216,9 +156,14 @@
 </div>
 
 <div class="top-nav">
-    <a href="https://facebook.com/DigitalFridayHomepage" target="_blank" class="community-btn">
-        <i class="fab fa-facebook-square"></i> JOIN COMMUNITY
-    </a>
+    <div class="nav-links">
+        <a href="https://facebook.com/DigitalFridayHomepage" target="_blank" class="community-btn">
+            <i class="fab fa-facebook-square"></i> JOIN COMMUNITY
+        </a>
+        <a href="news.html" class="news-btn">
+            <i class="fas fa-bullhorn"></i> LATEST NEWS
+        </a>
+    </div>
     <div style="color: var(--b-yellow); font-weight: bold; font-size: 14px; letter-spacing: 1px;">FRIDAY OFFICIAL</div>
 </div>
 
@@ -235,8 +180,11 @@
 
 <div class="grid" id="districtGrid">
     <script>
-        const districts = ["Dhaka", "Sirajganj", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Cumilla", "Gazipur", "Narayanganj", "Brahmanbaria", "Noakhali", "Chandpur", "Lakshmipur", "Feni", "Cox's Bazar", "Khagrachhari", "Rangamati", "Bandarban", "Tangail", "Manikganj", "Munshiganj", "Narsingdi", "Faridpur", "Madaripur", "Gopalganj", "Rajbari", "Shariatpur", "Kishoreganj", "Netrokona", "Sherpur", "Jamalpur", "Bogura", "Joypurhat", "Naogaon", "Natore", "Pabna", "Chapai Nawabganj", "Kurigram", "Gaibandha", "Nilphamari", "Dinajpur", "Panchagarh", "Thakurgaon", "Lalmonirhat", "Jashore", "Jhenaidah", "Magura", "Narail", "Kushtia", "Chuadanga", "Meherpur", "Satkhira", "Bagerhat", "Bhola", "Jhalokathi", "Pirojpur", "Borguna", "Patuakhali", "Moulvibazar", "Habiganj", "Sunamganj"];
+        const districts = ["Bagerhat", "Bandarban", "Barguna", "Barishal", "Bhola", "Bogura", "Brahmanbaria", "Chandpur", "Chapai Nawabganj", "Chattogram", "Chuadanga", "Cumilla", "Cox's Bazar", "Dhaka", "Dinajpur", "Faridpur", "Feni", "Gaibandha", "Gazipur", "Gopalganj", "Habiganj", "Jamalpur", "Jashore", "Jhalokathi", "Jhenaidah", "Joypurhat", "Khagrachhari", "Khulna", "Kishoreganj", "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj", "Meherpur", "Moulvibazar", "Munshiganj", "Mymensingh", "Naogaon", "Narail", "Narayanganj", "Narsingdi", "Natore", "Netrokona", "Nilphamari", "Noakhali", "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur", "Satkhira", "Shariatpur", "Sherpur", "Sirajganj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"];
         
+        // Sorting the list alphabetically to be 100% sure
+        districts.sort();
+
         let gridHtml = "";
         districts.forEach(d => {
             gridHtml += `
@@ -259,7 +207,6 @@
 </a>
 
 <script>
-    // Search Functionality
     function filterDistricts() {
         let input = document.getElementById('distSearch').value.toUpperCase();
         let cards = document.getElementsByClassName('card');
@@ -272,8 +219,6 @@
             }
         }
     }
-
-    // Popup Logic
     function openPopup() { document.getElementById('waPopup').style.display = 'flex'; }
     function closePopup() { document.getElementById('waPopup').style.display = 'none'; }
 </script>
