@@ -3,30 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LATEST NEWS | DIGITAL FRIDAY</title>
+    <title>OFFICIAL ANNOUNCEMENTS | DIGITAL FRIDAY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; --b-text: #EAECEF; }
-        body { background-color: var(--b-bg); color: var(--b-text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 50px 20px; }
-        .container { max-width: 700px; margin: auto; }
-        .back-btn { display: inline-flex; align-items: center; gap: 10px; color: #848e9c; text-decoration: none; margin-bottom: 30px; font-weight: bold; }
-        .news-box { background: var(--b-card); padding: 25px; border-radius: 12px; border-left: 5px solid var(--b-yellow); margin-bottom: 20px; transition: 0.3s; }
-        .news-box:hover { transform: scale(1.02); }
-        .date { font-size: 12px; color: var(--b-yellow); font-weight: bold; }
-        .policy-link { display: inline-block; margin-top: 15px; color: var(--b-yellow); text-decoration: none; font-weight: bold; border-bottom: 1px solid var(--b-yellow); }
+        :root { 
+            --b-bg: #0B0E11; 
+            --b-card: #1E2329; 
+            --b-yellow: #FCD535; 
+            --b-text: #EAECEF; 
+            --b-red: #ff4d4d;
+        }
+
+        body { 
+            background-color: var(--b-bg); 
+            color: var(--b-text); 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .container { width: 100%; max-width: 800px; }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #848e9c;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .back-btn:hover { color: var(--b-yellow); }
+
+        /* Legacy Highlight Box */
+        .legacy-box {
+            background: linear-gradient(145deg, #1E2329, #0B0E11);
+            border: 2px solid var(--b-yellow);
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(252, 213, 53, 0.1);
+        }
+        .legacy-box h2 { color: var(--b-yellow); margin: 0; font-size: 24px; letter-spacing: 2px; text-transform: uppercase; }
+        .legacy-box p { font-size: 18px; margin: 20px 0; color: #fff; font-weight: bold; line-height: 1.5; }
+
+        /* News Cards */
+        .news-card {
+            background: var(--b-card);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 6px solid #444;
+            transition: 0.3s;
+        }
+        .news-card:hover { transform: translateX(5px); }
+        .border-yellow { border-left-color: var(--b-yellow); }
+        .border-red { border-left-color: var(--b-red); }
+
+        .news-card h3 { margin: 0 0 10px 0; display: flex; align-items: center; gap: 12px; font-size: 20px; color: #fff; }
+        .news-card p { font-size: 15px; color: #b3b3b3; line-height: 1.7; margin: 0; }
+        .date-tag { font-size: 11px; color: var(--b-yellow); font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 8px; }
+
+        .policy-btn {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--b-yellow);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            border-bottom: 1px solid var(--b-yellow);
+        }
+
+        .footer-note { text-align: center; margin-top: 50px; font-size: 12px; color: #444; letter-spacing: 1px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> BACK TO HOME</a>
-        <h1 style="color: var(--b-yellow); text-transform: uppercase;"><i class="fas fa-bullhorn"></i> Latest News</h1>
 
-        <div class="news-box">
-            <span class="date">JANUARY 26, 2026</span>
-            <h3>LIFETIME OWNERSHIP IS NOW LIVE!</h3>
-            <p>We are excited to announce that all plots now come with <b>Lifetime Access</b>. No more renewal fees. Secure your spot in the legacy forever.</p>
-            <a href="terms.html" class="policy-link">LEARN MORE IN POLICY</a>
+    <div class="container">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> BACK TO GLOBAL MAP</a>
+
+        <div class="legacy-box">
+            <h2><i class="fas fa-crown"></i> The District Legacy</h2>
+            <p>⚠️ LIMITED EDITION NOTICE:<br>PLOTS FOR EACH DISTRICT ARE FIXED AT 2,400.<br>THIS NUMBER WILL NEVER BE INCREASED.</p>
         </div>
+
+        <div class="news-card border-yellow">
+            <span class="date-tag">January 26, 2026</span>
+            <h3><i class="fas fa-infinity"></i> Lifetime Ownership Active</h3>
+            <p>All plot owners now enjoy permanent placement on our global map. No renewal fees, no monthly charges. One-time payment for a lifetime of advertising.</p>
+            <a href="terms.html" class="policy-btn">View Detailed Policy</a>
         </div>
+
+        <div class="news-card border-red">
+            <span class="date-tag">January 24, 2026</span>
+            <h3><i class="fas fa-shield-alt"></i> Strictly Prohibited Content</h3>
+            <p>To keep Digital Friday a professional platform, we have a zero-tolerance policy against Gambling, Adult Content, and Illegal links. Violators will be removed instantly.</p>
+            <a href="terms.html" class="policy-btn">Read Prohibited List</a>
+        </div>
+
+        <div class="news-card">
+            <span class="date-tag">January 20, 2026</span>
+            <h3><i class="fas fa-image"></i> Quality Submission Guide</h3>
+            <p>Please ensure your brand logo is in 1:1 square ratio for the best visibility. We recommend 500x500 pixel PNG or JPG files for all plot submissions.</p>
+        </div>
+
+        <div class="footer-note">
+            THE DISTRICT LEGACY © 2026 KAWSAR AHMED | ALL RIGHTS RESERVED
+        </div>
+    </div>
+
 </body>
 </html>
