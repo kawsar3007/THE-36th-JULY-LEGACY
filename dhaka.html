@@ -13,29 +13,29 @@
         .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 18px; font-weight: 900; }
         .status-bar { background: #161a1e; padding: 10px; display: flex; justify-content: space-around; font-size: 12px; font-weight: bold; border-bottom: 2px solid #333; }
         
-        /* Top Navigation */
-        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
+        /* Navigation */
+        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 1%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
         
         .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
-        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 60px; outline: none; }
+        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 55px; outline: none; }
         .search-box button { background: var(--b-yellow); border: none; padding: 0 10px; cursor: pointer; color: #000; }
 
-        .nav-btn { display: flex; align-items: center; gap: 5px; background: #161a1e; padding: 8px 12px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; }
-        .payment-info { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-        .gold-icon { width: 25px; height: 25px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; }
+        .nav-btn { display: flex; align-items: center; gap: 5px; background: #161a1e; padding: 8px 10px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 10px; font-weight: bold; }
+        .payment-info { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        .gold-icon { width: 22px; height: 22px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; }
 
-        .buy-btn { background: var(--b-yellow); color: #000; padding: 8px 18px; font-size: 14px; border-radius: 8px; text-decoration: none; font-weight: 900; animation: pulse 1.5s infinite; }
+        .buy-btn { background: var(--b-yellow); color: #000; padding: 8px 15px; font-size: 12px; border-radius: 8px; text-decoration: none; font-weight: 900; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(252, 213, 53, 0); } 100% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0); } }
 
-        /* ক্যানভাস কন্টেইনার - আপনার চাহিদা মতো দুই পাশে সামান্য ফাঁকা রেখে ফুল চওড়া */
+        /* ক্যানভাস কন্টেইনার - আপনার চাহিদা মতো দুই পাশে ফাঁকা একদম কমিয়ে আনা হয়েছে */
         .canvas-container { 
-            width: 96%;           /* দুই পাশে সামান্য ফাঁকা (২% করে) */
-            max-width: 800px;     /* বড় স্ক্রিনে খুব বেশি ছড়াবে না */
-            margin: 20px auto; 
+            width: 98%;           /* দুই পাশে মাত্র ১% করে ফাঁকা জায়গা থাকবে */
+            max-width: 1200px;    /* পিসি-তে দেখার জন্য বড় লিমিট */
+            margin: 15px auto; 
             background: #fff; 
             position: relative; 
             border: 2px solid #555; 
-            border-radius: 5px;
+            border-radius: 4px;
             overflow: hidden; 
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
@@ -48,8 +48,8 @@
         
         #plotMarker { 
             position: absolute; 
-            border: 3px solid #ff0000; 
-            box-shadow: 0 0 15px #ff0000; 
+            border: 2px solid #ff0000; 
+            box-shadow: 0 0 10px #ff0000; 
             display: none; 
             pointer-events: none; 
             z-index: 5; 
@@ -57,7 +57,7 @@
             box-sizing: border-box;
         }
 
-        .support-float { position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px; background: var(--wa-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 2000; border: 2px solid #fff; }
+        .support-float { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--wa-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 2000; border: 2px solid #fff; }
     </style>
 </head>
 <body>
@@ -76,12 +76,12 @@
         <button onclick="locatePlot()"><i class="fas fa-search"></i></button>
     </div>
     
-    <div style="display:flex; gap:10px; align-items:center;">
+    <div style="display:flex; gap:8px; align-items:center;">
         <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> HOME</a>
         <div class="payment-info" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">
             <div class="gold-icon"><i class="fas fa-wallet"></i></div>
-            <div style="text-align: left; line-height: 1.1;">
-                <span style="font-size: 7px; color: var(--b-yellow); font-weight: bold;">BKASH/NAGAD</span><br>
+            <div style="text-align: left; line-height: 1;">
+                <span style="font-size: 6px; color: var(--b-yellow); font-weight: bold;">BKASH/NAGAD/ROCKET</span><br>
                 <b style="font-size: 10px;">01756206213</b>
             </div>
         </div>
@@ -95,22 +95,22 @@
     <canvas id="mapCanvas"></canvas>
 </div>
 
-<a href="https://wa.me/8801756206213" class="support-float"><i class="fab fa-whatsapp" style="color:#fff; font-size:28px;"></i></a>
+<a href="https://wa.me/8801756206213" class="support-float"><i class="fab fa-whatsapp" style="color:#fff; font-size:25px;"></i></a>
 
 <script>
-    // --- ম্যাপ কনফিগারেশন ---
     const totalPlots = 2400;
-    const cols = 20;      // ২০টি কলাম (যাতে ক্যানভাসটি চওড়ায় বড় হয়)
-    const bS = 50;        // প্রতিটি ব্লক ৫০x৫০ পিক্সেল
+    const cols = 35;      // ৩৫টি কলাম (আপনার চাহিদা অনুযায়ী)
+    const bS = 50;        // ব্লক সাইজ ৫০x৫০ পিক্সেল
     const canvas = document.getElementById('mapCanvas');
     const ctx = canvas.getContext('2d');
     const marker = document.getElementById('plotMarker');
     const wrapper = document.getElementById('cWrapper');
 
-    canvas.width = cols * bS; // ১০০০ পিক্সেল চওড়া ক্যানভাস
-    canvas.height = Math.ceil(totalPlots / cols) * bS; // ১২০টি সারি (১২০*৫০ = ৬০০০px লম্বা)
+    // ক্যানভাস সাইজ: ৩৫ কলাম * ৫০ পিক্সেল = ১৭৫০ পিক্সেল চওড়া
+    canvas.width = cols * bS; 
+    canvas.height = Math.ceil(totalPlots / cols) * bS; 
 
-    const soldPlots = {}; // ভবিষ্যতে ডাটা এখানে বসবে
+    const soldPlots = {}; 
 
     function drawMap() {
         ctx.fillStyle = "#ffffff";
@@ -122,14 +122,14 @@
             const x = c * bS;
             const y = r * bS;
 
-            ctx.strokeStyle = "#eeeeee";
+            ctx.strokeStyle = "#e0e0e0";
             ctx.lineWidth = 1;
             ctx.strokeRect(x, y, bS, bS);
             
-            ctx.fillStyle = "#bbbbbb";
-            ctx.font = "14px Arial"; 
+            ctx.fillStyle = "#aaaaaa";
+            ctx.font = "12px Arial"; // কলাম বেশি হওয়ায় নম্বর একটু ছোট রাখা হয়েছে স্পষ্টতার জন্য
             ctx.textAlign = "center";
-            ctx.fillText(i, x + bS/2, y + bS/2 + 5);
+            ctx.fillText(i, x + bS/2, y + bS/2 + 4);
         }
     }
 
@@ -142,17 +142,14 @@
 
         const r = Math.floor((plotID - 1) / cols);
         const c = (plotID - 1) % cols;
-        const xPos = c * bS;
         const yPos = r * bS;
 
-        // মার্কার পজিশন
         marker.style.display = 'block';
         marker.style.width = (100 / cols) + "%";
         marker.style.height = marker.offsetWidth + "px";
         marker.style.left = (c * (100 / cols)) + "%";
-        marker.style.top = (yPos / canvas.height * 100) + "%";
+        marker.style.top = (r * (bS / canvas.height) * 100) + "%";
 
-        // প্রোফাইল হাইলাইট ও স্ক্রল
         const scrollTarget = wrapper.offsetTop + (yPos * (wrapper.offsetWidth / canvas.width)) - (window.innerHeight / 2.5);
         window.scrollTo({
             top: scrollTarget,
