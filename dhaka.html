@@ -3,54 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DHAKA | THE DISTRICT LEGACY</title>
+    <title>DHAKA DISTRICT MAP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
-        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
+        body { background: var(--b-bg); color: #fff; font-family: sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
         .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 22px; font-weight: 900; letter-spacing: 2px; }
-        
         .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
         
-        /* Left: Search */
-        .nav-left { display: flex; align-items: center; }
-        .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
-        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 60px; outline: none; font-size: 13px; }
+        /* Layout Setup */
+        .nav-left { flex: 1; display: flex; }
+        .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; }
+        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 60px; outline: none; }
         .search-box button { background: var(--b-yellow); border: none; padding: 0 10px; cursor: pointer; color: #000; }
 
-        /* Middle: Back to Home & Payment */
-        .nav-center { display: flex; gap: 8px; align-items: center; position: absolute; left: 50%; transform: translateX(-50%); }
-        .nav-btn { display: flex; align-items: center; gap: 6px; background: #161a1e; padding: 5px 12px; border-radius: 50px; border: 1px solid #333; cursor: pointer; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; }
-        .gold-icon { width: 25px; height: 25px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 11px; }
+        .nav-center { flex: 2; display: flex; gap: 10px; justify-content: center; }
+        .nav-btn { display: flex; align-items: center; gap: 6px; background: #161a1e; padding: 5px 12px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; }
+        .gold-icon { width: 25px; height: 25px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 12px; }
 
-        /* Right: Buy Button */
-        .nav-right { display: flex; align-items: center; }
-        .buy-btn { background: var(--b-yellow) !important; color: #000 !important; }
-
-        /* Canvas: Responsive Container */
-        .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 1px solid #ddd; overflow: hidden; }
+        /* Canvas Setup */
+        .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 1px solid #ddd; }
         canvas { display: block; width: 100%; height: auto; }
+        #plotMarker { position: absolute; border: 2px solid var(--b-yellow); box-shadow: 0 0 15px var(--b-yellow); display: none; pointer-events: none; z-index: 10; background: rgba(252, 213, 53, 0.2); box-sizing: border-box; }
         
-        /* Fixed Search Highlight */
-        #plotMarker { 
-            position: absolute; 
-            width: 4%; /* Responsive width based on 25 columns */
-            aspect-ratio: 1 / 1; 
-            border: 2px solid var(--b-yellow); 
-            box-shadow: 0 0 15px var(--b-yellow); 
-            display: none; 
-            pointer-events: none; 
-            z-index: 10; 
-            background: rgba(252, 213, 53, 0.2); 
-            box-sizing: border-box; 
-        }
-
-        /* Footer Notice */
-        .footer-info { width: 96%; margin: 25px auto; padding: 20px; background: #161a1e; border-radius: 10px; text-align: center; border: 1px solid #333; }
-        .footer-info p { margin: 5px 0; font-size: 12px; color: #848e9c; }
-        .limited-tag { color: var(--b-yellow); font-size: 15px !important; font-weight: bold; margin-bottom: 10px !important; }
-        .dl-btn { display: inline-block; margin-top: 15px; padding: 8px 20px; background: #333; color: #fff; text-decoration: none; border-radius: 5px; font-size: 12px; transition: 0.3s; }
-        .dl-btn:hover { background: var(--b-yellow); color: #000; }
+        .footer-info { width: 96%; margin: 25px auto; padding: 20px; background: #161a1e; border-radius: 10px; border: 1px solid #333; }
     </style>
 </head>
 <body>
@@ -61,92 +37,34 @@
     <div class="nav-left">
         <div class="search-box">
             <input type="number" id="plotInput" placeholder="ID">
-            <button onclick="locatePlot()"><i class="fas fa-search"></i></button>
+            <button onclick="searchPlot()"><i class="fas fa-search"></i></button>
         </div>
     </div>
-
     <div class="nav-center">
-        <a href="index.html" class="nav-btn"><i class="fas fa-arrow-left"></i> HOME</a>
-        <div class="nav-btn" onclick="navigator.clipboard.writeText('01756206213'); alert('Number Copied!')">
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> HOME</a>
+        <div class="nav-btn" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">
             <div class="gold-icon"><i class="fas fa-wallet"></i></div>
-            <div style="text-align: left; line-height: 1.2;">
-                <span style="font-size: 7px; color: var(--b-yellow); font-weight: bold; letter-spacing: 0.5px;">BKASH / NAGAD / ROCKET</span><br>
-                <b style="font-size: 12px;">01756206213</b>
-            </div>
+            <div style="text-align: left;"><span style="font-size: 7px; color: var(--b-yellow);">BKASH/NAGAD/ROCKET</span><br><b>01756206213</b></div>
         </div>
     </div>
-
     <div class="nav-right">
-        <a href="order.html" class="nav-btn buy-btn">
-            <div class="gold-icon" style="background:#000; color:var(--b-yellow)"><i class="fas fa-shopping-cart"></i></div>
-            BUY
-        </a>
+        <a href="order.html" class="nav-btn" style="background:var(--b-yellow); color:#000;"><i class="fas fa-shopping-cart"></i> BUY</a>
     </div>
 </div>
 
-<div class="canvas-container" id="cContainer">
+<div class="canvas-container" id="mapWrapper">
     <div id="plotMarker"></div>
     <canvas id="mapCanvas"></canvas>
 </div>
 
 <div class="footer-info">
-    <p class="limited-tag">⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.</p>
-    <p>NUMBERS WILL NEVER BE INCREASED.</p>
-    <p>THE DISTRICT LEGACY © 2026 KAWSAR AHMED</p>
-    <a href="#" class="dl-btn" onclick="alert('Preparing download...')"><i class="fas fa-download"></i> DOWNLOAD MAP</a>
+    <p style="color:var(--b-yellow); font-weight:bold;">⚠️ LIMITED EDITION: 10,000 PLOTS ONLY.</p>
+    <p style="font-size:12px; color:#848e9c;">THE DISTRICT LEGACY © 2026 KAWSAR AHMED</p>
 </div>
 
-<script>
-    const cv = document.getElementById('mapCanvas'), ctx = cv.getContext('2d');
-    const cols = 25; // আপনি ২৫ কলাম ব্যবহার করছেন
-    const totalPlots = 10000;
-    const bS = 40; // প্রতিটি ব্লকের সাইজ (পিক্সেল)
+<a href="support.html" style="position:fixed; bottom:20px; right:20px; z-index:2000;">
+    <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" width="60" style="filter: drop-shadow(0 0 10px #2ebd85);">
+</a>
 
-    // ক্যানভাস সাইজ নির্ধারণ
-    cv.width = cols * bS; // ১০০০০ পিক্সেল
-    cv.height = (totalPlots / cols) * bS; // ১৬০০০ পিক্সেল
-
-    function draw() {
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, cv.width, cv.height);
-        ctx.strokeStyle = "#eee";
-        ctx.lineWidth = 1;
-
-        // গ্রিড ড্রয়িং
-        for(let x = 0; x <= cv.width; x += bS){
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, cv.height); ctx.stroke();
-        }
-        for(let y = 0; y <= cv.height; y += bS){
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(cv.width, y); ctx.stroke();
-        }
-    }
-    draw();
-
-    function locatePlot() {
-        const id = document.getElementById('plotInput').value;
-        if(!id || id < 1 || id > 10000) return alert("Enter Plot ID 1-10000");
-
-        const r = Math.floor((id - 1) / cols);
-        const c = (id - 1) % cols;
-        const m = document.getElementById('plotMarker');
-        
-        // মার্কারের অবস্থান নির্ধারণ (শতকরা হিসেবে যাতে মোবাইল ফ্রেন্ডলি হয়)
-        const posX = (c / cols) * 100;
-        const posY = (r / (totalPlots / cols)) * 100;
-
-        m.style.display = 'block';
-        m.style.left = posX + "%";
-        m.style.top = posY + "%";
-        
-        // স্মুথ স্ক্রলিং
-        const container = document.getElementById('cContainer');
-        const scrollTarget = (r * bS) * (container.offsetWidth / cv.width);
-        
-        window.scrollTo({
-            top: container.offsetTop + scrollTarget - 200,
-            behavior: 'smooth'
-        });
-    }
-</script>
-</body>
+<script src="map-logic.js"></script> </body>
 </html>
