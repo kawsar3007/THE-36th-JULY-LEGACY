@@ -3,53 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIGITAL FRIDAY HOMEPAGE | 64 DISTRICTS</title>
+    <title>DIGITAL FRIDAY HOMEPAGE | THE MARKETING LEGACY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; --b-text: #EAECEF; }
         body { background-color: var(--b-bg); color: var(--b-text); font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
         
+        /* টপ বার */
         .top-nav { background: var(--b-card); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); position: sticky; top: 0; z-index: 1000; }
         .community-btn { background: #1877F2; color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
 
-        .hero { text-align: center; padding: 60px 20px; }
-        .hero h1 { font-size: clamp(30px, 8vw, 55px); color: var(--b-yellow); margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        /* প্রিমিয়াম টাইটেল ইফেক্ট */
+        .hero { text-align: center; padding: 80px 20px; }
+        .hero h1 { 
+            font-size: clamp(35px, 8vw, 65px); 
+            color: var(--b-yellow); 
+            margin: 0; 
+            text-transform: uppercase; 
+            letter-spacing: 4px;
+            transition: 0.5s ease;
+            cursor: default;
+            text-shadow: 0 0 10px rgba(252, 213, 53, 0.3);
+        }
+        .hero h1:hover {
+            text-shadow: 0 0 20px var(--b-yellow), 0 0 40px var(--b-yellow), 0 0 60px var(--b-yellow);
+            transform: scale(1.02);
+        }
         
+        /* সার্চ বক্স */
         .search-container { display: flex; justify-content: center; padding: 30px; }
-        .search-box input { width: 100%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #444; background: var(--b-card); color: #fff; outline: none; text-align: center; }
+        .search-box input { width: 100%; max-width: 500px; padding: 16px 25px; border-radius: 50px; border: 1px solid #444; background: var(--b-card); color: #fff; outline: none; text-align: center; transition: 0.3s; }
+        .search-box input:focus { border-color: var(--b-yellow); box-shadow: 0 0 20px rgba(252, 213, 53, 0.2); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px 8% 60px; }
-        .card { background: var(--b-card); padding: 40px 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #333; transition: 0.4s; }
-        .card:hover { background-color: var(--b-yellow) !important; transform: translateY(-5px); box-shadow: 0 0 25px var(--b-yellow); }
-        .card h3 { margin: 0; font-size: 20px; color: #fff; transition: 0.3s; }
-        .card:hover h3 { color: #000; font-weight: bold; }
-        .notice { display: block; margin-top: 8px; font-size: 10px; font-weight: bold; color: var(--b-yellow); text-transform: uppercase; }
+        /* জেলা গ্রিড */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px 8% 80px; }
+        .card { background: var(--b-card); padding: 45px 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #333; transition: 0.4s; position: relative; }
+        .card:hover { background-color: var(--b-yellow) !important; transform: translateY(-8px); box-shadow: 0 0 30px var(--b-yellow); }
+        .card h3 { margin: 0; font-size: 22px; color: #fff; }
+        .card:hover h3 { color: #000; font-weight: 900; }
+        .notice { display: block; margin-top: 10px; font-size: 10px; font-weight: bold; color: var(--b-yellow); text-transform: uppercase; }
         .card:hover .notice { color: #000; }
 
-        /* পপ-আপ স্টাইল */
-        #waPopup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; }
-        .popup-content { background: #1E2329; border: 2px solid var(--b-yellow); padding: 30px; border-radius: 20px; max-width: 350px; text-align: center; position: relative; }
-        .info-box { text-align: left; background: #000; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid var(--b-yellow); }
-        .info-box p { font-size: 13px; margin: 8px 0; }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 25px; cursor: pointer; color: #888; }
+        /* পপ-আপ ডিজাইন */
+        #waPopup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 5000; justify-content: center; align-items: center; }
+        .popup-box { background: #1E2329; border: 2px solid var(--b-yellow); padding: 30px; border-radius: 20px; max-width: 360px; text-align: center; position: relative; }
+        .info-box { text-align: left; background: #000; padding: 18px; border-radius: 12px; margin: 15px 0; border-left: 5px solid var(--b-yellow); }
+        .info-box p { font-size: 13px; margin: 10px 0; color: #fff; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #888; }
         
-        .support-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 2000; cursor: pointer; border: none; }
-        .wa-trigger { position: fixed; bottom: 100px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; cursor: pointer; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        /* ফ্লোটিং বাটন */
+        .float-cs { position: fixed; bottom: 100px; right: 30px; background: var(--b-yellow); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 25px; cursor: pointer; z-index: 4000; box-shadow: 0 5px 20px rgba(0,0,0,0.5); transition: 0.3s; }
+        .float-cs:hover { transform: scale(1.1); }
+        .support-btn { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 4000; display: flex; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
 
 <div id="waPopup">
-    <div class="popup-content">
+    <div class="popup-box">
         <span class="close-btn" onclick="closePopup()">&times;</span>
-        <h3 style="color: var(--b-yellow); margin-top: 0;">REQUIRED INFO</h3>
+        <h3 style="color: var(--b-yellow); margin: 0;">REQUIRED INFO</h3>
+        <p style="font-size: 11px; color: #888;">Complete these steps to activate plot</p>
         <div class="info-box">
-            <p>1. Payment Screenshot (৳36)</p>
+            <p>1. Payment Screenshot (৳24)</p>
             <p>2. Brand Name & Plot ID</p>
             <p>3. Square Logo Image</p>
             <p>4. Website/Profile Link</p>
         </div>
-        <a href="https://wa.me/8801576940717" target="_blank" style="background:#2ebd85; color:#fff; padding:12px; display:block; text-decoration:none; border-radius:10px; font-weight:bold;">START CHAT</a>
+        <a href="https://wa.me/8801576940717" target="_blank" style="background:#2ebd85; color:#fff; padding:14px; display:block; text-decoration:none; border-radius:10px; font-weight:bold;">START CHAT ON WHATSAPP</a>
     </div>
 </div>
 
@@ -57,17 +78,17 @@
     <a href="https://facebook.com/DigitalFridayHomepage" target="_blank" class="community-btn">
         <i class="fab fa-facebook-square"></i> JOIN COMMUNITY
     </a>
-    <div style="color: var(--b-yellow); font-weight: bold; font-size: 14px;">FRIDAY EDITION</div>
+    <div style="color: var(--b-yellow); font-weight: bold; font-size: 14px; letter-spacing: 1px;">FRIDAY EDITION</div>
 </div>
 
 <div class="hero">
     <h1>DIGITAL FRIDAY HOMEPAGE</h1>
-    <p style="color: #848e9c;">THE PIXEL MARKETING LEGACY</p>
+    <p style="color: #848e9c; font-size: 18px; margin-top: 10px;">The Ultimate Pixel Marketing Legacy</p>
 </div>
 
 <div class="search-container">
     <div class="search-box">
-        <input type="text" id="distSearch" placeholder="Search Your District..." onkeyup="filterDistricts()">
+        <input type="text" id="distSearch" placeholder="Search Your District Area..." onkeyup="filterDistricts()">
     </div>
 </div>
 
@@ -86,11 +107,11 @@
     </script>
 </div>
 
-<div class="wa-trigger" onclick="openPopup()"><i class="fab fa-whatsapp"></i></div>
+<div class="float-cs" onclick="openPopup()"><i class="fas fa-headset"></i></div>
 
-<button class="support-float" onclick="location.href='support.html'">
-    <i class="fas fa-headset"></i> CUSTOMER SERVICE
-</button>
+<a href="support.html" target="_blank" class="support-btn">
+    <i class="fas fa-user-shield"></i> CUSTOMER SERVICE
+</a>
 
 <script>
     function filterDistricts() {
