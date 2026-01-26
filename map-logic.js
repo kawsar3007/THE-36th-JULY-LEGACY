@@ -4,17 +4,18 @@ const cols = 25;
 const bS = 40; 
 const totalPlots = 7000; 
 
-canvas.width = cols * bS; 
-canvas.height = Math.ceil(totalPlots / cols) * bS; 
+canvas.width = cols * bS; // 1000px
+canvas.height = Math.ceil(totalPlots / cols) * bS; // 11200px
 
-function draw() {
+function drawMap() {
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = "#eee";
+    ctx.lineWidth = 1;
     for(let x=0; x<=canvas.width; x+=bS){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke(); }
     for(let y=0; y<=canvas.height; y+=bS){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke(); }
 }
-draw();
+drawMap();
 
 function locatePlot() {
     const id = document.getElementById('plotInput').value;
@@ -32,5 +33,8 @@ function locatePlot() {
 
     const wrapper = document.getElementById('cWrapper');
     const scrollPos = (r * bS) * (wrapper.offsetWidth / canvas.width);
-    window.scrollTo({ top: wrapper.offsetTop + scrollPos - 200, behavior: 'smooth' });
+    window.scrollTo({ 
+        top: wrapper.offsetTop + scrollPos - 200, 
+        behavior: 'smooth' 
+    });
 }
