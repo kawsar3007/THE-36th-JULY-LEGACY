@@ -3,44 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIGITAL FRIDAY HOMEPAGE</title>
+    <title>DIGITAL FRIDAY HOMEPAGE | 64 DISTRICTS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; --b-text: #EAECEF; }
         body { background-color: var(--b-bg); color: var(--b-text); font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
         
-        /* টপ বার পরিবর্তন: ফেসবুক লোগো ও জয়েন কমিউনিটি */
         .top-nav { background: var(--b-card); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); position: sticky; top: 0; z-index: 1000; }
         .community-btn { background: #1877F2; color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .community-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(24, 119, 242, 0.5); }
 
         .hero { text-align: center; padding: 60px 20px; }
-        .hero h1 { font-size: 55px; color: var(--b-yellow); margin: 0; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 20px rgba(252, 213, 53, 0.5); }
+        .hero h1 { font-size: clamp(30px, 8vw, 55px); color: var(--b-yellow); margin: 0; text-transform: uppercase; letter-spacing: 2px; }
         
         .search-container { display: flex; justify-content: center; padding: 30px; }
-        .search-box input { width: 100%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #444; background: var(--b-card); color: #fff; outline: none; font-size: 16px; transition: 0.3s; text-align: center; }
-        .search-box input:focus { border-color: var(--b-yellow); box-shadow: 0 0 20px rgba(252, 213, 53, 0.3); }
+        .search-box input { width: 100%; max-width: 500px; padding: 15px 25px; border-radius: 50px; border: 1px solid #444; background: var(--b-card); color: #fff; outline: none; text-align: center; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; padding: 20px 8% 60px; }
-        .card { background: var(--b-card); padding: 50px 20px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #333; transition: all 0.4s ease; }
-        .card:hover { background-color: var(--b-yellow) !important; transform: translateY(-10px); box-shadow: 0 0 35px var(--b-yellow); }
-        .card h3 { margin: 0; font-size: 24px; color: #fff; }
-        .card:hover h3 { color: #000; font-weight: 900; }
-        
-        /* জেলার নিচের নোটিশ */
-        .notice { display: block; margin-top: 10px; font-size: 11px; font-weight: bold; color: var(--b-yellow); letter-spacing: 1px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px 8% 60px; }
+        .card { background: var(--b-card); padding: 40px 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #333; transition: 0.4s; }
+        .card:hover { background-color: var(--b-yellow) !important; transform: translateY(-5px); box-shadow: 0 0 25px var(--b-yellow); }
+        .card h3 { margin: 0; font-size: 20px; color: #fff; transition: 0.3s; }
+        .card:hover h3 { color: #000; font-weight: bold; }
+        .notice { display: block; margin-top: 8px; font-size: 10px; font-weight: bold; color: var(--b-yellow); text-transform: uppercase; }
         .card:hover .notice { color: #000; }
 
-        /* হোয়াটসঅ্যাপ পপ-আপ স্টাইল */
-        #waPopup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
-        .popup-content { background: #1E2329; border: 2px solid var(--b-yellow); padding: 30px; border-radius: 20px; max-width: 400px; text-align: center; position: relative; }
-        .popup-content h2 { color: var(--b-yellow); margin-top: 0; }
-        .info-list { text-align: left; background: #000; padding: 15px; border-radius: 10px; margin: 20px 0; border-left: 4px solid var(--b-yellow); }
-        .info-list p { font-size: 14px; margin: 10px 0; line-height: 1.4; }
+        /* পপ-আপ স্টাইল */
+        #waPopup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; }
+        .popup-content { background: #1E2329; border: 2px solid var(--b-yellow); padding: 30px; border-radius: 20px; max-width: 350px; text-align: center; position: relative; }
+        .info-box { text-align: left; background: #000; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid var(--b-yellow); }
+        .info-box p { font-size: 13px; margin: 8px 0; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 25px; cursor: pointer; color: #888; }
-        .btn-go { background: #2ebd85; color: #fff; padding: 15px; border-radius: 10px; text-decoration: none; display: block; font-weight: bold; }
-
-        .support-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; z-index: 2000; cursor: pointer; border: none; font-size: 16px; }
+        
+        .support-float { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 2000; cursor: pointer; border: none; }
+        .wa-trigger { position: fixed; bottom: 100px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; cursor: pointer; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -48,16 +42,14 @@
 <div id="waPopup">
     <div class="popup-content">
         <span class="close-btn" onclick="closePopup()">&times;</span>
-        <i class="fab fa-whatsapp" style="font-size: 50px; color: #2ebd85;"></i>
-        <h2>CUSTOMER CARE</h2>
-        <p style="font-size: 13px; color: #ccc;">মেসেজ করার সময় নিচের ৪টি তথ্য অবশ্যই দিবেন:</p>
-        <div class="info-list">
-            <p>১. পেমেন্ট স্ক্রিনশট (৩৬ টাকা)</p>
-            <p>২. ব্র্যান্ডের নাম ও প্লট আইডি</p>
-            <p>৩. আপনার চারকোনা (Square) লোগো</p>
-            <p>৪. আপনার ওয়েবসাইট বা প্রোফাইল লিংক</p>
+        <h3 style="color: var(--b-yellow); margin-top: 0;">REQUIRED INFO</h3>
+        <div class="info-box">
+            <p>1. Payment Screenshot (৳36)</p>
+            <p>2. Brand Name & Plot ID</p>
+            <p>3. Square Logo Image</p>
+            <p>4. Website/Profile Link</p>
         </div>
-        <a href="https://wa.me/8801576940717" target="_blank" class="btn-go">চ্যাট শুরু করুন</a>
+        <a href="https://wa.me/8801576940717" target="_blank" style="background:#2ebd85; color:#fff; padding:12px; display:block; text-decoration:none; border-radius:10px; font-weight:bold;">START CHAT</a>
     </div>
 </div>
 
@@ -65,44 +57,40 @@
     <a href="https://facebook.com/DigitalFridayHomepage" target="_blank" class="community-btn">
         <i class="fab fa-facebook-square"></i> JOIN COMMUNITY
     </a>
-    <div style="color: var(--b-yellow); font-weight: bold; font-size: 14px;">FRIDAY EXCLUSIVE</div>
+    <div style="color: var(--b-yellow); font-weight: bold; font-size: 14px;">FRIDAY EDITION</div>
 </div>
 
 <div class="hero">
     <h1>DIGITAL FRIDAY HOMEPAGE</h1>
-    <p style="color: #848e9c; font-size: 18px;">The Ultimate Pixel Marketing Legacy</p>
+    <p style="color: #848e9c;">THE PIXEL MARKETING LEGACY</p>
 </div>
 
 <div class="search-container">
     <div class="search-box">
-        <input type="text" id="distSearch" placeholder="আপনার জেলা খুঁজুন..." onkeyup="filterDistricts()">
+        <input type="text" id="distSearch" placeholder="Search Your District..." onkeyup="filterDistricts()">
     </div>
 </div>
 
 <div class="grid" id="districtGrid">
-    <div class="card" onclick="location.href='dhaka.html'">
-        <h3>DHAKA</h3>
-        <span class="notice">LIMITED EDITION FRIDAY</span>
-    </div>
+    <script>
+        const districts = ["Dhaka", "Sirajganj", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Barishal", "Rangpur", "Mymensingh", "Cumilla", "Gazipur", "Narayanganj", "Brahmanbaria", "Noakhali", "Chandpur", "Lakshmipur", "Feni", "Cox's Bazar", "Khagrachhari", "Rangamati", "Bandarban", "Tangail", "Manikganj", "Munshiganj", "Narsingdi", "Faridpur", "Madaripur", "Gopalganj", "Rajbari", "Shariatpur", "Kishoreganj", "Netrokona", "Sherpur", "Jamalpur", "Bogura", "Joypurhat", "Naogaon", "Natore", "Pabna", "Chapai Nawabganj", "Kurigram", "Gaibandha", "Nilphamari", "Dinajpur", "Panchagarh", "Thakurgaon", "Lalmonirhat", "Jashore", "Jhenaidah", "Magura", "Narail", "Kushtia", "Chuadanga", "Meherpur", "Satkhira", "Bagerhat", "Bhola", "Jhalokathi", "Pirojpur", "Borguna", "Patuakhali", "Moulvibazar", "Habiganj", "Sunamganj"];
+        
+        districts.forEach(d => {
+            document.write(`
+                <div class="card" onclick="location.href='${d.toLowerCase().replace(/ /g, '')}.html'">
+                    <h3>${d.toUpperCase()}</h3>
+                    <span class="notice">LIMITED EDITION FRIDAY</span>
+                </div>
+            `);
+        });
+    </script>
+</div>
 
-    <div class="card" onclick="location.href='sirajganj.html'">
-        <h3>SIRAJGANJ</h3>
-        <span class="notice">LIMITED EDITION FRIDAY</span>
-    </div>
-
-    <div class="card" onclick="location.href='chattogram.html'">
-        <h3>CHATTOGRAM</h3>
-        <span class="notice">LIMITED EDITION FRIDAY</span>
-    </div>
-    </div>
+<div class="wa-trigger" onclick="openPopup()"><i class="fab fa-whatsapp"></i></div>
 
 <button class="support-float" onclick="location.href='support.html'">
     <i class="fas fa-headset"></i> CUSTOMER SERVICE
 </button>
-
-<div onclick="openPopup()" style="position: fixed; bottom: 100px; right: 30px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-    <i class="fab fa-whatsapp"></i>
-</div>
 
 <script>
     function filterDistricts() {
@@ -113,7 +101,6 @@
             cards[i].style.display = h3.innerHTML.toUpperCase().includes(input) ? "" : "none";
         }
     }
-
     function openPopup() { document.getElementById('waPopup').style.display = 'flex'; }
     function closePopup() { document.getElementById('waPopup').style.display = 'none'; }
 </script>
