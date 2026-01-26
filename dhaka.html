@@ -2,162 +2,201 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DISTRICT MAP | THE DISTRICT LEGACY</title> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; --wa-green: #25D366; }
-        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
+        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow: hidden; touch-action: none; }
         
-        /* Header & Info */
-        .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 18px; font-weight: 900; }
-        .status-bar { background: #161a1e; padding: 10px; display: flex; justify-content: space-around; font-size: 12px; font-weight: bold; border-bottom: 2px solid #333; }
+        /* Header & Top Nav */
+        .header { background: #000; color: var(--b-yellow); padding: 10px; font-size: 16px; font-weight: 900; }
+        .top-nav { background: var(--b-card); padding: 8px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; position: relative; }
         
-        /* Navigation */
-        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 1%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
-        .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
-        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 55px; outline: none; }
-        .search-box button { background: var(--b-yellow); border: none; padding: 0 10px; cursor: pointer; color: #000; }
+        .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; }
+        .search-box input { background: transparent; border: none; padding: 6px; color: #fff; width: 50px; outline: none; }
+        .search-box button { background: var(--b-yellow); border: none; padding: 0 10px; color: #000; cursor: pointer; }
 
-        .nav-btn { display: flex; align-items: center; gap: 5px; background: #161a1e; padding: 8px 10px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 10px; font-weight: bold; }
-        .buy-btn { background: var(--b-yellow); color: #000; padding: 8px 15px; font-size: 12px; border-radius: 8px; text-decoration: none; font-weight: 900; }
+        .dl-btn { background: #3498db; color: #fff; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 11px; font-weight: bold; border: none; cursor: pointer; }
 
-        /* Canvas - 35 Columns & 55px Blocks */
-        .canvas-container { 
-            width: 98%; 
-            max-width: 2000px; 
-            margin: 15px auto; 
-            background: #fff; 
-            position: relative; 
-            border: 2px solid #555; 
+        /* Zoom & Pan Area */
+        .map-viewport { 
+            width: 100vw; 
+            height: calc(100vh - 250px); /* ম্যাপের জন্য নির্দিষ্ট জায়গা */
             overflow: hidden; 
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            position: relative; 
+            background: #222; 
+            cursor: grab;
         }
-        canvas { width: 100% !important; height: auto !important; display: block; image-rendering: pixelated; cursor: crosshair; }
+        .map-viewport:active { cursor: grabbing; }
+
+        #mapContainer { 
+            position: absolute; 
+            transform-origin: 0 0; 
+            transition: transform 0.1s ease-out;
+        }
         
-        /* Download Button */
-        .download-section { margin-bottom: 20px; }
-        .dl-btn { background: #3498db; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        canvas { background: #fff; display: block; image-rendering: pixelated; }
+        #plotMarker { position: absolute; border: 2px solid #ff0000; pointer-events: none; display: none; background: rgba(255,0,0,0.2); z-index: 10; }
 
-        /* Plot Marker & Popup */
-        #plotMarker { position: absolute; border: 2px solid #ff0000; display: none; pointer-events: none; z-index: 5; background: rgba(255, 0, 0, 0.2); }
-        .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #1e2329; border: 2px solid var(--b-yellow); padding: 20px; border-radius: 10px; z-index: 3000; display: none; width: 80%; max-width: 300px; }
-        .popup h3 { color: var(--b-yellow); margin-top: 0; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2500; display: none; }
+        /* Creator Support Section */
+        .support-box { background: var(--b-card); padding: 15px; border-top: 2px solid #333; position: fixed; bottom: 0; width: 100%; box-sizing: border-box; }
+        .support-box h4 { color: var(--b-yellow); margin: 0 0 10px 0; font-size: 16px; }
+        .support-list { text-align: left; display: inline-block; font-size: 11px; color: #ccc; margin-bottom: 10px; }
+        .support-list b { color: #fff; }
 
-        /* WhatsApp Fixed */
-        .support-float { position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px; background: var(--wa-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 2000; border: 2px solid #fff; text-decoration: none; }
+        .support-footer { display: flex; justify-content: center; gap: 10px; align-items: center; }
+        .wa-btn { background: var(--wa-green); color: #fff; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 12px; }
+        .footer-link { color: #aaa; text-decoration: none; font-size: 11px; }
+
     </style>
 </head>
 <body>
 
 <div class="header">DISTRICT PLOT MAP</div> 
 
-<div class="status-bar">
-    <div>TOTAL: 2400</div>
-    <div style="color: var(--b-yellow);">SOLD: <span id="soldCount">0</span></div>
-    <div style="color: #2ebd85;">AVAIL: <span id="availCount">2400</span></div>
-</div>
-
 <div class="top-nav">
     <div class="search-box">
         <input type="number" id="plotInput" placeholder="ID">
         <button onclick="locatePlot()"><i class="fas fa-search"></i></button>
     </div>
-    <div style="display:flex; gap:8px;">
-        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> HOME</a>
-        <a href="order.html" class="buy-btn">BUY</a>
+    <button class="dl-btn" onclick="downloadMap()"><i class="fas fa-download"></i> DOWNLOAD</button>
+    <a href="index.html" class="footer-link"><i class="fas fa-home"></i> HOME</a>
+</div>
+
+<div class="map-viewport" id="viewport">
+    <div id="mapContainer">
+        <div id="plotMarker"></div>
+        <canvas id="mapCanvas"></canvas>
     </div>
 </div>
 
-<div class="canvas-container" id="cWrapper">
-    <div id="plotMarker"></div>
-    <canvas id="mapCanvas"></canvas>
+<div class="support-box">
+    <h4>Creator Support</h4>
+    <div class="support-list">
+        1. <b>Payment Proof:</b> Screenshot of ৳24.<br>
+        2. <b>Plot Details:</b> Brand Name & Plot ID.<br>
+        3. <b>Brand Logo:</b> Send your square logo.<br>
+        4. <b>Official Link:</b> Your Website/Social link.
+    </div>
+    <div class="support-footer">
+        <a href="https://wa.me/8801756206213" target="_blank" class="wa-btn"><i class="fab fa-whatsapp"></i> CHAT ON WHATSAPP</a>
+        <span style="color:#555">|</span>
+        <a href="#" class="footer-link" onclick="resetMap()">BACK TO MAP</a>
+    </div>
 </div>
-
-<div class="download-section">
-    <button class="dl-btn" onclick="downloadMap()"><i class="fas fa-download"></i> DOWNLOAD MAP IMAGE</button>
-</div>
-
-<div class="overlay" id="overlay" onclick="closePopup()"></div>
-<div class="popup" id="plotPopup">
-    <h3 id="popTitle">Plot #0</h3>
-    <p>Size: 55x55 Pixels</p>
-    <p>Status: <span style="color:#2ebd85">Available</span></p>
-    <button onclick="closePopup()" style="background:var(--b-yellow); border:none; padding:8px 15px; border-radius:5px; font-weight:bold;">Close</button>
-</div>
-
-<a href="https://wa.me/8801756206213" target="_blank" class="support-float">
-    <i class="fab fa-whatsapp" style="color:#fff; font-size:28px;"></i>
-</a>
 
 <script>
-    const totalPlots = 2400;
-    const cols = 35; 
-    const bS = 55; // ৫৫x৫৫ ব্লক সাইজ
+    const totalPlots = 2401; // ৪৯x৪৯ = ২৪০১টি প্লট
+    const cols = 49; 
+    const bS = 50; 
     const canvas = document.getElementById('mapCanvas');
     const ctx = canvas.getContext('2d');
+    const container = document.getElementById('mapContainer');
+    const viewport = document.getElementById('viewport');
     const marker = document.getElementById('plotMarker');
-    const wrapper = document.getElementById('cWrapper');
 
     canvas.width = cols * bS; 
-    canvas.height = Math.ceil(totalPlots / cols) * bS; 
+    canvas.height = cols * bS; 
+
+    // প্যান এবং জুম ভেরিয়েবল
+    let scale = 0.5;
+    let posX = 20;
+    let posY = 20;
 
     function drawMap() {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = "#e0e0e0";
+        ctx.lineWidth = 1;
+        ctx.font = "10px Arial";
+        ctx.textAlign = "center";
+
         for (let i = 1; i <= totalPlots; i++) {
             const r = Math.floor((i - 1) / cols);
             const c = (i - 1) % cols;
             const x = c * bS;
             const y = r * bS;
-            ctx.strokeStyle = "#e0e0e0";
             ctx.strokeRect(x, y, bS, bS);
-            ctx.fillStyle = "#aaaaaa";
-            ctx.font = "11px Arial";
-            ctx.textAlign = "center";
+            ctx.fillStyle = "#999";
             ctx.fillText(i, x + bS/2, y + bS/2 + 4);
         }
     }
 
+    // প্যানিং ও জুম লজিক (মাউস এবং টাচ)
+    let isDragging = false;
+    let startX, startY;
+
+    viewport.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX - posX; startY = e.clientY - posY; });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        posX = e.clientX - startX;
+        posY = e.clientY - startY;
+        updateTransform();
+    });
+
+    // মোবাইল টাচ সাপোর্ট
+    viewport.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            isDragging = true;
+            startX = e.touches[0].clientX - posX;
+            startY = e.touches[0].clientY - posY;
+        }
+    });
+    viewport.addEventListener('touchmove', (e) => {
+        if (!isDragging || e.touches.length !== 1) return;
+        posX = e.touches[0].clientX - startX;
+        posY = e.touches[0].clientY - startY;
+        updateTransform();
+    });
+    viewport.addEventListener('touchend', () => { isDragging = false; });
+
+    // জুম লজিক
+    viewport.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const zoomSpeed = 0.001;
+        scale -= e.deltaY * zoomSpeed;
+        scale = Math.min(Math.max(0.1, scale), 2);
+        updateTransform();
+    }, { passive: false });
+
+    function updateTransform() {
+        container.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    }
+
     function locatePlot() {
-        const plotID = parseInt(document.getElementById('plotInput').value);
-        if (isNaN(plotID) || plotID < 1 || plotID > totalPlots) return;
+        const id = parseInt(document.getElementById('plotInput').value);
+        if (isNaN(id) || id < 1 || id > totalPlots) return;
         
-        const r = Math.floor((plotID - 1) / cols);
-        const c = (plotID - 1) % cols;
-        const yPos = r * bS;
+        const r = Math.floor((id - 1) / cols);
+        const c = (id - 1) % cols;
+        const targetX = c * bS;
+        const targetY = r * bS;
 
         marker.style.display = 'block';
-        marker.style.width = (100 / cols) + "%";
-        marker.style.height = marker.offsetWidth + "px";
-        marker.style.left = (c * (100 / cols)) + "%";
-        marker.style.top = (r * (bS / canvas.height) * 100) + "%";
+        marker.style.width = bS + "px";
+        marker.style.height = bS + "px";
+        marker.style.left = targetX + "px";
+        marker.style.top = targetY + "px";
 
-        window.scrollTo({
-            top: wrapper.offsetTop + (yPos * (wrapper.offsetWidth / canvas.width)) - (window.innerHeight / 3),
-            behavior: 'smooth'
-        });
-
-        // Show Popup
-        document.getElementById('popTitle').innerText = "Plot #" + plotID;
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('plotPopup').style.display = 'block';
+        // জুম করে ওই জায়গায় নিয়ে আসা
+        scale = 1.2;
+        posX = (viewport.offsetWidth / 2) - (targetX * scale) - (bS * scale / 2);
+        posY = (viewport.offsetHeight / 2) - (targetY * scale) - (bS * scale / 2);
+        updateTransform();
     }
 
-    function closePopup() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('plotPopup').style.display = 'none';
-    }
+    function resetMap() { scale = 0.5; posX = 20; posY = 20; updateTransform(); }
 
     function downloadMap() {
         const link = document.createElement('a');
-        link.download = 'District-Map.png';
+        link.download = 'District-Plot-Map.png';
         link.href = canvas.toDataURL();
         link.click();
     }
 
-    window.onload = drawMap;
+    window.onload = () => { drawMap(); updateTransform(); };
 </script>
 
 </body>
