@@ -1,82 +1,103 @@
-// ১. প্রাথমিক সেটআপ
+// ১. কনফিগারেশন সেটআপ (২৪০০ প্লট অনুযায়ী)
+const totalPlots = 2400;
+const cols = 60;   // ৬০টি কলাম
+const bS = 50;     // আপনার চাহিদা অনুযায়ী ৫০x৫০ পিক্সেল ব্লক সাইজ
 const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');
 const marker = document.getElementById('plotMarker');
 const wrapper = document.getElementById('cWrapper');
 
-// ২. প্লট এবং গ্রিড হিসেব (৭০০০ প্লট)
-const totalPlots = 7000;
-const cols = 25; 
-const bS = 40; // প্রতিটি ব্লকের সাইজ ৪০ পিক্সেল
+// ক্যানভাস সাইজ নির্ধারণ (৬০ কলাম * ৫০ পিক্সেল = ৩০০০px প্রস্থ)
+// (২৪০০ প্লট / ৬০ কলাম = ৪০টি সারি। ৪০ সারি * ৫০ পিক্সেল = ২০০০px উচ্চতা)
+canvas.width = cols * bS; 
+canvas.height = Math.ceil(totalPlots / cols) * bS; 
 
-// ক্যানভাস সাইজ নির্ধারণ (৭০০০ / ২৫ = ২৮০ সারি)
-canvas.width = cols * bS; // ১০০০ পিক্সেল
-canvas.height = Math.ceil(totalPlots / cols) * bS; // ১১২০০ পিক্সেল
+// ২. সোল্ড প্লট ডাটাবেজ (ভবিষ্যতে এখানে আইডি ও লোগো যোগ করবেন)
+const soldPlots = {}; 
 
 // ৩. ম্যাপ গ্রিড ড্রয়িং ফাংশন
 function drawMap() {
+    // ক্যানভাস পরিষ্কার করে সাদা ব্যাকগ্রাউন্ড দেওয়া
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    ctx.strokeStyle = "#eeeeee"; // হালকা ধূসর রঙ
-    ctx.lineWidth = 1;
+    let soldCount = 0;
 
-    // লম্বালম্বি দাগ (Vertical lines)
-    for (let x = 0; x <= canvas.width; x += bS) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
+    for (let i = 1; i <= totalPlots; i++) {
+        const r = Math.floor((i - 1) / cols);
+        const c = (i - 1) % cols;
+        const x = c * bS;
+        const y = r * bS;
+
+        if (soldPlots[i]) {
+            // যদি প্লটটি বিক্রি হয়ে থাকে
+            const img = new Image();
+            img.src = soldPlots[i].logo;
+            ctx.drawImage(img, x, y, bS, bS);
+            soldCount++;
+        } else {
+            // খালি প্লট ড্রয়িং
+            ctx.strokeStyle = "#dddddd"; // হালকা ধূসর বর্ডার
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, bS, bS);
+            
+            // প্লট নাম্বার (খুব ছোট করে)
+            ctx.fillStyle = "#bbbbbb";
+            ctx.font = "10px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(i, x + bS/2, y + bS/2 + 4);
+        }
     }
 
-    // আড়াআড়ি দাগ (Horizontal lines)
-    for (let y = 0; y <= canvas.height; y += bS) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
+    // স্ট্যাটাস বার আপডেট করা
+    if(document.getElementById('soldCount')) document.getElementById('soldCount').innerText = soldCount;
+    if(document.getElementById('availCount')) document.getElementById('availCount').innerText = totalPlots - soldCount;
 }
 
-// ম্যাপটি লোড হওয়ার সাথে সাথে ড্র হবে
-drawMap();
+// ৪. সার্চ এবং হাইলাইট লজিক (স্মার্ট ফোকাস সহ)
+window.findAndMarkPlot = function(id) {
+    const plotID = parseInt(id);
 
-// ৪. সার্চ এবং হাইলাইট লজিক
-function locatePlot() {
-    const plotInput = document.getElementById('plotInput');
-    const id = parseInt(plotInput.value);
-
-    // ভ্যালিডেশন চেক
-    if (isNaN(id) || id < 1 || id > totalPlots) {
-        alert("অনুগ্রহ করে ১ থেকে " + totalPlots + " এর মধ্যে একটি সঠিক আইডি দিন।");
+    // ভ্যালিডেশন
+    if (isNaN(plotID) || plotID < 1 || plotID > totalPlots) {
+        alert("Please enter ID between 1 to " + totalPlots);
         return;
     }
 
-    // সারি (Row) এবং কলাম (Column) বের করার সঠিক গাণিতিক হিসেব
-    const r = Math.floor((id - 1) / cols);
-    const c = (id - 1) % cols;
+    // পজিশন ক্যালকুলেশন
+    const r = Math.floor((plotID - 1) / cols);
+    const c = (plotID - 1) % cols;
+    const x = c * bS;
+    const y = r * bS;
 
-    // মার্কার পজিশন সেট করা (রেসপন্সিভ পার্সেন্টেজ ব্যবহার করে)
+    // ৫. মার্কার পজিশন সেট করা (৫০x৫০ সাইজ অনুযায়ী)
     if (marker) {
         marker.style.display = 'block';
-        marker.style.width = (100 / cols) + "%"; // কলাম অনুযায়ী প্রস্থ
-        marker.style.aspectRatio = "1/1";
-        marker.style.left = ((c / cols) * 100) + "%";
+        marker.style.width = bS + "px";
+        marker.style.height = bS + "px";
         
-        // টপ পজিশন নির্ভুল করতে ক্যানভাস হাইটের সাথে ক্যালকুলেশন
-        const topPos = (r * bS) / canvas.height * 100;
-        marker.style.top = topPos + "%";
+        // ক্যানভাস যদি রেসপন্সিভ হয় তার জন্য পজিশন পার্সেন্টেজে রূপান্তর
+        const leftPercent = (x / canvas.width) * 100;
+        const topPercent = (y / canvas.height) * 100;
+        
+        marker.style.left = leftPercent + "%";
+        marker.style.top = topPercent + "%";
     }
 
-    // ৫. অটোমেটিক স্ক্রল লজিক
+    // ৬. অটোমেটিক স্ক্রল লজিক (ইউজারকে প্লটের কাছে নিয়ে যাবে)
     if (wrapper) {
-        // ম্যাপের কন্টেইনারের প্রস্থ অনুযায়ী স্ক্রল পজিশন ঠিক করা
+        // ম্যাপের বর্তমান প্রদর্শিত সাইজ অনুযায়ী স্ক্রল রেশিও বের করা
         const ratio = wrapper.offsetWidth / canvas.width;
-        const scrollAmount = (r * bS) * ratio;
+        const scrollTargetX = (x * ratio) - (wrapper.offsetWidth / 2) + (bS * ratio / 2);
+        const scrollTargetY = (y * ratio) - (wrapper.offsetHeight / 2) + (bS * ratio / 2);
 
-        window.scrollTo({
-            top: wrapper.offsetTop + scrollAmount - 200, // ২০০ পিক্সেল উপরে থাকবে যাতে ক্লিয়ার দেখা যায়
+        wrapper.scrollTo({
+            left: scrollTargetX,
+            top: scrollTargetY,
             behavior: 'smooth'
         });
     }
-}
+};
+
+// ম্যাপ লোড করা
+window.onload = drawMap;
