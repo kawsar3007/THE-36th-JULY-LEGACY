@@ -2,67 +2,92 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DISTRICT LEGACY MAP</title> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; --wa-green: #25D366; }
-        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; overflow: hidden; touch-action: none; }
+        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
         
-        /* Header */
-        .top-nav { background: var(--b-card); padding: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); }
-        .search-box { display: flex; background: #000; border: 1px solid #444; border-radius: 5px; }
+        /* District Name Header */
+        .district-header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 22px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        
+        /* Status Bar */
+        .status-bar { background: #161a1e; padding: 10px; display: flex; justify-content: space-around; font-size: 13px; font-weight: bold; border-bottom: 2px solid #333; }
+        
+        /* Top Navigation */
+        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 3%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; gap: 10px; }
+        
+        .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
         .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 60px; outline: none; }
-        .search-box button { background: var(--b-yellow); border: none; padding: 0 12px; color: #000; cursor: pointer; }
-        .dl-btn { background: #3498db; color: #fff; padding: 8px 15px; border-radius: 5px; font-weight: bold; border: none; cursor: pointer; font-size: 12px; }
+        .search-box button { background: var(--b-yellow); border: none; padding: 0 12px; cursor: pointer; color: #000; }
 
-        /* Square Canvas Frame */
-        .map-frame { 
-            width: 95vw; 
-            height: 95vw; 
-            max-width: 500px; 
-            max-height: 500px; 
+        .dl-btn { background: #3498db; color: #fff; padding: 8px 12px; border-radius: 6px; font-weight: bold; border: none; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+        .buy-btn { background: var(--b-yellow); color: #000; padding: 8px 18px; font-size: 14px; border-radius: 6px; text-decoration: none; font-weight: 900; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(252, 213, 53, 0); } 100% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0); } }
+
+        /* Canvas Container - লম্বা ম্যাপ লজিক */
+        .canvas-container { 
+            width: 95%;           
+            max-width: 600px;     
             margin: 20px auto; 
-            border: 4px solid #333; 
-            background: #222; 
+            background: #fff; 
             position: relative; 
-            overflow: hidden; 
-            border-radius: 10px;
+            border: 3px solid #444; 
+            border-radius: 5px;
+            overflow: hidden; /* ডানে বামে নড়াচড়া হবে না */
         }
-        #mapContainer { position: absolute; transform-origin: 0 0; cursor: grab; }
-        #mapContainer:active { cursor: grabbing; }
-        canvas { background: #fff; display: block; image-rendering: pixelated; }
-        #plotMarker { position: absolute; border: 3px solid #ff0000; pointer-events: none; display: none; background: rgba(255,0,0,0.3); z-index: 10; box-sizing: border-box; }
+        canvas { width: 100% !important; height: auto !important; display: block; image-rendering: pixelated; }
+        
+        #plotMarker { 
+            position: absolute; 
+            border: 4px solid #ff0000; 
+            box-shadow: 0 0 15px #ff0000; 
+            display: none; 
+            pointer-events: none; 
+            z-index: 5; 
+            background: rgba(255, 0, 0, 0.2);
+            box-sizing: border-box;
+        }
 
         /* Support Button */
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: var(--wa-green); padding: 10px 20px; border-radius: 50px; display: flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.4); cursor: pointer; border: 2px solid #fff; z-index: 1000; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: var(--wa-green); padding: 12px 20px; border-radius: 50px; display: flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.4); border: 2px solid #fff; z-index: 1000; cursor: pointer; }
 
         /* Support Dashboard Overlay */
-        .dashboard { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; padding: 20px; box-sizing: border-box; }
+        .dashboard { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; padding: 20px; box-sizing: border-box; }
         .db-card { background: var(--b-card); padding: 25px; border-radius: 15px; border: 2px solid var(--b-yellow); width: 100%; max-width: 350px; text-align: left; }
-        .db-card h2 { color: var(--b-yellow); margin-top: 0; text-align: center; }
-        .db-list { list-style: none; padding: 0; font-size: 14px; line-height: 2; color: #ccc; }
+        .db-list { list-style: none; padding: 0; font-size: 14px; line-height: 1.8; color: #ccc; margin: 15px 0; }
         .db-list b { color: #fff; }
-        .db-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .db-btns { display: flex; flex-direction: column; gap: 10px; }
         .contact-btn { background: var(--wa-green); color: #fff; padding: 12px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: bold; }
-        .back-btn { background: #444; color: #fff; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
+        .back-btn { background: #444; color: #fff; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; }
     </style>
 </head>
 <body>
+
+<div class="district-header">DHAKA DISTRICT</div> 
+
+<div class="status-bar">
+    <div>TOTAL: 2400</div>
+    <div style="color: var(--b-yellow);">SOLD: <span id="soldCount">0</span></div>
+    <div style="color: #2ebd85;">AVAIL: <span id="availCount">2400</span></div>
+</div>
 
 <div class="top-nav">
     <div class="search-box">
         <input type="number" id="plotInput" placeholder="ID">
         <button onclick="locatePlot()"><i class="fas fa-search"></i></button>
     </div>
-    <button class="dl-btn" onclick="downloadMap()"><i class="fas fa-download"></i> MAP IMAGE</button>
+    
+    <button class="dl-btn" onclick="downloadMap()"><i class="fas fa-download"></i> SAVE</button>
+    
+    <a href="order.html" class="buy-btn">BUY</a>
 </div>
 
-<div class="map-frame" id="viewport">
-    <div id="mapContainer">
-        <div id="plotMarker"></div>
-        <canvas id="mapCanvas"></canvas>
-    </div>
+<div class="canvas-container" id="cWrapper">
+    <div id="plotMarker"></div>
+    <canvas id="mapCanvas"></canvas>
 </div>
 
 <div class="wa-float" onclick="openDashboard()">
@@ -71,7 +96,7 @@
 
 <div class="dashboard" id="dbOverlay">
     <div class="db-card">
-        <h2>Creator Support</h2>
+        <h2 style="color:var(--b-yellow); margin-top:0; text-align:center;">Creator Support</h2>
         <ul class="db-list">
             <li>1. <b>Payment Proof:</b> Screenshot of ৳24.</li>
             <li>2. <b>Plot Details:</b> Brand Name & Plot ID.</li>
@@ -79,7 +104,7 @@
             <li>4. <b>Official Link:</b> Website/Social link.</li>
         </ul>
         <div class="db-btns">
-            <a href="https://wa.me/8801756206213" target="_blank" class="contact-btn">CONTACT CUSTOMER SUPPORT</a>
+            <a href="https://wa.me/8801756206213" target="_blank" class="contact-btn">CONTACT SUPPORT</a>
             <div class="back-btn" onclick="closeDashboard()">BACK TO MAP</div>
         </div>
     </div>
@@ -87,99 +112,67 @@
 
 <script>
     const totalPlots = 2400;
-    const cols = 60; // ৬০ কলাম
-    const bS = 60; // ৬০ পিক্সেল সাইজ
+    const cols = 10;      // ১০টি কলামে ম্যাপটি লম্বা হবে
+    const bS = 60;        // আপনি যেমনটি চেয়েছেন ৬০x৬০ সাইজ
     const canvas = document.getElementById('mapCanvas');
     const ctx = canvas.getContext('2d');
-    const container = document.getElementById('mapContainer');
-    const viewport = document.getElementById('viewport');
     const marker = document.getElementById('plotMarker');
+    const wrapper = document.getElementById('cWrapper');
 
     canvas.width = cols * bS; 
-    canvas.height = (totalPlots / cols) * bS; // ৪০ সারি
-
-    let scale = 0.2;
-    let posX = 0, posY = 0;
+    canvas.height = Math.ceil(totalPlots / cols) * bS; 
 
     function drawMap() {
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = "#ddd";
-        ctx.font = "14px Arial";
-        ctx.textAlign = "center";
         
         for (let i = 1; i <= totalPlots; i++) {
             const r = Math.floor((i - 1) / cols);
             const c = (i - 1) % cols;
             const x = c * bS;
             const y = r * bS;
+
+            ctx.strokeStyle = "#dddddd";
             ctx.strokeRect(x, y, bS, bS);
+            
             ctx.fillStyle = "#888";
-            ctx.fillText(i, x + bS/2, y + bS/2 + 6);
+            ctx.font = "bold 16px Arial"; 
+            ctx.textAlign = "center";
+            ctx.fillText(i, x + bS/2, y + bS/2 + 7);
         }
-    }
-
-    // প্যান এবং ড্র্যাগ লজিক
-    let isDragging = false;
-    let startX, startY;
-
-    function handleStart(e) {
-        isDragging = true;
-        const touch = e.touches ? e.touches[0] : e;
-        startX = touch.clientX - posX;
-        startY = touch.clientY - posY;
-    }
-    function handleMove(e) {
-        if (!isDragging) return;
-        const touch = e.touches ? e.touches[0] : e;
-        posX = touch.clientX - startX;
-        posY = touch.clientY - startY;
-        updateTransform();
-    }
-    function handleEnd() { isDragging = false; }
-
-    viewport.addEventListener('mousedown', handleStart);
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('mouseup', handleEnd);
-    viewport.addEventListener('touchstart', handleStart);
-    viewport.addEventListener('touchmove', handleMove);
-    viewport.addEventListener('touchend', handleEnd);
-
-    // জুম লজিক
-    viewport.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        scale -= e.deltaY * 0.001;
-        scale = Math.min(Math.max(0.05, scale), 1.5);
-        updateTransform();
-    }, { passive: false });
-
-    function updateTransform() {
-        container.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
     }
 
     function locatePlot() {
         const id = parseInt(document.getElementById('plotInput').value);
-        if (id < 1 || id > 2400) return;
-        const r = Math.floor((id-1)/cols), c = (id-1)%cols;
-        const tx = c * bS, ty = r * bS;
+        if (isNaN(id) || id < 1 || id > 2400) { alert("ID 1-2400"); return; }
+
+        const r = Math.floor((id - 1) / cols);
+        const c = (id - 1) % cols;
+        const yPos = r * bS;
+
         marker.style.display = 'block';
-        marker.style.width = bS + "px"; marker.style.height = bS + "px";
-        marker.style.left = tx + "px"; marker.style.top = ty + "px";
-        scale = 1;
-        posX = (viewport.offsetWidth/2) - (tx * scale) - (bS/2);
-        posY = (viewport.offsetHeight/2) - (ty * scale) - (bS/2);
-        updateTransform();
+        marker.style.width = (100 / cols) + "%";
+        marker.style.height = marker.offsetWidth + "px";
+        marker.style.left = (c * (100 / cols)) + "%";
+        marker.style.top = (yPos / canvas.height * 100) + "%";
+
+        window.scrollTo({
+            top: wrapper.offsetTop + (yPos * (wrapper.offsetWidth / canvas.width)) - (window.innerHeight / 2.5),
+            behavior: 'smooth'
+        });
     }
 
-    // ড্যাশবোর্ড লজিক
     function openDashboard() { document.getElementById('dbOverlay').style.display = 'flex'; }
     function closeDashboard() { document.getElementById('dbOverlay').style.display = 'none'; }
+    
     function downloadMap() {
         const link = document.createElement('a');
-        link.download = 'map.png'; link.href = canvas.toDataURL(); link.click();
+        link.download = 'District-Map.png';
+        link.href = canvas.toDataURL();
+        link.click();
     }
 
-    window.onload = () => { drawMap(); updateTransform(); };
+    window.onload = drawMap;
 </script>
 
 </body>
