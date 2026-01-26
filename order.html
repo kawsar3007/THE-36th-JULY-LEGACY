@@ -2,80 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RESERVE YOUR PLOT</title>
+    <title>RESERVE YOUR PLOT | DIGITAL FRIDAY</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .order-box { background: #1E2329; padding: 40px; border-radius: 20px; border: 2px solid #FCD535; text-align: center; width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { background: #0B0E11; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .order-box { background: #1E2329; padding: 40px; border-radius: 20px; border: 2px solid #FCD535; text-align: center; width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10; }
         input { width: 100%; padding: 15px; margin: 12px 0; background: #0b0e11; border: 1px solid #444; color: #fff; border-radius: 10px; box-sizing: border-box; font-size: 16px; outline: none; }
         input:focus { border-color: #FCD535; }
         .btn { width: 100%; padding: 18px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 10px; font-size: 18px; margin-top: 15px; transition: 0.3s; }
         .btn:hover { background: #fff; transform: scale(1.02); }
-        .back-link { display: inline-block; margin-top: 15px; color: #848e9c; text-decoration: none; font-size: 14px; font-weight: bold; }
-        .back-link:hover { color: #FCD535; }
+        
+        .nav-footer { display: flex; justify-content: center; gap: 20px; margin-top: 25px; }
+        .nav-footer a { color: #848e9c; text-decoration: none; font-size: 13px; font-weight: bold; }
+        .nav-footer a:hover { color: #FCD535; }
+
         #celeb-overlay { display: none; position: fixed; inset: 0; background: #FCD535; color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
+        .celeb-btn-group { display: flex; gap: 15px; margin-top: 30px; }
+        .celeb-btn { background: #000; color: #fff; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="order-box" id="formBox">
-    <h2 style="color:#FCD535; margin-top: 0; font-size: 28px;">RESERVE PLOT</h2>
+    <h2 style="color:#FCD535; margin: 0 0 20px 0;">RESERVE PLOT</h2>
     <input type="text" id="brandName" placeholder="Your Brand Name">
-    <input type="number" id="plotID" placeholder="Plot ID (1-7000)">
+    <input type="number" id="plotID" placeholder="Plot ID (1-2400)">
     <button class="btn" onclick="handleOrder()">SUBMIT REQUEST</button>
-    <a href="javascript:history.back()" class="back-link">← BACK TO MAP</a>
+    
+    <div class="nav-footer">
+        <a href="javascript:history.back()"><i class="fas fa-map"></i> BACK TO MAP</a>
+        <a href="index.html"><i class="fas fa-home"></i> ALL DISTRICTS</a>
+    </div>
 </div>
 
 <div id="celeb-overlay">
-    <h1 id="congratsName" style="font-size: 40px; margin: 0; line-height: 1.2;">CONGRATULATIONS!</h1>
-    <p style="font-size: 20px; font-weight: bold; margin-top: 15px;">Your request has been successfully received.</p>
-    <p style="font-size: 16px;">Redirecting back to map in 5s...</p>
-    <p style="background: #000; color: #fff; padding: 12px 25px; border-radius: 50px; margin-top: 25px; font-weight: bold; font-size: 14px;">Contact Support Team Immediately!</p>
+    <h1 id="congratsName">CONGRATULATIONS!</h1>
+    <p style="font-size: 20px; font-weight: bold; margin-top: 10px;">Your request has been successfully received.</p>
+    
+    <div class="celeb-btn-group">
+        <a href="support.html" class="celeb-btn">CONTACT SUPPORT</a>
+        <a href="javascript:history.back()" class="celeb-btn" style="background: transparent; border: 2px solid #000; color: #000;">BACK TO MAP</a>
+    </div>
+    <a href="index.html" style="margin-top: 25px; color: #000; font-weight: bold; text-decoration: underline;">BACK TO HOME PAGE</a>
 </div>
 
 <script>
     function handleOrder() {
         const name = document.getElementById('brandName').value;
         const id = document.getElementById('plotID').value;
-
-        if(!name || !id || id < 1 || id > 7000) {
-            alert("Please provide correct info and ID between 1-7000.");
-            return;
-        }
+        if(!name || !id || id < 1 || id > 2400) { alert("Please provide valid info."); return; }
 
         document.getElementById('formBox').style.display = 'none';
         document.getElementById('celeb-overlay').style.display = 'flex';
-        document.getElementById('congratsName').innerText = "CONGRATS, " + name.toUpperCase() + "!";
+        document.getElementById('congratsName').innerText = "WELL DONE, " + name.toUpperCase() + "!";
 
         var duration = 5 * 1000;
         var end = Date.now() + duration;
-
         (function frame() {
-            // বাম সাইড থেকে রঙিন কনফেটি
-            confetti({
-                particleCount: 20,
-                angle: 60,
-                spread: 80,
-                origin: { x: 0, y: 0.6 },
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#FCD535', '#ffffff', '#ff00ff']
-            });
-            // ডান সাইড থেকে রঙিন কনফেটি
-            confetti({
-                particleCount: 20,
-                angle: 120,
-                spread: 80,
-                origin: { x: 1, y: 0.6 },
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#FCD535', '#ffffff', '#ff00ff']
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
+            confetti({ particleCount: 20, angle: 60, spread: 80, origin: { x: 0, y: 0.6 }, colors: ['#ff0000', '#00ff00', '#0000ff', '#FCD535', '#ff00ff'] });
+            confetti({ particleCount: 20, angle: 120, spread: 80, origin: { x: 1, y: 0.6 }, colors: ['#ff0000', '#00ff00', '#0000ff', '#FCD535', '#ff00ff'] });
+            if (Date.now() < end) { requestAnimationFrame(frame); }
         }());
-
-        setTimeout(() => {
-            history.back(); // ৫ সেকেন্ড পর আগের ম্যাপ পেজে ফিরে যাবে
-        }, 5000);
     }
 </script>
 </body>
