@@ -2,165 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CREATOR SUPPORT | DIGITAL FRIDAY</title>
+    <title>SUPPORT DASHBOARD | DIGITAL FRIDAY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --b-bg: #0B0E11;
-            --b-card: #1E2329;
-            --b-yellow: #FCD535;
-            --b-text: #EAECEF;
-        }
-
-        body { 
-            background: var(--b-bg); 
-            color: var(--b-text); 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 20px;
-        }
-
-        .support-card { 
-            background: var(--b-card); 
-            border: 2px solid var(--b-yellow); 
-            padding: 40px; 
-            border-radius: 25px; 
-            width: 100%;
-            max-width: 420px; 
-            text-align: center; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.7); 
-        }
-
-        .header-icon { 
-            font-size: 60px; 
-            color: var(--b-yellow); 
-            margin-bottom: 20px; 
-            filter: drop-shadow(0 0 10px rgba(252, 213, 53, 0.4));
-        }
-
-        h2 { 
-            margin: 0; 
-            font-size: 28px; 
-            letter-spacing: 1px; 
-            text-transform: uppercase;
-            color: var(--b-yellow);
-        }
-
-        .subtitle {
-            color: #848e9c;
-            font-size: 14px;
-            margin-top: 8px;
-            margin-bottom: 25px;
-        }
-
-        .info-list { 
-            background: #0b0e11; 
-            padding: 25px; 
-            border-radius: 15px; 
-            text-align: left; 
-            margin-bottom: 30px; 
-            border-left: 5px solid var(--b-yellow); 
-        }
-
-        .info-item {
-            margin-bottom: 15px;
-        }
-
-        .info-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .info-item b { 
-            color: var(--b-yellow); 
-            display: block;
-            font-size: 13px;
-            text-transform: uppercase;
-            margin-bottom: 3px;
-        }
-
-        .info-item p { 
-            margin: 0;
-            font-size: 15px; 
-            color: #EAECEF; 
-            line-height: 1.4; 
-        }
-
-        .btn-wa { 
-            background: #2ebd85; 
-            color: #fff; 
-            padding: 18px; 
-            border-radius: 12px; 
-            text-decoration: none; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 12px; 
-            font-weight: bold; 
-            font-size: 18px; 
-            transition: 0.3s; 
-            box-shadow: 0 5px 15px rgba(46, 189, 133, 0.3);
-        }
-
-        .btn-wa:hover { 
-            background: #25a171; 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 20px rgba(46, 189, 133, 0.4);
-        }
-
-        .back-btn { 
-            display: inline-block; 
-            margin-top: 25px; 
-            color: #848e9c; 
-            text-decoration: none; 
-            font-size: 14px; 
-            transition: 0.2s;
-        }
-
-        .back-btn:hover {
-            color: var(--b-yellow);
-        }
-
-        .back-btn i {
-            margin-right: 5px;
-        }
+        body { background: #0B0E11; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .support-card { background: #1E2329; border: 2px solid #FCD535; padding: 40px; border-radius: 25px; width: 400px; text-align: center; box-shadow: 0 15px 50px rgba(0,0,0,0.7); }
+        .header-icon { font-size: 60px; color: #FCD535; margin-bottom: 20px; }
+        .info-list { background: #000; padding: 25px; border-radius: 15px; text-align: left; margin: 25px 0; border-left: 6px solid #FCD535; }
+        .info-list p { font-size: 14px; margin: 12px 0; color: #EAECEF; line-height: 1.6; }
+        .info-list b { color: #FCD535; }
+        .btn-wa { background: #2ebd85; color: #fff; padding: 18px; border-radius: 12px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; font-size: 18px; transition: 0.3s; }
+        .btn-wa:hover { background: #25a171; transform: translateY(-3px); }
+        .back-btn { display: block; margin-top: 25px; color: #848e9c; text-decoration: none; font-size: 13px; }
     </style>
 </head>
 <body>
 
     <div class="support-card">
-        <div class="header-icon">
-            <i class="fas fa-headset"></i>
-        </div>
-        
-        <h2>CREATOR SUPPORT</h2>
-        <p class="subtitle">To activate your plot, please provide the following:</p>
+        <div class="header-icon"><i class="fas fa-headset"></i></div>
+        <h2 style="margin: 0; font-size: 26px; text-transform: uppercase; color: #FCD535;">Creator Support</h2>
+        <p style="font-size: 13px; color: #848e9c; margin-top: 8px;">Submit your details to activate your plot.</p>
         
         <div class="info-list">
-            <div class="info-item">
-                <b>1. Payment Proof</b>
-                <p>Screenshot of ৳36 transaction.</p>
-            </div>
-            <div class="info-item">
-                <b>2. Plot Details</b>
-                <p>Mention your Brand Name and Plot ID.</p>
-            </div>
-            <div class="info-item">
-                <b>3. Brand Logo</b>
-                <p>Send a square size image of your logo.</p>
-            </div>
-            <div class="info-item">
-                <b>4. Official Link</b>
-                <p>Provide your Website or Social Media link.</p>
-            </div>
+            <p><b>1. Payment Proof:</b> Screenshot of ৳24 transaction.</p>
+            <p><b>2. Plot Details:</b> Mention your Brand Name & Plot ID.</p>
+            <p><b>3. Brand Logo:</b> Send a square size image of your logo.</p>
+            <p><b>4. Official Link:</b> Provide your Website or Social link.</p>
         </div>
 
         <a href="https://wa.me/8801576940717" target="_blank" class="btn-wa">
-            <i class="fab fa-whatsapp"></i> CHAT ON WHATSAPP
+            <i class="fab fa-whatsapp" style="font-size: 24px;"></i> CHAT ON WHATSAPP
         </a>
 
         <a href="index.html" class="back-btn">
