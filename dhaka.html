@@ -27,12 +27,25 @@
         .nav-right { display: flex; align-items: center; }
         .buy-btn { background: var(--b-yellow) !important; color: #000 !important; }
 
-        /* Canvas: Small Blocks, 25 Columns */
-        .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 1px solid #ddd; }
+        /* Canvas: Responsive Container */
+        .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 1px solid #ddd; overflow: hidden; }
         canvas { display: block; width: 100%; height: auto; }
-        #plotMarker { position: absolute; width: 40px; height: 40px; border: 3px solid var(--b-yellow); box-shadow: 0 0 15px var(--b-yellow); display: none; pointer-events: none; z-index: 10; background: rgba(252, 213, 53, 0.2); box-sizing: border-box; }
+        
+        /* Fixed Search Highlight */
+        #plotMarker { 
+            position: absolute; 
+            width: 4%; /* Responsive width based on 25 columns */
+            aspect-ratio: 1 / 1; 
+            border: 2px solid var(--b-yellow); 
+            box-shadow: 0 0 15px var(--b-yellow); 
+            display: none; 
+            pointer-events: none; 
+            z-index: 10; 
+            background: rgba(252, 213, 53, 0.2); 
+            box-sizing: border-box; 
+        }
 
-        /* Footer Notice (As requested) */
+        /* Footer Notice */
         .footer-info { width: 96%; margin: 25px auto; padding: 20px; background: #161a1e; border-radius: 10px; text-align: center; border: 1px solid #333; }
         .footer-info p { margin: 5px 0; font-size: 12px; color: #848e9c; }
         .limited-tag { color: var(--b-yellow); font-size: 15px !important; font-weight: bold; margin-bottom: 10px !important; }
@@ -54,9 +67,12 @@
 
     <div class="nav-center">
         <a href="index.html" class="nav-btn"><i class="fas fa-arrow-left"></i> HOME</a>
-        <div class="nav-btn" onclick="navigator.clipboard.writeText('01756206213'); alert('Copied!')">
-            <div class="gold-icon"><i class="fas fa-university"></i></div>
-            <div style="text-align: left;"><span style="font-size: 7px; color: var(--b-yellow);">BKASH/NAGAD</span><br><b>01756206213</b></div>
+        <div class="nav-btn" onclick="navigator.clipboard.writeText('01756206213'); alert('Number Copied!')">
+            <div class="gold-icon"><i class="fas fa-wallet"></i></div>
+            <div style="text-align: left; line-height: 1.2;">
+                <span style="font-size: 7px; color: var(--b-yellow); font-weight: bold; letter-spacing: 0.5px;">BKASH / NAGAD / ROCKET</span><br>
+                <b style="font-size: 12px;">01756206213</b>
+            </div>
         </div>
     </div>
 
@@ -68,7 +84,7 @@
     </div>
 </div>
 
-<div class="canvas-container">
+<div class="canvas-container" id="cContainer">
     <div id="plotMarker"></div>
     <canvas id="mapCanvas"></canvas>
 </div>
@@ -81,24 +97,55 @@
 </div>
 
 <script>
-    const cv = document.getElementById('mapCanvas'), ctx = cv.getContext('2d'), bS = 40, cols = 25;
-    cv.width = 1000; cv.height = (10000/cols) * bS;
+    const cv = document.getElementById('mapCanvas'), ctx = cv.getContext('2d');
+    const cols = 25; // আপনি ২৫ কলাম ব্যবহার করছেন
+    const totalPlots = 10000;
+    const bS = 40; // প্রতিটি ব্লকের সাইজ (পিক্সেল)
+
+    // ক্যানভাস সাইজ নির্ধারণ
+    cv.width = cols * bS; // ১০০০০ পিক্সেল
+    cv.height = (totalPlots / cols) * bS; // ১৬০০০ পিক্সেল
 
     function draw() {
-        ctx.fillStyle = "#fff"; ctx.fillRect(0,0,cv.width, cv.height);
-        ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
-        for(let x=0; x<=cv.width; x+=bS){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,cv.height); ctx.stroke(); }
-        for(let y=0; y<=cv.height; y+=bS){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cv.width,y); ctx.stroke(); }
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, cv.width, cv.height);
+        ctx.strokeStyle = "#eee";
+        ctx.lineWidth = 1;
+
+        // গ্রিড ড্রয়িং
+        for(let x = 0; x <= cv.width; x += bS){
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, cv.height); ctx.stroke();
+        }
+        for(let y = 0; y <= cv.height; y += bS){
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(cv.width, y); ctx.stroke();
+        }
     }
     draw();
 
     function locatePlot() {
         const id = document.getElementById('plotInput').value;
         if(!id || id < 1 || id > 10000) return alert("Enter Plot ID 1-10000");
-        const r = Math.floor((id-1)/cols), c = (id-1)%cols;
+
+        const r = Math.floor((id - 1) / cols);
+        const c = (id - 1) % cols;
         const m = document.getElementById('plotMarker');
-        m.style.display = 'block'; m.style.left = (c*bS)+"px"; m.style.top = (r*bS)+"px";
-        window.scrollTo({ top: cv.offsetTop + (r*bS) - 200, behavior: 'smooth' });
+        
+        // মার্কারের অবস্থান নির্ধারণ (শতকরা হিসেবে যাতে মোবাইল ফ্রেন্ডলি হয়)
+        const posX = (c / cols) * 100;
+        const posY = (r / (totalPlots / cols)) * 100;
+
+        m.style.display = 'block';
+        m.style.left = posX + "%";
+        m.style.top = posY + "%";
+        
+        // স্মুথ স্ক্রলিং
+        const container = document.getElementById('cContainer');
+        const scrollTarget = (r * bS) * (container.offsetWidth / cv.width);
+        
+        window.scrollTo({
+            top: container.offsetTop + scrollTarget - 200,
+            behavior: 'smooth'
+        });
     }
 </script>
 </body>
