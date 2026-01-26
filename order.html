@@ -1,49 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>RESERVE YOUR PLOT</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .box { background: #1E2329; padding: 40px; border-radius: 20px; border: 2px solid #FCD535; text-align: center; width: 350px; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #0b0e11; border: 1px solid #444; color: #fff; border-radius: 10px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 18px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 10px; font-size: 16px; margin-top: 10px; }
-        #success { display: none; position: fixed; inset: 0; background: #FCD535; color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
+        .order-box { background: #1E2329; padding: 40px; border-radius: 20px; border: 2px solid #FCD535; text-align: center; width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 15px; margin: 12px 0; background: #0b0e11; border: 1px solid #444; color: #fff; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
+        .btn { width: 100%; padding: 18px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 10px; font-size: 18px; margin-top: 15px; transition: 0.3s; }
+        .btn:hover { background: #fff; }
+        #celeb-overlay { display: none; position: fixed; inset: 0; background: #FCD535; color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
     </style>
 </head>
 <body>
-    <div class="box" id="orderForm">
-        <h2 style="color:#FCD535; margin-top: 0;">RESERVE PLOT</h2>
-        <input type="text" id="bName" placeholder="Brand Name">
-        <input type="number" id="pID" placeholder="Plot ID (1-7000)">
-        <button class="btn" onclick="startCeleb()">SUBMIT REQUEST</button>
-    </div>
 
-    <div id="success">
-        <h1 id="congratsMsg" style="font-size: 40px; margin: 0;">CONGRATULATIONS!</h1>
-        <p style="font-size: 20px; font-weight: bold;">Request Received. Redirecting in 5s...</p>
-    </div>
+<div class="order-box" id="formBox">
+    <h2 style="color:#FCD535; margin-top: 0; font-size: 28px;">RESERVE PLOT</h2>
+    <input type="text" id="brandName" placeholder="Your Brand Name">
+    <input type="number" id="plotID" placeholder="Plot ID (1-7000)">
+    <button class="btn" onclick="handleOrder()">SUBMIT REQUEST</button>
+</div>
 
-    <script>
-        function startCeleb() {
-            const name = document.getElementById('bName').value;
-            if(!name || !document.getElementById('pID').value) return alert("Fill all!");
+<div id="celeb-overlay">
+    <h1 id="congratsName" style="font-size: 45px; margin: 0;">CONGRATULATIONS!</h1>
+    <p style="font-size: 20px; font-weight: bold; margin-top: 10px;">Request Received. Activating in 5s...</p>
+    <p style="background: #000; color: #fff; padding: 10px 20px; border-radius: 50px; margin-top: 20px; font-weight: bold;">PLEASE CONTACT SUPPORT NOW!</p>
+</div>
 
-            document.getElementById('orderForm').style.display = 'none';
-            document.getElementById('success').style.display = 'flex';
-            document.getElementById('congratsMsg').innerText = "CONGRATS, " + name.toUpperCase() + "!";
+<script>
+    function handleOrder() {
+        const name = document.getElementById('brandName').value;
+        const id = document.getElementById('plotID').value;
+        if(!name || !id || id < 1 || id > 7000) return alert("Please fill details correctly!");
 
-            // Dense Confetti from 2 sides
-            var duration = 5 * 1000;
-            var end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 10, angle: 60, spread: 55, origin: { x: 0, y: 0.6 } });
-                confetti({ particleCount: 10, angle: 120, spread: 55, origin: { x: 1, y: 0.6 } });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+        document.getElementById('formBox').style.display = 'none';
+        document.getElementById('celeb-overlay').style.display = 'flex';
+        document.getElementById('congratsName').innerText = "CONGRATS, " + name.toUpperCase() + "!";
 
-            setTimeout(() => { window.location.href = "dhaka.html"; }, 5000);
-        }
-    </script>
+        // DENSE CONFETTI FROM BOTH SIDES
+        var end = Date.now() + (5 * 1000);
+        (function frame() {
+            confetti({ particleCount: 12, angle: 60, spread: 60, origin: { x: 0, y: 0.65 }, colors: ['#000', '#FCD535'] });
+            confetti({ particleCount: 12, angle: 120, spread: 60, origin: { x: 1, y: 0.65 }, colors: ['#000', '#FCD535'] });
+            if (Date.now() < end) requestAnimationFrame(frame);
+        }());
+
+        setTimeout(() => { window.location.href = "dhaka.html"; }, 5000);
+    }
+</script>
 </body>
 </html>
