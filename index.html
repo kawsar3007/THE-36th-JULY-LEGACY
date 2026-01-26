@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE DISTRICT LEGACY | 64 Districts</title>
+    <title>DIGITAL FRIDAY HOMEPAGE | THE MARKETING LEGACY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -21,212 +21,179 @@
             overflow-x: hidden;
         }
 
-        /* গ্লোয়িং টেক্সট ইফেক্ট */
-        .glow-text {
-            text-shadow: 0 0 10px rgba(252, 213, 53, 0.3);
-        }
-
-        /* টপ বার */
         .top-nav {
             background: var(--b-card);
             padding: 12px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #333;
+            border-bottom: 2px solid var(--b-yellow);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .community-btn {
+        .brand-name {
+            color: var(--b-yellow);
+            font-weight: 900;
+            letter-spacing: 2px;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: radial-gradient(circle at center, #1E2329 0%, #0B0E11 100%);
+        }
+
+        .hero h1 {
+            font-size: clamp(35px, 8vw, 65px);
+            color: var(--b-yellow);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            line-height: 1.1;
+            text-shadow: 0 0 30px rgba(252, 213, 53, 0.4);
+        }
+
+        .hero p {
+            color: #848e9c;
+            font-size: 20px;
+            margin-top: 15px;
+            font-weight: 300;
+        }
+
+        /* গ্রিড সেকশন */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 0 8% 100px;
+        }
+
+        .card {
+            background: var(--b-card);
+            padding: 45px 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #222;
+            transition: 0.4s;
+            position: relative;
+        }
+
+        .card:hover {
             background: var(--b-yellow);
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
+            transform: translateY(-10px);
+            box-shadow: 0 0 40px rgba(252, 213, 53, 0.3);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 26px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .card:hover h3 { color: #000; font-weight: 900; }
+
+        .limited-tag {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 10px;
             font-weight: bold;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            box-shadow: 0 0 10px rgba(252, 213, 53, 0.4);
+            color: var(--b-yellow);
+            border: 1px solid var(--b-yellow);
+            padding: 3px 10px;
+            border-radius: 50px;
+            text-transform: uppercase;
         }
 
-        .community-btn:hover {
-            box-shadow: 0 0 25px var(--b-yellow);
-            transform: scale(1.05);
+        .card:hover .limited-tag {
+            color: #000;
+            border-color: #000;
         }
 
-        /* সার্চবার সেকশন */
+        /* সার্চ বক্স */
         .search-container {
             display: flex;
             justify-content: center;
-            padding: 30px;
-            background: var(--b-bg);
-        }
-
-        .search-box {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
+            margin-bottom: 50px;
         }
 
         .search-box input {
-            width: 100%;
-            padding: 15px 25px;
+            width: 400px;
+            padding: 18px 30px;
             border-radius: 50px;
-            border: 1px solid #444;
+            border: 1px solid #333;
             background: var(--b-card);
             color: #fff;
             outline: none;
             font-size: 16px;
             transition: 0.3s;
-            box-shadow: 0 0 5px rgba(252, 213, 53, 0.1);
-        }
-
-        .search-box input:focus {
-            border-color: var(--b-yellow);
-            box-shadow: 0 0 20px rgba(252, 213, 53, 0.3);
-        }
-
-        /* হিরো */
-        .hero {
             text-align: center;
-            padding: 60px 20px;
         }
 
-        .hero h1 {
-            font-size: 55px;
-            color: var(--b-yellow);
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(252, 213, 53, 0.5); /* মেইন টাইটেল গ্লো */
-        }
-
-        /* জেলা গ্রিড */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-            padding: 20px 8% 60px;
-        }
-
-        .card {
-            background: var(--b-card);
-            padding: 50px 20px;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            border: 1px solid #333;
-            transition: all 0.4s ease;
-        }
-
-        /* মাউসের পয়েন্টার নিলে ইফেক্ট */
-        .card:hover {
-            background-color: var(--b-yellow) !important;
-            transform: translateY(-10px);
-            box-shadow: 0 0 35px var(--b-yellow); /* বক্স গ্লো */
-        }
-
-        .card h3 {
-            margin: 0;
-            font-size: 24px;
-            color: #fff;
-            transition: 0.3s;
-            text-shadow: 0 0 10px rgba(252, 213, 53, 0.2); /* নাম গ্লো */
-        }
-
-        .card:hover h3 {
-            color: #000;
-            font-weight: 900;
-            text-shadow: none;
-        }
-
-        /* ফুটার ও সাপোর্ট */
-        .footer {
-            text-align: center;
-            padding: 60px 20px;
-            background: #000;
-            border-top: 1px solid #222;
-        }
+        .search-box input:focus { border-color: var(--b-yellow); }
 
         .wa-float {
             position: fixed; bottom: 30px; right: 30px; background: #2ebd85;
             color: white; padding: 15px 25px; border-radius: 50px;
-            text-decoration: none; font-weight: bold; display: flex;
-            align-items: center; gap: 10px; z-index: 2000;
-            box-shadow: 0 0 15px rgba(46, 189, 133, 0.4);
+            text-decoration: none; font-weight: bold; z-index: 2000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 10px;
         }
     </style>
 </head>
 <body>
 
-<a href="https://wa.me/8801576940717" class="wa-float" target="_blank">
-    <i class="fab fa-whatsapp" style="font-size: 24px;"></i> LIVE SUPPORT
-</a>
-
 <div class="top-nav">
-    <a href="#" class="community-btn">
-        <i class="fab fa-facebook-square" style="font-size: 18px;"></i> JOIN COMMUNITY
+    <div class="brand-name">FRIDAY EDITION</div>
+    <a href="https://wa.me/8801576940717" style="text-decoration: none; color: #fff; font-size: 12px; border: 1px solid #444; padding: 5px 15px; border-radius: 50px;">
+        <i class="fas fa-bullhorn" style="color: var(--b-yellow);"></i> ADVERTISE HERE
     </a>
-    <div style="color: var(--b-yellow); font-weight: bold; font-size: 13px; text-shadow: 0 0 10px rgba(252, 213, 53, 0.4);">
-        MAINTENANCE FEE: NOMINAL COST
-    </div>
 </div>
 
 <div class="hero">
-    <h1 class="glow-text">THE DISTRICT LEGACY</h1>
-    <p style="color: #848e9c; font-size: 18px;">Preserve your pride in Bangladesh's digital history.</p>
+    <h1>DIGITAL FRIDAY <br> HOMEPAGE</h1>
+    <p>THE ULTIMATE PIXEL MARKETING LEGACY</p>
 </div>
 
 <div class="search-container">
     <div class="search-box">
-        <input type="text" id="distSearch" placeholder="Type your district name to search..." onkeyup="filterDistricts()">
+        <input type="text" id="distSearch" placeholder="Search Your District Area..." onkeyup="filterDistricts()">
     </div>
 </div>
 
-<div class="grid" id="district-grid">
+<div class="grid" id="districtGrid">
+    <div class="card" onclick="location.href='dhaka.html'">
+        <h3>DHAKA</h3>
+        <div class="limited-tag">LIMITED EDITION FRIDAY</div>
     </div>
 
-<div class="footer">
-    <p style="color: #FF0000; font-weight: bold; font-size: 18px; text-shadow: 0 0 10px rgba(255,0,0,0.2);">
-        ⚠️ LIMITED EDITION: 10,000 PLOTS FOR EACH DISTRICT ONLY.<br>
-        NUMBERS WILL NEVER BE INCREASED.
-    </p>
-    <p style="color: #444; font-size: 14px; margin-top: 20px;">THE DISTRICT LEGACY © 2026 KAWSAR AHMED</p>
-</div>
+    <div class="card" onclick="location.href='sirajganj.html'">
+        <h3>SIRAJGANJ</h3>
+        <div class="limited-tag">LIMITED EDITION FRIDAY</div>
+    </div>
+    
+    <div class="card" onclick="location.href='chattogram.html'">
+        <h3>CHATTOGRAM</h3>
+        <div class="limited-tag">LIMITED EDITION FRIDAY</div>
+    </div>
+    </div>
+
+<a href="https://wa.me/8801576940717" class="wa-float" target="_blank">
+    <i class="fab fa-whatsapp" style="font-size: 22px;"></i> BOOK YOUR PIXEL
+</a>
 
 <script>
-    const districts = [
-        "Dhaka", "Faridpur", "Gazipur", "Gopalganj", "Kishoreganj", "Madaripur", "Manikganj", "Munshiganj", "Narayanganj", "Narsingdi", "Rajbari", "Shariatpur", "Tangail",
-        "Bagerhat", "Chuadanga", "Jessore", "Jhenaidah", "Khulna", "Kushtia", "Magura", "Meherpur", "Narail", "Satkhira",
-        "Barguna", "Barisal", "Bhola", "Jhalokati", "Patuakhali", "Pirojpur",
-        "Bandarban", "Brahmanbaria", "Chandpur", "Chittagong", "Comilla", "Cox's Bazar", "Feni", "Khagrachhari", "Lakshmipur", "Noakhali", "Rangamati",
-        "Habiganj", "Moulvibazar", "Sunamganj", "Sylhet",
-        "Bogra", "Joypurhat", "Naogaon", "Natore", "Chapai Nawabganj", "Pabna", "Rajshahi", "Sirajganj",
-        "Dinajpur", "Gaibandha", "Kurigram", "Lalmonirhat", "Nilphamari", "Panchagarh", "Rangpur", "Thakurgaon",
-        "Jamalpur", "Mymensingh", "Netrokona", "Sherpur"
-    ];
-
-    const grid = document.getElementById('district-grid');
-    districts.sort().forEach(d => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.setAttribute('data-name', d.toLowerCase());
-        div.onclick = () => location.href = d.toLowerCase() + '.html';
-        div.innerHTML = `<h3>${d.toUpperCase()}</h3><span style="color: var(--b-yellow); font-size: 12px; font-weight: bold; display: block; margin-top: 10px;">10,000 PLOTS</span>`;
-        grid.appendChild(div);
-    });
-
     function filterDistricts() {
-        let input = document.getElementById('distSearch').value.toLowerCase();
-        let cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            card.style.display = card.dataset.name.includes(input) ? 'block' : 'none';
-        });
+        let input = document.getElementById('distSearch').value.toUpperCase();
+        let cards = document.getElementsByClassName('card');
+        for (let i = 0; i < cards.length; i++) {
+            let h3 = cards[i].getElementsByTagName('h3')[0];
+            cards[i].style.display = h3.innerHTML.toUpperCase().includes(input) ? "" : "none";
+        }
     }
 </script>
 
