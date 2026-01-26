@@ -8,23 +8,45 @@
     <style>
         :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; --wa-green: #25D366; }
         body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
+        
         .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 20px; font-weight: 900; letter-spacing: 2px; }
         .status-bar { background: #161a1e; padding: 12px; display: flex; justify-content: space-around; font-size: 13px; font-weight: bold; border-bottom: 2px solid #333; }
+        
         .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; }
         
         .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; }
         .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 60px; outline: none; }
         .search-box button { background: var(--b-yellow); border: none; padding: 0 12px; cursor: pointer; color: #000; }
 
-        .nav-btn { display: flex; align-items: center; gap: 8px; background: #161a1e; padding: 8px 15px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; }
+        .nav-btn { display: flex; align-items: center; gap: 8px; background: #161a1e; padding: 8px 15px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; }
         .gold-icon { width: 28px; height: 28px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; }
 
-        .buy-btn-large { background: var(--b-yellow); color: #000; padding: 12px 25px; font-size: 16px; border-radius: 8px; text-decoration: none; font-weight: 900; animation: pulse 1.5s infinite; display: inline-block; }
+        .buy-btn-large { background: var(--b-yellow); color: #000; padding: 12px 25px; font-size: 16px; border-radius: 8px; text-decoration: none; font-weight: 900; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(252, 213, 53, 0); } 100% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0); } }
 
-        .canvas-container { width: 98%; margin: 10px auto; background: #fff; position: relative; border: 2px solid #333; overflow: auto; height: 70vh; }
-        canvas { display: block; image-rendering: pixelated; }
-        #plotMarker { position: absolute; border: 3px solid #ff4d4d; box-shadow: 0 0 15px #ff4d4d; display: none; pointer-events: none; z-index: 10; background: rgba(255, 77, 77, 0.2); }
+        /* ক্যানভাস লেআউট: ডানে-বামে সরবে না */
+        .canvas-container { 
+            width: 100%; 
+            max-width: 500px; 
+            margin: 10px auto; 
+            background: #fff; 
+            position: relative; 
+            border: 2px solid #333; 
+            overflow: hidden; 
+        }
+        canvas { width: 100% !important; height: auto !important; display: block; image-rendering: pixelated; }
+        
+        #plotMarker { 
+            position: absolute; 
+            border: 3px solid #ff0000; 
+            box-shadow: 0 0 15px #ff0000; 
+            display: none; 
+            pointer-events: none; 
+            z-index: 5; 
+            box-sizing: border-box;
+            background: rgba(255, 0, 0, 0.2);
+        }
+
         .support-float { position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px; background: var(--wa-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 2000; border: 2px solid #fff; }
     </style>
 </head>
@@ -57,8 +79,11 @@
         </div>
     </div>
 
-    <div style="flex:1; display:flex; justify-content:flex-end;">
-        <a href="order.html" class="buy-btn-large">BUY</a>
+    <div style="flex:1; display:flex; justify-content:flex-end; gap:8px;">
+        <button onclick="downloadMap()" class="nav-btn" style="background: #fff; color: #000; border: none; cursor: pointer; padding: 8px 12px;">
+            <i class="fas fa-download"></i>
+        </button>
+        <a href="order.html" class="buy-btn-large" style="padding: 8px 15px;">BUY</a>
     </div>
 </div>
 
