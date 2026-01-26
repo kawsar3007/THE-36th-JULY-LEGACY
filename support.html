@@ -13,7 +13,10 @@
         .info-list b { color: #FCD535; }
         .btn-wa { background: #2ebd85; color: #fff; padding: 18px; border-radius: 12px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; font-size: 18px; transition: 0.3s; }
         .btn-wa:hover { background: #25a171; transform: translateY(-3px); }
-        .back-btn { display: block; margin-top: 25px; color: #848e9c; text-decoration: none; font-size: 13px; }
+        
+        .nav-links { display: flex; justify-content: center; gap: 20px; margin-top: 25px; }
+        .nav-links a { color: #848e9c; text-decoration: none; font-size: 13px; font-weight: bold; transition: 0.3s; }
+        .nav-links a:hover { color: #FCD535; }
     </style>
 </head>
 <body>
@@ -34,9 +37,11 @@
             <i class="fab fa-whatsapp" style="font-size: 24px;"></i> CHAT ON WHATSAPP
         </a>
 
-        <a href="index.html" class="back-btn">
-            <i class="fas fa-arrow-left"></i> BACK TO HOME PAGE
-        </a>
+        <div class="nav-links">
+            <a href="javascript:history.back()"><i class="fas fa-map"></i> BACK TO MAP</a>
+            <span style="color: #444;">|</span>
+            <a href="index.html"><i class="fas fa-home"></i> BACK TO HOME</a>
+        </div>
     </div>
 
 </body>
