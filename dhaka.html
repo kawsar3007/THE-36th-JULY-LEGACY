@@ -1,108 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DHAKA | THE DISTRICT LEGACY</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; --wa-green: #25D366; }
-        body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
-        
-        .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 22px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
-        
-        /* Live Status Bar */
-        .status-bar { background: #161a1e; padding: 12px; display: flex; justify-content: space-around; font-size: 13px; font-weight: bold; border-bottom: 2px solid #333; }
-        
-        .top-nav { position: sticky; top: 0; background: var(--b-card); padding: 10px 2%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--b-yellow); z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        
-        .nav-left { flex: 1; display: flex; }
-        .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
-        .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 70px; outline: none; font-weight: bold; }
-        .search-box button { background: var(--b-yellow); border: none; padding: 0 12px; cursor: pointer; color: #000; }
+// --- CONFIGURATION ---
+const totalPlots = 2400;
+const columns = 60; // ৬০টি কলাম
+const rows = 40;    // ৪০টি সারি (৬০ x ৪০ = ২৪০০ প্লট)
+const cellSize = 100; // প্রতিটি ব্লকের সাইজ (pixel)
+const canvas = document.getElementById('mapCanvas');
+const ctx = canvas.getContext('2d');
+const marker = document.getElementById('plotMarker');
 
-        .nav-center { flex: 2; display: flex; gap: 8px; justify-content: center; align-items: center; }
-        .nav-btn { display: flex; align-items: center; gap: 6px; background: #161a1e; padding: 8px 15px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; }
-        
-        .gold-icon { width: 25px; height: 25px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 11px; }
+// ক্যানভাসের সাইজ সেট করা (৬০*১০০ = ৬০০০px চওড়া)
+canvas.width = columns * cellSize;
+canvas.height = rows * cellSize;
 
-        .buy-btn-large { background: var(--b-yellow) !important; color: #000 !important; padding: 12px 35px !important; font-size: 18px !important; border-radius: 10px !important; text-decoration: none; font-weight: 900; animation: pulse 1.5s infinite; display: inline-block; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(252, 213, 53, 0); } 100% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0); } }
+// --- আপনার কাস্টমারদের ডাটাবেজ (উদাহরণ) ---
+// যখনই কোনো প্লট বিক্রি হবে, শুধু এখানে ID, Logo এবং Link বসিয়ে দিবেন
+const soldPlots = {
+    "1": { logo: "https://via.placeholder.com/100", link: "https://facebook.com/kawsar" },
+    "150": { logo: "https://via.placeholder.com/100", link: "https://digitalfriday.com" }
+};
 
-        .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 2px solid #333; border-radius: 10px; overflow: hidden; }
-        canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
-        
-        #plotMarker { position: absolute; border: 3px solid #ff4d4d; box-shadow: 0 0 20px #ff4d4d; display: none; pointer-events: none; z-index: 10; background: rgba(255, 77, 77, 0.2); box-sizing: border-box; }
-
-        /* WhatsApp Style Support Button */
-        .support-float { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: var(--wa-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 2000; text-decoration: none; border: 2px solid #fff; transition: 0.3s; }
-        .support-float:hover { transform: scale(1.1); background: #128C7E; }
-        .support-float i { color: #fff; font-size: 32px; }
-    </style>
-</head>
-<body>
-
-<div class="header">DHAKA DISTRICT MAP</div>
-
-<div class="status-bar">
-    <div>TOTAL PLOTS: 2400</div>
-    <div style="color: var(--b-yellow);">SOLD: <span id="soldCount">0</span></div>
-    <div style="color: #2ebd85;">AVAILABLE: <span id="availCount">2400</span></div>
-</div>
-
-<div class="top-nav">
-    <div class="nav-left">
-        <div class="search-box">
-            <input type="number" id="plotInput" placeholder="ID 1-2400">
-            <button onclick="locatePlot()"><i class="fas fa-search"></i></button>
-        </div>
-    </div>
+// --- ম্যাপ ড্রয়িং ফাংশন ---
+function drawMap() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    <div class="nav-center">
-        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> HOME</a>
-        <div class="nav-btn" style="cursor: pointer;" onclick="navigator.clipboard.writeText('01756206213'); alert('Payment Number Copied!')">
-            <div class="gold-icon"><i class="fas fa-wallet"></i></div>
-            <div style="text-align: left;">
-                <span style="font-size: 7px; color: var(--b-yellow); font-weight: bold; text-transform: uppercase;">Payment Agent</span><br>
-                <b>01756206213</b>
-            </div>
-        </div>
-    </div>
+    let soldCount = 0;
 
-    <div class="nav-right">
-        <a href="order.html" class="buy-btn-large">BUY PLOT</a>
-    </div>
-</div>
+    for (let i = 1; i <= totalPlots; i++) {
+        const x = ((i - 1) % columns) * cellSize;
+        const y = Math.floor((i - 1) / columns) * cellSize;
 
-<div class="canvas-container" id="cWrapper">
-    <div id="plotMarker"></div>
-    <canvas id="mapCanvas"></canvas>
-</div>
-
-<a href="support.html" class="support-float">
-    <i class="fab fa-whatsapp"></i>
-</a>
-
-<script src="map-logic.js"></script>
-
-<script>
-    // সোল্ড কাউন্ট ০ এবং এভেইলঅ্যাবল ২৪০০ ফিক্স করা হয়েছে
-    window.onload = function() {
-        document.getElementById('soldCount').innerText = "0";
-        document.getElementById('availCount').innerText = "2400";
-    }
-
-    function locatePlot() {
-        const id = document.getElementById('plotInput').value;
-        if(id < 1 || id > 2400) {
-            alert("Please enter a valid Plot ID between 1 and 2400");
-            return;
-        }
-        if (typeof window.findAndMarkPlot === "function") {
-            window.findAndMarkPlot(id);
+        if (soldPlots[i]) {
+            // বিক্রি হওয়া প্লট (Logo দেখানো হবে)
+            const img = new Image();
+            img.src = soldPlots[i].logo;
+            ctx.drawImage(img, x, y, cellSize, cellSize);
+            soldCount++;
+        } else {
+            // খালি প্লট (বর্ডার এবং নাম্বার)
+            ctx.strokeStyle = "#ccc";
+            ctx.strokeRect(x, y, cellSize, cellSize);
+            ctx.fillStyle = "#f9f9f9";
+            ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
+            
+            ctx.fillStyle = "#888";
+            ctx.font = "20px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(i, x + cellSize / 2, y + cellSize / 2 + 7);
         }
     }
-</script>
 
-</body>
-</html>
+    // নির্ভুল কাউন্টিং আপডেট
+    document.getElementById('soldCount').innerText = soldCount;
+    document.getElementById('availCount').innerText = totalPlots - soldCount;
+}
+
+// --- স্মার্ট সার্চ এবং হাইলাইট লজিক ---
+window.findAndMarkPlot = function(id) {
+    if (id < 1 || id > totalPlots) return;
+
+    const x = ((id - 1) % columns) * cellSize;
+    const y = Math.floor((id - 1) / columns) * cellSize;
+
+    // ১. মার্কার সেট করা
+    marker.style.width = cellSize + "px";
+    marker.style.height = cellSize + "px";
+    marker.style.left = x + "px";
+    marker.style.top = y + "px";
+    marker.style.display = "block";
+
+    // ২. কাস্টমারের চোখে পড়ার জন্য অটো স্ক্রল (Smooth Scroll)
+    const container = document.getElementById('cWrapper');
+    const scrollX = x - (window.innerWidth / 2) + (cellSize / 2);
+    const scrollY = y - (window.innerHeight / 2) + (cellSize / 2);
+
+    window.scrollTo({
+        top: container.offsetTop + scrollY,
+        left: scrollX,
+        behavior: 'smooth'
+    });
+};
+
+// ক্যানভাসে ক্লিক করলে লিংকে নিয়ে যাওয়া
+canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    const col = Math.floor(x / cellSize);
+    const row = Math.floor(y / cellSize);
+    const id = (row * columns) + col + 1;
+
+    if (soldPlots[id]) {
+        window.open(soldPlots[id].link, '_blank');
+    } else {
+        window.location.href = "order.html?id=" + id;
+    }
+});
+
+// শুরুতে ম্যাপটি আঁকা
+drawMap();
