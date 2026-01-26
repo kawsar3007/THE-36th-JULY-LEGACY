@@ -1,45 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>RESERVE PLOT</title>
+    <title>RESERVE YOUR PLOT</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         body { background: #0B0E11; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .order-box { background: #1E2329; padding: 40px; border-radius: 15px; border: 2px solid #FCD535; text-align: center; width: 350px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #2b3139; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; }
+        .box { background: #1E2329; padding: 40px; border-radius: 20px; border: 2px solid #FCD535; text-align: center; width: 350px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #0b0e11; border: 1px solid #444; color: #fff; border-radius: 10px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 18px; background: #FCD535; color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 10px; font-size: 16px; margin-top: 10px; }
         #success { display: none; position: fixed; inset: 0; background: #FCD535; color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
     </style>
 </head>
 <body>
+    <div class="box" id="orderForm">
+        <h2 style="color:#FCD535; margin-top: 0;">RESERVE PLOT</h2>
+        <input type="text" id="bName" placeholder="Brand Name">
+        <input type="number" id="pID" placeholder="Plot ID (1-7000)">
+        <button class="btn" onclick="startCeleb()">SUBMIT REQUEST</button>
+    </div>
 
-<div class="order-box" id="oBox">
-    <h2 style="color:#FCD535;">RESERVE PLOT</h2>
-    <input type="text" id="bName" placeholder="Brand Name">
-    <input type="number" id="pID" placeholder="Plot ID (1-10000)">
-    <button class="btn" onclick="submitOrder()">SUBMIT REQUEST</button>
-</div>
+    <div id="success">
+        <h1 id="congratsMsg" style="font-size: 40px; margin: 0;">CONGRATULATIONS!</h1>
+        <p style="font-size: 20px; font-weight: bold;">Request Received. Redirecting in 5s...</p>
+    </div>
 
-<div id="success">
-    <h1 id="brandTitle">CONGRATULATIONS!</h1>
-    <p style="font-size: 18px; font-weight: bold;">Your request has been received.</p>
-    <p style="background: #000; color: #fff; padding: 10px; border-radius: 8px; margin-top: 20px;">CONTACT SUPPORT TO ACTIVATE!</p>
-    <p style="margin-top: 30px; font-size: 12px;">Redirecting back to map...</p>
-</div>
+    <script>
+        function startCeleb() {
+            const name = document.getElementById('bName').value;
+            if(!name || !document.getElementById('pID').value) return alert("Fill all!");
 
-<script>
-    function submitOrder() {
-        const name = document.getElementById('bName').value;
-        if(!name || !document.getElementById('pID').value) return alert("Fill all fields!");
+            document.getElementById('orderForm').style.display = 'none';
+            document.getElementById('success').style.display = 'flex';
+            document.getElementById('congratsMsg').innerText = "CONGRATS, " + name.toUpperCase() + "!";
 
-        document.getElementById('oBox').style.display = 'none';
-        document.getElementById('success').style.display = 'flex';
-        document.getElementById('brandTitle').innerText = "CONGRATS, " + name.toUpperCase() + "!";
+            // Dense Confetti from 2 sides
+            var duration = 5 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 10, angle: 60, spread: 55, origin: { x: 0, y: 0.6 } });
+                confetti({ particleCount: 10, angle: 120, spread: 55, origin: { x: 1, y: 0.6 } });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
 
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        setTimeout(() => { window.location.href = "dhaka.html"; }, 4000);
-    }
-</script>
+            setTimeout(() => { window.location.href = "dhaka.html"; }, 5000);
+        }
+    </script>
 </body>
 </html>
