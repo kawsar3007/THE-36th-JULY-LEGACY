@@ -6,7 +6,7 @@
     <title>DHAKA | THE DISTRICT LEGACY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; }
+        :root { --b-bg: #0B0E11; --b-card: #1E2329; --b-yellow: #FCD535; --wa-green: #25D366; }
         body { background: var(--b-bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; scroll-behavior: smooth; }
         
         .header { background: #000; color: var(--b-yellow); padding: 15px; font-size: 22px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
@@ -19,27 +19,25 @@
         .nav-left { flex: 1; display: flex; }
         .search-box { display: flex; background: #0b0e11; border: 1px solid #444; border-radius: 5px; overflow: hidden; }
         .search-box input { background: transparent; border: none; padding: 8px; color: #fff; width: 70px; outline: none; font-weight: bold; }
-        .search-box button { background: var(--b-yellow); border: none; padding: 0 12px; cursor: pointer; color: #000; transition: 0.3s; }
-        .search-box button:hover { background: #fff; }
+        .search-box button { background: var(--b-yellow); border: none; padding: 0 12px; cursor: pointer; color: #000; }
 
         .nav-center { flex: 2; display: flex; gap: 8px; justify-content: center; align-items: center; }
-        .nav-btn { display: flex; align-items: center; gap: 6px; background: #161a1e; padding: 8px 15px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; transition: 0.3s; }
-        .nav-btn:hover { border-color: var(--b-yellow); }
+        .nav-btn { display: flex; align-items: center; gap: 6px; background: #161a1e; padding: 8px 15px; border-radius: 50px; border: 1px solid #333; text-decoration: none; color: #fff; font-size: 11px; font-weight: bold; }
         
         .gold-icon { width: 25px; height: 25px; background: var(--b-yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 11px; }
 
-        /* LARGE BUY BUTTON */
-        .buy-btn-large { background: var(--b-yellow) !important; color: #000 !important; padding: 12px 35px !important; font-size: 18px !important; border-radius: 10px !important; text-decoration: none; font-weight: 900; animation: pulse 1.5s infinite; border: none; cursor: pointer; display: inline-block; }
+        .buy-btn-large { background: var(--b-yellow) !important; color: #000 !important; padding: 12px 35px !important; font-size: 18px !important; border-radius: 10px !important; text-decoration: none; font-weight: 900; animation: pulse 1.5s infinite; display: inline-block; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(252, 213, 53, 0); } 100% { box-shadow: 0 0 0 0 rgba(252, 213, 53, 0); } }
 
-        .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 2px solid #333; overflow: hidden; border-radius: 10px; }
+        .canvas-container { width: 96%; margin: 15px auto; background: #fff; position: relative; border: 2px solid #333; border-radius: 10px; overflow: hidden; }
         canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
         
-        /* Plot Finder Marker */
         #plotMarker { position: absolute; border: 3px solid #ff4d4d; box-shadow: 0 0 20px #ff4d4d; display: none; pointer-events: none; z-index: 10; background: rgba(255, 77, 77, 0.2); box-sizing: border-box; }
 
-        .support-float { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: #2ebd85; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 2000; text-decoration: none; border: 2px solid #fff; transition: 0.3s; }
-        .support-float:hover { transform: scale(1.1); }
+        /* WhatsApp Style Support Button */
+        .support-float { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: var(--wa-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 2000; text-decoration: none; border: 2px solid #fff; transition: 0.3s; }
+        .support-float:hover { transform: scale(1.1); background: #128C7E; }
+        .support-float i { color: #fff; font-size: 32px; }
     </style>
 </head>
 <body>
@@ -48,8 +46,8 @@
 
 <div class="status-bar">
     <div>TOTAL PLOTS: 2400</div>
-    <div style="color: var(--b-yellow);">SOLD: <span id="soldCount">Loading...</span></div>
-    <div style="color: #2ebd85;">AVAILABLE: <span id="availCount">Loading...</span></div>
+    <div style="color: var(--b-yellow);">SOLD: <span id="soldCount">0</span></div>
+    <div style="color: #2ebd85;">AVAILABLE: <span id="availCount">2400</span></div>
 </div>
 
 <div class="top-nav">
@@ -81,17 +79,17 @@
     <canvas id="mapCanvas"></canvas>
 </div>
 
-<a href="support.html" class="support-float"><i class="fas fa-headset"></i><span style="position: absolute; top: -5px; right: -5px; background: red; width: 15px; height: 15px; border-radius: 50%; border: 2px solid #fff;"></span></a>
+<a href="support.html" class="support-float">
+    <i class="fab fa-whatsapp"></i>
+</a>
 
 <script src="map-logic.js"></script>
 
 <script>
-    // এই পেজের জন্য স্পেসিফিক ২৪০০ প্লট লজিক
+    // সোল্ড কাউন্ট ০ এবং এভেইলঅ্যাবল ২৪০০ ফিক্স করা হয়েছে
     window.onload = function() {
-        const total = 2400;
-        const sold = 48; // এখানে আপনি এই জেলার জন্য কয়টি বিক্রি হয়েছে তা বসাবেন
-        document.getElementById('soldCount').innerText = sold;
-        document.getElementById('availCount').innerText = total - sold;
+        document.getElementById('soldCount').innerText = "0";
+        document.getElementById('availCount').innerText = "2400";
     }
 
     function locatePlot() {
@@ -100,7 +98,6 @@
             alert("Please enter a valid Plot ID between 1 and 2400");
             return;
         }
-        // এখানে আপনার map-logic.js এর ফাংশনটি কল হবে
         if (typeof window.findAndMarkPlot === "function") {
             window.findAndMarkPlot(id);
         }
