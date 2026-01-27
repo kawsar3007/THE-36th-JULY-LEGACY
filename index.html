@@ -3,214 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIGITAL FRIDAY HOMEPAGE | THE MARKETING LEGACY</title>
+    <title>AETHER PLOTS | The Elite Digital Realm</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { 
-            --b-bg: #0B0E11; 
-            --b-card: #1E2329; 
-            --b-yellow: #FCD535; 
-            --b-text: #EAECEF; 
-        }
-
-        body { 
-            background-color: var(--b-bg); 
-            color: var(--b-text); 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            margin: 0; 
-            overflow-x: hidden; 
-        }
-        
-        /* Navigation */
-        .top-nav { 
-            background: var(--b-card); 
-            padding: 12px 5%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 2px solid var(--b-yellow); 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-        }
-
-        /* Nav Buttons Group */
-        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
-
-        .nav-btn { 
-            padding: 8px 15px; 
-            border-radius: 5px; 
-            text-decoration: none; 
-            font-weight: bold; 
-            font-size: 11px; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            transition: 0.3s; 
-            text-transform: uppercase;
-        }
-
-        .fb-btn { background: #1877F2; color: #fff; }
-        .news-btn { background: #ffffff; color: #000; }
-        .stats-btn { background: var(--b-yellow); color: #000; }
-        .terms-btn { border: 1px solid var(--b-yellow); color: var(--b-yellow); }
-
-        .nav-btn:hover { transform: translateY(-2px); opacity: 0.9; }
-
-        /* Premium Highlighted Title */
-        .hero { text-align: center; padding: 60px 20px; }
-        .hero h1 { 
-            font-size: clamp(30px, 8vw, 55px); 
-            color: var(--b-yellow); 
-            margin: 0; 
-            text-transform: uppercase; 
-            letter-spacing: 4px;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            display: inline-block;
-            text-shadow: 0 0 15px rgba(252, 213, 53, 0.4);
-            animation: pulseGlow 2s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            from { text-shadow: 0 0 10px rgba(252, 213, 53, 0.4); }
-            to { text-shadow: 0 0 30px rgba(252, 213, 53, 0.8); }
-        }
-
-        .search-container { display: flex; justify-content: center; padding: 20px; }
-        .search-box input { 
-            width: 100%; max-width: 500px; padding: 16px 25px; 
-            border-radius: 50px; border: 1px solid #333; 
-            background: var(--b-card); color: #fff; outline: none; 
-            text-align: center; font-size: 16px; 
-        }
-
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 20px; 
-            padding: 20px 8% 100px; 
-        }
-
-        .card { 
-            background: var(--b-card); padding: 40px 15px; 
-            border-radius: 12px; text-align: center; cursor: pointer; 
-            border: 1px solid #222; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
-
-        .card:hover { 
-            background-color: var(--b-yellow) !important; 
-            transform: translateY(-8px); 
-            box-shadow: 0 15px 35px rgba(252, 213, 53, 0.3); 
-        }
-
-        .card h3 { margin: 0; font-size: 18px; color: #fff; transition: 0.3s; }
-        .card:hover h3 { color: #000; font-weight: 900; }
-        .notice { display: block; margin-top: 10px; font-size: 9px; font-weight: bold; color: var(--b-yellow); letter-spacing: 1px;}
-        .card:hover .notice { color: #000; }
-
-        /* Pop-up UI */
-        #waPopup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; }
-        .popup-box { background: #1E2329; border: 2px solid var(--b-yellow); padding: 35px; border-radius: 25px; max-width: 380px; width: 90%; text-align: center; position: relative; }
-        .info-box { text-align: left; background: #000; padding: 20px; border-radius: 15px; margin: 20px 0; border-left: 5px solid var(--b-yellow); }
-        .info-box p { font-size: 14px; margin: 10px 0; color: #fff; line-height: 1.5; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #666; }
-
-        /* Floating buttons */
-        .float-cs { position: fixed; bottom: 100px; right: 30px; background: var(--b-yellow); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 25px; cursor: pointer; z-index: 4000; box-shadow: 0 8px 20px rgba(0,0,0,0.5); }
-        .support-btn { position: fixed; bottom: 30px; right: 30px; background: #2ebd85; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; z-index: 4000; display: flex; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-    </style>
 </head>
 <body>
 
-<div id="waPopup">
-    <div class="popup-box">
-        <span class="close-btn" onclick="closePopup()">&times;</span>
-        <i class="fas fa-headset" style="font-size: 40px; color: var(--b-yellow); margin-bottom: 15px;"></i>
-        <h3 style="color: var(--b-yellow); margin: 0; text-transform: uppercase;">Required Info</h3>
-        <div class="info-box">
-            <p><b>1. Payment:</b> Screenshot of ৳24 transaction.</p>
-            <p><b>2. Details:</b> Brand Name & Plot ID.</p>
-            <p><b>3. Logo:</b> Square size Brand Image.</p>
-            <p><b>4. Link:</b> Official Web or Social Link.</p>
+    <div id="loader">
+        <div class="loader-content">
+            <h1 class="logo-text">AETHER<span>PLOTS</span></h1>
+            <div class="progress-bar"></div>
         </div>
-        <a href="https://wa.me/8801576940717" target="_blank" style="background:#2ebd85; color:#fff; padding:15px; display:block; text-decoration:none; border-radius:12px; font-weight:bold; font-size: 16px;">START CHAT ON WHATSAPP</a>
     </div>
-</div>
 
-<div class="top-nav">
-    <div class="nav-links">
-        <a href="https://facebook.com/DigitalFridayHomepage" target="_blank" class="nav-btn fb-btn">
-            <i class="fab fa-facebook-f"></i> FB
-        </a>
-        <a href="news.html" class="nav-btn news-btn">
-            <i class="fas fa-bullhorn"></i> NEWS
-        </a>
-        <a href="stats.html" class="nav-btn stats-btn">
-            <i class="fas fa-chart-line"></i> STATS
-        </a>
-        <a href="terms.html" class="nav-btn terms-btn">
-            <i class="fas fa-file-contract"></i> POLICY
-        </a>
-    </div>
-    <div style="color: var(--b-yellow); font-weight: bold; font-size: 13px; letter-spacing: 1px;">FRIDAY OFFICIAL</div>
-</div>
+    <header>
+        <nav>
+            <div class="logo">AETHER PLOTS™</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="stats.html">Market Stats</a>
+                <a href="support.html">Support</a>
+            </div>
+        </nav>
+    </header>
 
-<div class="hero">
-    <h1>DIGITAL FRIDAY HOMEPAGE</h1>
-    <p style="color: #848e9c; font-size: clamp(14px, 4vw, 17px); margin-top: 10px; font-weight: 300;">THE ULTIMATE PIXEL MARKETING LEGACY</p>
-</div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>OWN A PIECE OF THE <span class="gold-text">DIGITAL SKY</span></h1>
+            <p>Only 100 Permanent Plots Per Universe. No Renewal Forever.</p>
+            <div class="cta-buttons">
+                <a href="#games" class="btn-primary">Explore Realms</a>
+                <a href="terms.html" class="btn-secondary">View Rules</a>
+            </div>
+        </div>
+    </section>
 
-<div class="search-container">
-    <div class="search-box">
-        <input type="text" id="distSearch" placeholder="Search Your District..." onkeyup="filterDistricts()">
-    </div>
-</div>
-
-<div class="grid" id="districtGrid">
-    <script>
-        const districts = ["Bagerhat", "Bandarban", "Barguna", "Barishal", "Bhola", "Bogura", "Brahmanbaria", "Chandpur", "Chapai Nawabganj", "Chattogram", "Chuadanga", "Cumilla", "Cox's Bazar", "Dhaka", "Dinajpur", "Faridpur", "Feni", "Gaibandha", "Gazipur", "Gopalganj", "Habiganj", "Jamalpur", "Jashore", "Jhalokathi", "Jhenaidah", "Joypurhat", "Khagrachhari", "Khulna", "Kishoreganj", "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj", "Meherpur", "Moulvibazar", "Munshiganj", "Mymensingh", "Naogaon", "Narail", "Narayanganj", "Narsingdi", "Natore", "Netrokona", "Nilphamari", "Noakhali", "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur", "Satkhira", "Shariatpur", "Sherpur", "Sirajganj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"];
-        
-        districts.sort();
-
-        let gridHtml = "";
-        districts.forEach(d => {
-            gridHtml += `
-                <div class="card" onclick="location.href='${d.toLowerCase().replace(/ /g, '')}.html'">
-                    <h3>${d.toUpperCase()}</h3>
-                    <span class="notice">LIMITED EDITION FRIDAY</span>
+    <section id="games" class="games-section">
+        <h2 class="section-title">Select Your <span class="gold-text">Community</span></h2>
+        <div class="grid-container">
+            <div class="game-card" onclick="window.location.href='dashboard.html?game=fortnite'">
+                <div class="card-img" style="background-image: url('https://via.placeholder.com/300x150/1a1a1a/gold?text=FORTNITE');"></div>
+                <div class="card-info">
+                    <h3>Fortnite Realm</h3>
+                    <p>95 Plots + 5 Leader Slots</p>
+                    <span class="status">Live Now</span>
                 </div>
-            `;
+            </div>
+            </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        // Loader Script
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+            }, 2000);
         });
-        document.getElementById('districtGrid').innerHTML = gridHtml;
     </script>
-</div>
-
-<div class="float-cs" onclick="openPopup()" title="Quick Support">
-    <i class="fas fa-headset"></i>
-</div>
-
-<a href="support.html" target="_blank" class="support-btn">
-    <i class="fas fa-user-shield"></i> CUSTOMER SERVICE
-</a>
-
-<script>
-    function filterDistricts() {
-        let input = document.getElementById('distSearch').value.toUpperCase();
-        let cards = document.getElementsByClassName('card');
-        for (let i = 0; i < cards.length; i++) {
-            let h3 = cards[i].getElementsByTagName('h3')[0];
-            if (h3.innerHTML.toUpperCase().includes(input)) {
-                cards[i].style.display = "";
-            } else {
-                cards[i].style.display = "none";
-            }
-        }
-    }
-    function openPopup() { document.getElementById('waPopup').style.display = 'flex'; }
-    function closePopup() { document.getElementById('waPopup').style.display = 'none'; }
-</script>
-
 </body>
 </html>
