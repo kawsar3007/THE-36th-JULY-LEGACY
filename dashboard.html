@@ -2,90 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AETHER REALM | Assets Map</title>
+    <title>AETHER REALM | Plot Canvas</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body style="background: #000;">
 
-    <div class="display-header">
-        <h2 id="realmName">FORTNITE REALM</h2>
-        <p style="color: #D4AF37; font-size: 14px;">SELECT A PLOT TO CLAIM OWNERSHIP</p>
+    <div class="canvas-header">
+        <h1 id="realmTitle">LOADING REALM...</h1>
+        <p>SELECT YOUR 100x100 DIGITAL ASSET</p>
     </div>
 
-    <div class="map-canvas">
-        <h3 style="text-align: center; margin-bottom: 20px; font-size: 12px; letter-spacing: 4px;">VIP LEADER SLOTS</h3>
-        <div class="leader-section">
-            <div class="leader-card" onclick="openPurchase('Leader #1', 9999)">
-                <i class="fas fa-crown"></i>
-                <span>SLOT 01</span>
-                <small>$9,999</small>
-            </div>
-            <div class="leader-card" onclick="openPurchase('Leader #2', 9999)">
-                <i class="fas fa-crown"></i>
-                <span>SLOT 02</span>
-                <small>$9,999</small>
-            </div>
-            <div class="leader-card" onclick="openPurchase('Leader #3', 9999)">
-                <i class="fas fa-crown"></i>
-                <span>SLOT 03</span>
-                <small>$9,999</small>
-            </div>
-            <div class="leader-card" onclick="openPurchase('Leader #4', 9999)">
-                <i class="fas fa-crown"></i>
-                <span>SLOT 04</span>
-                <small>$9,999</small>
-            </div>
-            <div class="leader-card" onclick="openPurchase('Leader #5', 9999)">
-                <i class="fas fa-crown"></i>
-                <span>SLOT 05</span>
-                <small>$9,999</small>
-            </div>
-        </div>
-
-        <h3 style="text-align: center; margin-bottom: 20px; font-size: 12px; letter-spacing: 4px;">COMMUNITY PLOTS</h3>
-        <div class="plots-grid" id="mainGrid">
+    <div class="map-wrapper">
+        <div class="plot-canvas" id="plotCanvas">
             </div>
     </div>
 
-    <div id="plotModal" class="modal">
-        <div class="modal-box">
-            <h1 id="mTitle" style="color: var(--gold);">PLOT #00</h1>
-            <p id="mCategory" style="color: #888;">COMMUNITY ASSET</p>
-            <h2 id="mPrice" style="font-size: 2.5rem; margin: 20px 0;">$0</h2>
-            <p style="font-size: 12px; color: #555;">* Lifetime ownership. No hidden fees.</p>
-            <button class="buy-btn" onclick="location.href='order.html'">PURCHASE NOW</button>
-            <p onclick="closeM()" style="margin-top: 15px; cursor: pointer; color: #444;">Close</p>
+    <div id="buyModal" class="modal">
+        <div class="modal-content">
+            <h2 id="mID">PLOT #00</h2>
+            <h1 id="mPrice" class="gold-text">$0</h1>
+            <p>Permanent Ownership | Instant Deployment</p>
+            <button class="buy-btn" onclick="goToOrder()">PROCEED TO PAYMENT</button>
+            <button class="close-btn" onclick="closeModal()">CANCEL</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
     <script>
-        // Generate 95 Plots with auto-pricing logic
-        const grid = document.getElementById('mainGrid');
-        for (let i = 1; i <= 95; i++) {
-            let price, layer;
-            if (i <= 20) { price = 999; layer = 'layer-1'; }
-            else if (i <= 45) { price = 499; layer = 'layer-2'; }
-            else if (i <= 70) { price = 299; layer = 'layer-3'; }
-            else { price = 199; layer = 'layer-4'; }
+        const urlParams = new URLSearchParams(window.location.search);
+        document.getElementById('realmTitle').innerText = (urlParams.get('realm') || 'AETHER') + " REALM";
 
-            const div = document.createElement('div');
-            div.className = `plot ${layer}`;
-            div.innerHTML = i;
-            div.onclick = () => openPurchase(`Plot #${i}`, price);
-            grid.appendChild(div);
+        const canvas = document.getElementById('plotCanvas');
+        let selectedPlot = "";
+        let selectedPrice = "";
+
+        for (let i = 1; i <= 100; i++) {
+            const plot = document.createElement('div');
+            plot.className = 'plot-unit';
+            
+            let price = "";
+            if (i <= 5) { plot.classList.add('p-leader'); price = 9999; }
+            else if (i <= 20) { plot.classList.add('p-tier-1'); price = 999; }
+            else if (i <= 50) { plot.classList.add('p-tier-2'); price = 499; }
+            else { plot.classList.add('p-tier-3'); price = 199; }
+
+            plot.innerHTML = `<span>#${i}</span><div class="price-tag">$${price}</div>`;
+            plot.onclick = () => {
+                selectedPlot = i;
+                selectedPrice = price;
+                document.getElementById('mID').innerText = "PLOT #" + i;
+                document.getElementById('mPrice').innerText = "$" + price;
+                document.getElementById('buyModal').style.display = 'flex';
+            };
+            canvas.appendChild(plot);
         }
 
-        function openPurchase(title, price) {
-            document.getElementById('plotModal').style.display = 'flex';
-            document.getElementById('mTitle').innerText = title;
-            document.getElementById('mPrice').innerText = '$' + price.toLocaleString();
-        }
-
-        function closeM() {
-            document.getElementById('plotModal').style.display = 'none';
-        }
+        function closeModal() { document.getElementById('buyModal').style.display = 'none'; }
+        function goToOrder() { window.location.href = `order.html?id=${selectedPlot}&price=${selectedPrice}`; }
     </script>
 </body>
 </html>
