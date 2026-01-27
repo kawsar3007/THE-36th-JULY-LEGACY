@@ -1,90 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>CEO ADMIN | THE GLOBAL CREATOR HOMEPAGE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHER ADMIN | Master Control</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { font-family: sans-serif; background: #0B0E11; color: #fff; padding: 20px; display: none; }
-        .card { background: #1E2329; padding: 20px; margin-bottom: 20px; border-radius: 10px; border-left: 8px solid #FCD535; }
-        input { padding: 12px; width: 250px; margin-right: 10px; border: 1px solid #444; background: #0B0E11; color: #fff; border-radius: 4px; }
-        button { padding: 12px 25px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; }
+        body { background-color: #0b0c10; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .admin-login { height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .admin-box { background: #161b22; padding: 40px; border: 2px solid #D4AF37; border-radius: 10px; text-align: center; color: white; }
+        .admin-box input { background: #0d1117; border: 1px solid #30363d; color: #fff; padding: 12px; width: 100%; margin-bottom: 20px; border-radius: 5px; }
+        
+        /* Admin UI Design inspired by your image */
+        .dashboard-ui { display: none; padding: 30px; color: white; }
+        .game-selector { margin-bottom: 30px; text-align: center; }
+        .game-btn { background: #161b22; color: #D4AF37; border: 1px solid #D4AF37; padding: 10px 20px; cursor: pointer; margin: 5px; border-radius: 5px; }
+        .game-btn.active { background: #D4AF37; color: black; }
+
+        .panel-container { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+        .form-section, .list-section { 
+            background: #161b22; padding: 30px; border-radius: 12px; 
+            width: 100%; max-width: 450px; border: 1px solid #30363d; 
+        }
+        
+        h2 { color: #D4AF37; margin-bottom: 25px; text-transform: uppercase; font-size: 1.2rem; letter-spacing: 2px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group input { 
+            width: 100%; padding: 12px; background: #0d1117; border: 1px solid #30363d; 
+            color: white; border-radius: 5px; 
+        }
+        
+        .publish-btn { 
+            width: 100%; padding: 15px; background: #D4AF37; color: black; 
+            border: none; border-radius: 8px; font-weight: bold; cursor: pointer; 
+            text-transform: uppercase; margin-top: 10px; transition: 0.3s;
+        }
+        .publish-btn:hover { background: #b8962d; }
+
+        .plot-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 12px; border-bottom: 1px solid #30363d; font-size: 0.9rem;
+        }
+        .del-btn { background: #ff0000; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 0.7rem; }
     </style>
 </head>
 <body>
+
+    <div id="loginArea" class="admin-login">
+        <div class="admin-box">
+            <h2 style="color: #D4AF37;">AETHER SECURITY</h2>
+            <p style="margin-bottom: 20px; color: #8b949e;">Authorization Required</p>
+            <input type="password" id="pinInput" placeholder="Enter Access Password">
+            <button class="publish-btn" onclick="checkPin()">Access Dashboard</button>
+        </div>
+    </div>
+
+    <div id="adminUI" class="dashboard-ui">
+        <div class="game-selector">
+            <h1 id="currentGameTitle">FORTNITE REALM</h1>
+            <button class="game-btn active" onclick="switchGame('Fortnite')">Fortnite</button>
+            <button class="game-btn" onclick="switchGame('PUBG')">PUBG</button>
+            <button class="game-btn" onclick="switchGame('Free Fire')">Free Fire</button>
+            <button class="game-btn" onclick="switchGame('Valorant')">Valorant</button>
+            <button class="game-btn" onclick="switchGame('Minecraft')">Minecraft</button>
+            <button class="game-btn" onclick="switchGame('Roblox')">Roblox</button>
+            <button class="game-btn" onclick="switchGame('GTA V')">GTA V</button>
+            <button class="game-btn" onclick="switchGame('Dota 2')">Dota 2</button>
+            <button class="game-btn" onclick="switchGame('League')">LoL</button>
+        </div>
+
+        <div class="panel-container">
+            <div class="form-section">
+                <h2>DIRECT PUBLISH</h2>
+                <div class="input-group"><input type="text" id="brandName" placeholder="Brand Name"></div>
+                <div class="input-group"><input type="text" id="logoUrl" placeholder="Logo URL"></div>
+                <div class="input-group"><input type="text" id="webUrl" placeholder="Website URL"></div>
+                <div class="input-group"><input type="number" id="plotId" placeholder="Plot ID (1-100)"></div>
+                <button class="publish-btn" onclick="publishPlot()">PUBLISH NOW</button>
+            </div>
+
+            <div class="list-section">
+                <h2>LIVE PLOTS</h2>
+                <div id="plotsList">
+                    <div class="plot-item"><span>#1 - Kawsar Ahmed</span> <button class="del-btn">DEL</button></div>
+                    <div class="plot-item"><span>#2 - Pri ON TO</span> <button class="del-btn">DEL</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // আপনার জিমেইল পাসওয়ার্ড হিসেবে কাজ করবে
-        const accessPass = prompt("Access Password:");
-        if(accessPass === "zoomlink34@gmail.com") { 
-            document.body.style.display = "block"; 
-        } else { 
-            alert("ভুল পাসওয়ার্ড!");
-            window.location.href = "index.html"; 
-        }
-    </script>
+        const SECRET_PASS = "KAWSARahmed22@@";
 
-    <h1 style="color:#FCD535">PENDING APPROVALS</h1>
-    <div id="order-list">Loading...</div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
-    <script>
-        // পূর্ণাঙ্গ Config (এটি ছাড়া Rules কাজ করবে না)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
-            messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const auth = firebase.auth();
-
-        // অ্যাডমিন প্যানেলে ডাটা দেখানোর ফাংশন
-        function loadOrders() {
-            db.ref('orders').on('value', s => {
-                const list = document.getElementById('order-list'); 
-                list.innerHTML = "";
-                const data = s.val(); 
-                if(!data) return list.innerHTML = "No pending orders.";
-                
-                Object.keys(data).forEach(id => {
-                    list.innerHTML += `<div class="card">
-                        <b>PLOT #${id}</b> | BRAND: ${data[id].name} <br><br>
-                        <input type="text" id="img_${id}" placeholder="Logo URL">
-                        <input type="text" id="web_${id}" placeholder="Website URL">
-                        <button onclick="approve('${id}', '${data[id].name}')" style="background:#2ebd85; color:white;">APPROVE</button>
-                        <button onclick="reject('${id}')" style="background:red; color:white; margin-left:10px;">REJECT / DELETE</button>
-                    </div>`;
-                });
-            }, (error) => {
-                console.error(error);
-                document.getElementById('order-list').innerHTML = "Permission Denied! Please login to Firebase Console.";
-            });
-        }
-
-        // এপ্রুভ ও ডিলিট ফাংশন
-        function approve(id, name) {
-            const img = document.getElementById('img_'+id).value, web = document.getElementById('web_'+id).value;
-            if(!img) return alert("Logo URL missing!");
-            db.ref('pixels/'+id).set({name, imageUrl:img, link:web||"#", plotID:id}).then(() => {
-                db.ref('notifications/'+id).set({status: "Approved", message: "Your Brand is Live!"});
-                db.ref('orders/'+id).remove();
-            });
-        }
-
-        function reject(id) {
-            if(confirm("Delete this order?")) {
-                db.ref('orders/'+id).remove();
+        function checkPin() {
+            const input = document.getElementById('pinInput').value;
+            if(input === SECRET_PASS) {
+                document.getElementById('loginArea').style.display = 'none';
+                document.getElementById('adminUI').style.display = 'block';
+            } else {
+                alert("Incorrect Password! Access Denied.");
             }
         }
 
-        // পেজ লোড হলে ডাটা আনা শুরু করবে
-        loadOrders();
+        function switchGame(gameName) {
+            document.getElementById('currentGameTitle').innerText = gameName.toUpperCase() + " REALM";
+            // গেম অনুযায়ী বাটন কালার চেঞ্জ করার লজিক
+            const btns = document.querySelectorAll('.game-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            alert(gameName + " প্যানেল লোড হয়েছে। এখন আপনি এই গেমের প্লট এডিট করতে পারবেন।");
+        }
+
+        function publishPlot() {
+            const id = document.getElementById('plotId').value;
+            const brand = document.getElementById('brandName').value;
+            if(id && brand) {
+                alert("Plot #" + id + " has been published for " + brand);
+            } else {
+                alert("Please fill all fields!");
+            }
+        }
     </script>
 </body>
 </html>
