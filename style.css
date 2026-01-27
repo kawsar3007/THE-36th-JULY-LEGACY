@@ -1,110 +1,82 @@
-:root {
-    --primary-bg: #050505;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --gold: #D4AF37;
-    --text-white: #EAECEF;
-    --neon-glow: 0 0 15px rgba(212, 175, 55, 0.5);
-}
+/* AETHER PLOTS - GLOBAL DESIGN SYSTEM */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
+:root {
+    --bg-deep: #050505;
+    --bg-panel: #0f0f0f;
+    --gold: #D4AF37;
+    --gold-glow: rgba(212, 175, 55, 0.4);
+    --text-main: #e0e0e0;
+    --border: #222;
 }
 
 body {
-    background-color: var(--primary-bg);
-    color: var(--text-white);
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
     overflow-x: hidden;
 }
 
-/* Pre-loader Styling */
+/* Luxury Loader */
 #loader {
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    background: #000;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: fixed; height: 100vh; width: 100%; background: #000;
+    z-index: 10000; display: flex; justify-content: center; align-items: center;
+}
+.loader-logo { font-size: 2.5rem; letter-spacing: 8px; color: var(--gold); font-weight: 800; }
+
+/* Grid Navigation Display */
+.display-header {
+    position: sticky; top: 0; background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px); padding: 20px; border-bottom: 1px solid var(--border);
+    z-index: 900; text-align: center;
 }
 
-.logo-text {
-    font-size: 3rem;
-    letter-spacing: 5px;
-    color: var(--text-white);
+/* The Map Container */
+.map-canvas {
+    max-width: 1200px; margin: 40px auto; padding: 20px;
 }
 
-.logo-text span { color: var(--gold); }
-
-/* Header & Nav */
-header {
-    padding: 20px 50px;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    position: fixed;
-    width: 100%;
-    z-index: 100;
+/* Top 5 Leader Slots - $9,999 */
+.leader-section {
+    display: flex; justify-content: center; gap: 20px; margin-bottom: 60px;
 }
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.leader-card {
+    width: 120px; height: 150px; background: linear-gradient(145deg, #1a1a1a, #000);
+    border: 1px solid var(--gold); border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: 0.4s; box-shadow: 0 0 15px var(--gold-glow);
 }
+.leader-card:hover { transform: translateY(-10px); box-shadow: 0 0 30px var(--gold); }
+.leader-card i { color: var(--gold); font-size: 2rem; margin-bottom: 10px; }
+.leader-card span { font-size: 10px; letter-spacing: 2px; color: #888; }
 
-.logo { font-size: 1.5rem; font-weight: bold; color: var(--gold); }
-
-/* Game Cards */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    padding: 50px;
+/* 95 Community Plots Grid */
+.plots-grid {
+    display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px;
 }
-
-.game-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    overflow: hidden;
-    transition: 0.4s;
-    cursor: pointer;
+.plot {
+    aspect-ratio: 1/1; background: #0f0f0f; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; cursor: pointer; transition: 0.2s; border-radius: 4px;
 }
+.plot:hover { border-color: var(--gold); background: #1a1a1a; transform: scale(1.05); }
 
-.game-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--gold);
-    box-shadow: var(--neon-glow);
+/* Pricing Layers Backgrounds */
+.layer-1 { border-color: #D4AF37; } /* $999 */
+.layer-2 { border-color: #888; }    /* $499 */
+.layer-3 { border-color: #444; }    /* $299 */
+
+/* Modal Pop-up */
+.modal {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 2000;
 }
-
-.gold-text { color: var(--gold); }
-.map-container { padding: 100px 50px; text-align: center; }
-.grid-label { margin: 20px 0; letter-spacing: 3px; font-size: 0.9rem; color: #888; }
-.divider { border: 0; border-top: 1px solid rgba(212, 175, 55, 0.3); margin: 40px auto; width: 50%; }
-
-.leader-grid { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
-.leader-slot {
-    width: 80px; height: 80px; background: linear-gradient(45deg, #D4AF37, #8A6E2F);
-    border-radius: 10px; display: flex; align-items: center; justify-content: center;
-    font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-    transition: 0.3s; color: black;
+.modal-box {
+    background: #111; padding: 50px; border-radius: 20px; border: 1px solid var(--gold);
+    text-align: center; max-width: 400px;
 }
-.leader-slot:hover { transform: scale(1.1); box-shadow: 0 0 25px #D4AF37; }
-
-.main-grid {
-    display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; max-width: 800px; margin: 0 auto;
+.buy-btn {
+    background: var(--gold); color: #000; padding: 15px 40px; border: none;
+    border-radius: 30px; font-weight: 800; cursor: pointer; margin-top: 25px;
 }
-.plot-slot {
-    aspect-ratio: 1/1; background: #1a1a1a; border: 1px solid #333;
-    display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
-    cursor: pointer; transition: 0.2s;
-}
-.plot-slot:hover { border-color: var(--gold); background: #222; }
-
-/* Modal Styling */
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
-.modal-content { background: #111; padding: 40px; border: 1px solid var(--gold); border-radius: 20px; text-align: center; }
-.buy-btn { background: var(--gold); color: black; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; font-weight: bold; }
