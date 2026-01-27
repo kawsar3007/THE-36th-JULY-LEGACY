@@ -81,3 +81,30 @@ nav {
 }
 
 .gold-text { color: var(--gold); }
+.map-container { padding: 100px 50px; text-align: center; }
+.grid-label { margin: 20px 0; letter-spacing: 3px; font-size: 0.9rem; color: #888; }
+.divider { border: 0; border-top: 1px solid rgba(212, 175, 55, 0.3); margin: 40px auto; width: 50%; }
+
+.leader-grid { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+.leader-slot {
+    width: 80px; height: 80px; background: linear-gradient(45deg, #D4AF37, #8A6E2F);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    transition: 0.3s; color: black;
+}
+.leader-slot:hover { transform: scale(1.1); box-shadow: 0 0 25px #D4AF37; }
+
+.main-grid {
+    display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; max-width: 800px; margin: 0 auto;
+}
+.plot-slot {
+    aspect-ratio: 1/1; background: #1a1a1a; border: 1px solid #333;
+    display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+    cursor: pointer; transition: 0.2s;
+}
+.plot-slot:hover { border-color: var(--gold); background: #222; }
+
+/* Modal Styling */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; }
+.modal-content { background: #111; padding: 40px; border: 1px solid var(--gold); border-radius: 20px; text-align: center; }
+.buy-btn { background: var(--gold); color: black; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; font-weight: bold; }
