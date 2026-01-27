@@ -1,38 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>TRACK | THE GLOBAL CREATOR HOMEPAGE</title>
-    <style>
-        body { background: #0B0E11; color: #fff; font-family: sans-serif; text-align: center; padding: 50px; }
-        .card { background: #1E2329; border: 1px solid #FCD535; padding: 40px; border-radius: 15px; display: inline-block; width: 320px; }
-        input { width: 90%; padding: 15px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #444; background: #2B3139; color: #fff; }
-        button { width: 100%; padding: 15px; background: #FCD535; border:none; font-weight:bold; cursor:pointer; border-radius: 5px; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHER REALM | Plot Selection</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="card">
-        <h2 style="color:#FCD535;">TRACK STATUS</h2>
-        <input type="number" id="plotID" placeholder="Enter Plot ID">
-        <button onclick="check()">CHECK NOW</button>
-        <div id="resBox" style="margin-top:20px; padding:15px; background:#2B3139; display:none; border-radius:5px;">
-            <h3 id="s" style="color:#FCD535;"></h3>
-            <p id="m"></p>
+<body class="dashboard-body">
+
+    <header>
+        <div class="logo" onclick="window.location.href='index.html'">AETHER PLOTS</div>
+        <div id="plot-info-display">Select a plot to see details</div>
+    </header>
+
+    <main class="map-container">
+        <h2 class="grid-label gold-text">LEADER SLOTS ($9,999)</h2>
+        <div class="leader-grid" id="leaderGrid">
+            </div>
+
+        <hr class="divider">
+
+        <h2 class="grid-label">COMMUNITY PLOTS</h2>
+        <div class="main-grid" id="mainGrid">
+            </div>
+    </main>
+
+    <div id="plotModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Plot #0</h2>
+            <p>Category: <span id="modalCategory">-</span></p>
+            <h3 id="modalPrice">$0</h3>
+            <button class="buy-btn" onclick="window.location.href='order.html'">Purchase Plot</button>
+            <button class="close-btn" onclick="closeModal()">Close</button>
         </div>
-        <a href="index.html" style="display:block; margin-top:20px; color:#888; text-decoration:none;">← Back</a>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script>
-        firebase.initializeApp({databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com/"});
-        function check() {
-            const id = document.getElementById('plotID').value;
-            firebase.database().ref('notifications/'+id).once('value', s => {
-                const d = s.val(); if(!d) return alert("Pending...");
-                document.getElementById('resBox').style.display = 'block';
-                document.getElementById('s').innerText = d.status;
-                document.getElementById('m').innerText = d.message;
-            });
-        }
-    </script>
+
+    <script src="script.js"></script>
 </body>
 </html>
