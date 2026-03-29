@@ -7,67 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        // Your Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
-            messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded",
-            measurementId: "G-6KEYY60YGG"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // --- Realtime Stats Sync from Firestore ---
-        // Firebase Console > Firestore-এ 'stats' কালেকশনে 'global' ডকুমেন্ট থাকতে হবে
-        onSnapshot(doc(db, "stats", "global"), (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.data();
-                document.getElementById('stat-donation').innerText = '$' + (data.donationAmount || 0);
-                document.getElementById('stat-bought').innerText = data.treesBought || 0;
-                document.getElementById('stat-handed').innerText = data.treesDelivered || 0;
-            }
-        });
-
-        // --- Submit Donation to Firebase ---
-        window.submitDonation = async function() {
-            const name = document.getElementById('custName').value;
-            const qty = document.getElementById('treeQty').value;
-
-            if(!name || !qty) return alert("Please enter name and tree quantity.");
-
-            try {
-                // 'donations' কালেকশনে নতুন এন্ট্রি সেভ হবে
-                await addDoc(collection(db, "donations"), {
-                    donorName: name,
-                    treeQuantity: parseInt(qty),
-                    status: "pending",
-                    timestamp: new Date()
-                });
-
-                // UI updates (Original logic preserved)
-                document.getElementById('payment-list').style.display = 'block';
-                document.getElementById('congrats-title').innerText = "Congratulations, " + name + "!";
-                document.getElementById('congrats-desc').innerText = "You've successfully requested to plant " + qty + " trees!";
-                document.getElementById('congrats-popup').classList.add('active');
-                confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
-
-            } catch (error) {
-                console.error("Error saving data: ", error);
-                alert("Database connection failed. Check your Firebase Rules.");
-            }
-        };
-    </script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
 
@@ -82,7 +21,12 @@
         .nav-brand { font-family: 'Montserrat'; font-weight: 900; font-size: 24px; letter-spacing: 1px; flex-shrink: 0; }
         
         .nav-stats {
-            display: flex; gap: 20px; align-items: center; justify-content: center; flex-grow: 1; margin: 0 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            margin: 0 15px;
         }
         .stat-item { text-align: center; }
         .stat-number { display: block; font-family: 'Montserrat'; font-weight: 900; font-size: 16px; color: var(--pink); line-height: 1; }
@@ -94,7 +38,8 @@
 
         .fixed-social-bar {
             position: fixed; right: 20px; bottom: 30px;
-            display: flex; flex-direction: column; gap: 10px; z-index: 9999; align-items: center;
+            display: flex; flex-direction: column; gap: 10px; z-index: 9999;
+            align-items: center;
         }
         .side-icon {
             width: 45px; height: 45px; border-radius: 50%; background: var(--pink);
@@ -116,6 +61,11 @@
         @media (max-width: 768px) { .info-grid { grid-template-columns: 1fr; } .nav-stats { display: none; } }
         .info-card h3 { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); margin-bottom: 15px; text-transform: uppercase; }
         .info-card p { line-height: 1.8; color: #444; font-size: 15px; margin-bottom: 10px; }
+
+        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; max-width: 1200px; margin-top: 40px; }
+        .gallery-item { width: 100%; height: 250px; background: #eee; border-radius: 15px; overflow: hidden; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        @media (max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
 
         #archive { 
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=2000');
@@ -144,9 +94,11 @@
     <div class="fixed-social-bar">
         <a href="https://wa.me/8801576940717" target="_blank" class="side-icon" title="Support"><i class="fab fa-whatsapp"></i></a>
         <span class="support-label">Customer Support<br>24/7</span>
+        
         <a href="https://facebook.com/arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-facebook-f"></i></a>
         <a href="https://instagram.com/arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-instagram"></i></a>
         <a href="https://youtube.com/@ArkArchiveOfficial" target="_blank" class="side-icon"><i class="fab fa-youtube"></i></a>
+        
         <a href="https://tiktok.com/@arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-tiktok"></i></a>
         <a href="https://x.com/arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-x-twitter"></i></a>
     </div>
@@ -154,11 +106,22 @@
     <div class="main-wrapper">
         <header class="nav-bar">
             <div class="nav-brand">ARK ARCHIVE</div>
+            
             <div class="nav-stats">
-                <div class="stat-item"><span class="stat-number" id="stat-donation">$0</span><span class="stat-text">Collected</span></div>
-                <div class="stat-item"><span class="stat-number" id="stat-bought">0</span><span class="stat-text">Trees Bought</span></div>
-                <div class="stat-item"><span class="stat-number" id="stat-handed">0</span><span class="stat-text">Handed Over</span></div>
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-donation">$0</span>
+                    <span class="stat-text">Collected</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-bought">0</span>
+                    <span class="stat-text">Trees Bought</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-handed">0</span>
+                    <span class="stat-text">Handed Over</span>
+                </div>
             </div>
+
             <nav class="nav-links">
                 <a href="#philosophy" class="nav-link">Philosophy</a>
                 <a href="#archive" class="nav-link">Archive</a>
@@ -178,11 +141,29 @@
                 <div class="info-grid">
                     <div class="info-card" style="grid-column: 1 / -1; border-bottom: 3px solid var(--pink); padding-bottom: 20px;">
                         <h3>Environmental Shield Against War Impacts</h3>
-                        <p>Global conflicts do more than direct damage; they destroy the very air we breathe. Modern warfare releases toxic gases, chemical residues, and massive amounts of dust into the atmosphere. Nature is our only long-term defense.</p>
+                        <p>Global conflicts do more than direct damage; they destroy the very air we breathe. Nature is our only long-term defense.</p>
+                        <p>Trees act as massive biological filters. By planting millions of trees, we are building a natural shield for our children. We must plant today to breathe tomorrow.</p>
                     </div>
-                    <div class="info-card"><h3>Our Goal & Priority</h3><p>Providing every student in Bangladesh with their own fruit-bearing tree.</p></div>
-                    <div class="info-card"><h3>Transparency</h3><p>Every dollar you send is converted directly into a sapling.</p></div>
+
+                    <div class="info-card">
+                        <h3>Our Goal & Priority</h3>
+                        <p>To provide every student in Bangladesh from Class 1 to Class 10 with their own fruit-bearing tree.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Where Does Your Money Go?</h3>
+                        <p>Transparency is our foundation. Every dollar you send is converted directly into a sapling.</p>
+                    </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="section" id="mission-gallery">
+            <h2 style="font-family:'Montserrat'; font-weight:900; text-transform:uppercase; margin-bottom:40px;">Mission in Progress</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+1"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+2"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+3"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+4"></div>
             </div>
         </section>
 
@@ -190,7 +171,7 @@
             <div class="section">
                 <h2 style="font-family:'Montserrat'; font-weight:900; font-size:40px; text-transform:uppercase; color:var(--cyan);">The Legacy Archive Grid</h2>
                 <div class="donor-grid" id="infiniteGrid"></div>
-                <div id="grid-bottom" style="height: 50px;"></div>
+                <div id="grid-bottom" style="height: 100px;"></div>
             </div>
         </section>
     </div>
@@ -198,6 +179,12 @@
     <div id="congrats-popup">
         <h2 id="congrats-title" style="color:var(--pink); font-family:'Montserrat';"></h2>
         <p id="congrats-desc" style="margin:20px 0; font-weight:bold;"></p>
+        <div style="text-align:left; background:#f9f9f9; padding:20px; border-radius:10px; font-size:14px; line-height:1.6; border-left:5px solid var(--cyan);">
+            <strong>Next Steps:</strong><br>
+            1. Complete your payment using the provided addresses.<br>
+            2. After payment, click the WhatsApp icon below to contact <strong>Customer Support</strong>.<br>
+            3. Provide your <strong>Name, Photo, and Social Media/Website link</strong> for your plot.<br>
+        </div>
         <button onclick="closeCongrats()" class="donate-btn" style="margin-top:25px; width:100%;">EXCELLENT!</button>
     </div>
 
@@ -208,16 +195,67 @@
         <button onclick="submitDonation()" style="width:100%; padding:18px; background:var(--pink); color:#fff; border:none; border-radius:8px; font-weight:900; cursor:pointer;">SUBMIT & VIEW ADDRESSES</button>
 
         <div id="payment-list" style="display:none; margin-top:30px;">
+            <p style="font-size:11px; font-weight:900; color:var(--cyan); margin-bottom:15px; letter-spacing:1px;">TAP ADDRESS TO COPY</p>
             <div class="pay-card" onclick="copy('01756206213')"><h4>bKash: 01756206213</h4></div>
             <div class="pay-card" onclick="copy('912221034')"><h4>Binance UID: 912221034</h4></div>
-            <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><h4>USDT TRC20: TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</h4></div>
+            <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><h4 style="font-size:10px;">USDT TRC20: TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</h4></div>
         </div>
         <button onclick="toggleDrawer()" style="margin-top:30px; background:none; border:none; color:#aaa; cursor:pointer;">[ CLOSE PANEL ]</button>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Sync Stats from /system Node (Read Only Rule)
+        database.ref('system').on('value', (snapshot) => {
+            const data = snapshot.val() || { donationAmount: 0, treesBought: 0, treesDelivered: 0 };
+            document.getElementById('stat-donation').innerText = '$' + data.donationAmount;
+            document.getElementById('stat-bought').innerText = data.treesBought;
+            document.getElementById('stat-handed').innerText = data.treesDelivered;
+        });
+
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t).then(() => alert("Copied: " + t)); }
+        
+        function copy(t) { 
+            navigator.clipboard.writeText(t).then(() => alert("Copied: " + t));
+        }
+
+        // Write to /payment_requests Node (Write Only Rule)
+        function submitDonation() {
+            const name = document.getElementById('custName').value;
+            const qty = document.getElementById('treeQty').value;
+            if(!name || !qty) return alert("Please enter name and tree quantity.");
+
+            const requestRef = database.ref('payment_requests').push();
+            requestRef.set({
+                donorName: name,
+                treeQuantity: qty,
+                timestamp: Date.now()
+            }).then(() => {
+                document.getElementById('payment-list').style.display = 'block';
+                document.getElementById('congrats-title').innerText = "Congratulations, " + name + "!";
+                document.getElementById('congrats-desc').innerText = "You've successfully requested to plant " + qty + " trees!";
+                document.getElementById('congrats-popup').classList.add('active');
+                confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+            }).catch(err => {
+                alert("Submission failed. Check Database Rules.");
+            });
+        }
+
         function closeCongrats() { document.getElementById('congrats-popup').classList.remove('active'); }
 
         const grid = document.getElementById('infiniteGrid');
@@ -229,10 +267,7 @@
             }
         }
 
-        window.onload = () => {
-            loadPlots(120);
-        };
-
+        window.onload = () => { loadPlots(120); };
         window.addEventListener('scroll', () => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
                 loadPlots(24);
