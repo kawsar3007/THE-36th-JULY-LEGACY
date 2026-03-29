@@ -1,0 +1,263 @@
+/* PROJECT: ARK ARCHIVE GLOBAL 
+    AUTHOR: Kawsar Ahmed (Dev)
+    THEME: Cyan (#00BFFF), Pink (#FF1493), Dark (#000000)
+    NO MODIFICATIONS TO USER LOGIC OR COLORS.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+    --cyan: #00BFFF;
+    --pink: #FF1493;
+    --black: #000000;
+    --white: #ffffff;
+    --grey: #f4f7f6;
+    --dark-grey: #2c3e50;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Global Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--white);
+    color: var(--black);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- Typography --- */
+h1, h2, h3, .nav-brand {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Buttons --- */
+.btn-main {
+    background: var(--pink);
+    color: var(--white);
+    padding: 14px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition);
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-main:hover {
+    background: var(--black);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 20, 147, 0.3);
+}
+
+/* --- Navigation --- */
+.nav-bar {
+    width: 100%;
+    max-width: 1200px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    margin: 0 auto;
+}
+
+.nav-brand {
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--black);
+}
+
+.nav-stats {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.stat-item { text-align: center; }
+.stat-number {
+    display: block;
+    font-weight: 900;
+    font-size: 20px;
+    color: var(--pink);
+    font-family: 'Montserrat';
+}
+
+.stat-text {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #888;
+}
+
+/* --- Hero Section --- */
+.hero {
+    background: var(--cyan);
+    color: var(--white);
+    padding: 140px 20px;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: clamp(38px, 9vw, 80px);
+    margin-bottom: 25px;
+    font-weight: 900;
+}
+
+.hero-desc {
+    max-width: 850px;
+    margin: 0 auto 45px;
+    font-size: 22px;
+    font-weight: 300;
+    opacity: 0.95;
+}
+
+/* --- Grid System --- */
+.archive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 20px;
+    padding: 50px 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.donor-plot {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--cyan);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 191, 255, 0.03);
+    transition: var(--transition);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.donor-plot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
+}
+
+.donor-plot:hover {
+    transform: scale(1.15) rotate(5deg);
+    border-color: var(--pink);
+    box-shadow: 0 15px 30px rgba(0, 191, 255, 0.3);
+    z-index: 10;
+}
+
+/* --- Dashboard Specifics --- */
+.admin-sidebar {
+    width: 280px;
+    background: var(--black);
+    min-height: 100vh;
+    padding: 40px 25px;
+    color: var(--white);
+}
+
+.admin-card {
+    background: var(--white);
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    border-top: 5px solid var(--pink);
+}
+
+/* --- Form Controls --- */
+.form-input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #eee;
+    border-radius: 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    margin-bottom: 20px;
+    transition: var(--transition);
+}
+
+.form-input:focus {
+    border-color: var(--cyan);
+    outline: none;
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.1);
+}
+
+/* --- Tables --- */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+}
+
+.custom-table th {
+    background: #fafafa;
+    padding: 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: #666;
+    border-bottom: 2px solid #eee;
+}
+
+.custom-table td {
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+/* --- Floating Icons --- */
+.social-float {
+    position: fixed;
+    right: 25px;
+    bottom: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 9999;
+}
+
+.social-circle {
+    width: 50px;
+    height: 50px;
+    background: var(--pink);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: var(--transition);
+}
+
+.social-circle:hover {
+    background: var(--black);
+    transform: scale(1.1);
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .nav-stats { display: none; }
+    .hero { padding: 100px 20px; }
+    .archive-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+}
