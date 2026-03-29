@@ -17,22 +17,25 @@
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { background: var(--white); color: var(--black); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        .nav-bar { width: 100%; max-width: 1300px; height: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; margin: 0 auto; }
-        .nav-brand { font-family: 'Montserrat'; font-weight: 900; font-size: 24px; letter-spacing: 1px; min-width: 200px; }
+        .nav-bar { width: 100%; max-width: 1200px; height: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; margin: 0 auto; }
+        .nav-brand { font-family: 'Montserrat'; font-weight: 900; font-size: 24px; letter-spacing: 1px; flex-shrink: 0; }
         
-        /* Stats Counting Section in Nav */
-        .nav-stats { display: flex; gap: 25px; flex-grow: 1; justify-content: center; padding: 0 20px; }
-        .stat-box { text-align: center; line-height: 1.2; }
-        .stat-val { display: block; font-family: 'Montserrat'; font-weight: 900; color: var(--pink); font-size: 16px; }
-        .stat-lbl { display: block; font-size: 9px; text-transform: uppercase; font-weight: 700; color: #666; letter-spacing: 0.5px; }
+        /* New Counting System Style */
+        .nav-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            margin: 0 15px;
+        }
+        .stat-item { text-align: center; }
+        .stat-number { display: block; font-family: 'Montserrat'; font-weight: 900; font-size: 16px; color: var(--pink); line-height: 1; }
+        .stat-text { display: block; font-size: 9px; text-transform: uppercase; font-weight: 700; color: #666; margin-top: 2px; }
 
-        .nav-links { display: flex; gap: 20px; align-items: center; min-width: 300px; justify-content: flex-end; }
+        .nav-links { display: flex; gap: 20px; align-items: center; flex-shrink: 0; }
         .nav-link { text-decoration: none; color: var(--black); font-weight: 700; font-size: 13px; text-transform: uppercase; font-family: 'Montserrat'; }
         .donate-btn { background: var(--pink); color: #fff; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 13px; text-transform: uppercase; cursor: pointer; border: none; }
-
-        @media (max-width: 992px) {
-            .nav-stats { display: none; } /* Mobile এ জায়গা কম থাকলে হাইড হবে */
-        }
 
         /* Fixed Social Sidebar */
         .fixed-social-bar {
@@ -43,7 +46,7 @@
         .side-icon {
             width: 45px; height: 45px; border-radius: 50%; background: var(--pink);
             display: flex; align-items: center; justify-content: center; color: #fff;
-            text-decoration: none; font-size: 20px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-decoration: none; font-size: 18px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         .support-label { font-size: 9px; font-weight: 900; color: var(--pink); text-transform: uppercase; margin-top: -5px; margin-bottom: 5px; text-align: center; line-height: 1; }
         .side-icon:hover { transform: scale(1.1); background: var(--black); }
@@ -57,7 +60,7 @@
         #philosophy { background: var(--white); text-align: left; }
         .content-wrap { max-width: 1100px; width: 100%; }
         .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 40px; margin-top: 50px; }
-        @media (max-width: 768px) { .info-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .info-grid { grid-template-columns: 1fr; } .nav-stats { display: none; } }
         .info-card h3 { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); margin-bottom: 15px; text-transform: uppercase; }
         .info-card p { line-height: 1.8; color: #444; font-size: 15px; margin-bottom: 10px; }
 
@@ -107,17 +110,17 @@
             <div class="nav-brand">ARK ARCHIVE</div>
             
             <div class="nav-stats">
-                <div class="stat-box">
-                    <span class="stat-val" id="totalDonation">$0</span>
-                    <span class="stat-lbl">Donation</span>
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-donation">$0</span>
+                    <span class="stat-text">Collected</span>
                 </div>
-                <div class="stat-box">
-                    <span class="stat-val" id="treesPurchased">0</span>
-                    <span class="stat-lbl">Trees Bought</span>
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-bought">0</span>
+                    <span class="stat-text">Trees Bought</span>
                 </div>
-                <div class="stat-box">
-                    <span class="stat-val" id="treesDelivered">0</span>
-                    <span class="stat-lbl">Handed Over</span>
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-handed">0</span>
+                    <span class="stat-text">Handed Over</span>
                 </div>
             </div>
 
@@ -141,18 +144,40 @@
                     <div class="info-card" style="grid-column: 1 / -1; border-bottom: 3px solid var(--pink); padding-bottom: 20px;">
                         <h3>Environmental Shield Against War Impacts</h3>
                         <p>Global conflicts do more than direct damage; they destroy the very air we breathe. Modern warfare releases toxic gases, chemical residues, and massive amounts of dust into the atmosphere. This can lead to environmental disasters like "oily rain" and severe respiratory issues for civilians. </p>
-                        <p>Nature is our only long-term defense. Trees act as massive biological filters, trapping toxic dust and absorbing harmful gases. By planting millions of trees, we are not just reforestation—we are building a natural shield for our children.</p>
+                        <p>Nature is our only long-term defense. Trees act as massive biological filters, trapping toxic dust and absorbing harmful gases. By planting millions of trees, we are not just reforestation—we are building a natural shield for our children. Preparedness through nature is the only way to counteract the invisible damage of global instability. We must plant today to breathe tomorrow.</p>
                     </div>
 
                     <div class="info-card">
                         <h3>Our Goal & Priority</h3>
-                        <p>Our primary mission is absolute: to provide every student in Bangladesh from Class 1 to Class 10 with their own fruit-bearing tree.</p>
+                        <p>Our primary mission is absolute: to provide every student in Bangladesh from Class 1 to Class 10 with their own fruit-bearing tree. Once we have reached every student across the nation, we will expand our logistics and mission to other countries in need of environmental restoration.</p>
                     </div>
                     <div class="info-card">
                         <h3>Where Does Your Money Go?</h3>
-                        <p>Transparency is our foundation. Every dollar you send is converted directly into a sapling. Our team covers all personal expenses out of pocket.</p>
+                        <p>Transparency is our foundation. We have invested zero donor capital into this website or our operations. Every dollar you send is converted directly into a sapling. Our team covers all personal expenses out of pocket.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Why Fruit Trees?</h3>
+                        <p>By planting fruit trees, we provide children with a sustainable source of nutrition while restoring the ecosystem. It is a dual-purpose investment in the planet and the next generation of students.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>The Silent Witness</h3>
+                        <p>Every tree is recorded in the ARK ARCHIVE. By claiming a plot, your name is etched into the digital record of this revolution—a testament to your contribution to a cleaner, greener world.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="section" id="mission-gallery">
+            <h2 style="font-family:'Montserrat'; font-weight:900; text-transform:uppercase; margin-bottom:40px;">Mission in Progress</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+1"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+2"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+3"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+4"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+5"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+6"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+7"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+8"></div>
             </div>
         </section>
 
@@ -165,6 +190,19 @@
         </section>
     </div>
 
+    <div id="congrats-popup">
+        <h2 id="congrats-title" style="color:var(--pink); font-family:'Montserrat';"></h2>
+        <p id="congrats-desc" style="margin:20px 0; font-weight:bold;"></p>
+        <div style="text-align:left; background:#f9f9f9; padding:20px; border-radius:10px; font-size:14px; line-height:1.6; border-left:5px solid var(--cyan);">
+            <strong>Next Steps:</strong><br>
+            1. Complete your payment using the provided addresses.<br>
+            2. After payment, click the WhatsApp icon below to contact <strong>Customer Support</strong>.<br>
+            3. Provide your <strong>Name, Photo, and Social Media/Website link</strong> for your plot.<br>
+            4. Confirm the number of trees donated.
+        </div>
+        <button onclick="closeCongrats()" class="donate-btn" style="margin-top:25px; width:100%;">EXCELLENT!</button>
+    </div>
+
     <div id="payment-drawer">
         <h2 style="font-family:'Montserrat'; margin-bottom:25px;">DONATION PORTAL</h2>
         <input type="text" id="custName" class="pay-input" placeholder="DONOR FULL NAME">
@@ -173,39 +211,80 @@
 
         <div id="payment-list" style="display:none; margin-top:30px;">
             <p style="font-size:11px; font-weight:900; color:var(--cyan); margin-bottom:15px; letter-spacing:1px;">TAP ADDRESS TO COPY</p>
-            <div class="pay-card" onclick="copy('01756206213')"><h4>bKash: 01756206213</h4></div>
-            <div class="pay-card" onclick="copy('912221034')"><h4>Binance UID: 912221034</h4></div>
+            
+            <div class="pay-card" onclick="copy('01756206213')">
+                <h4>bKash: 01756206213</h4>
+                <span class="limit-tag">Max: $100</span>
+                <span class="method-info">International donors: Look for "Remittance" or "Send Money" to bKash.</span>
+            </div>
+            <div class="pay-card" onclick="copy('01576940717')">
+                <h4>bKash: 01576940717</h4>
+                <span class="limit-tag">Max: $100</span>
+                <span class="method-info">Use this secondary bKash for standard transfers.</span>
+            </div>
+            <div class="pay-card" onclick="copy('017562062134')">
+                <h4>Rocket: 017562062134</h4>
+                <span class="limit-tag">Large: Max $400</span>
+                <span class="method-info">Suitable for larger contributions in a single transaction.</span>
+            </div>
+            
+            <div class="pay-card" onclick="copy('arkarchiveofficial')">
+                <h4>Social Support: TikTok / X (Twitter)</h4>
+                <span class="method-info">Contact support via WhatsApp to donate via social platform tips/gifts.</span>
+            </div>
+
+            <div class="pay-card" onclick="copy('912221034')">
+                <h4>Binance UID: 912221034</h4>
+                <span class="limit-tag" style="background:var(--cyan); color:#000;">No Limit</span>
+                <span class="method-info">Internal Binance transfer. Instant and zero fees.</span>
+            </div>
+            <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+                <h4 style="font-size:10px;">USDT TRC20: TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</h4>
+                <span class="limit-tag" style="background:var(--cyan); color:#000;">No Limit</span>
+                <span class="method-info">Global crypto transfer. Preferred for any amount.</span>
+            </div>
         </div>
         <button onclick="toggleDrawer()" style="margin-top:30px; background:none; border:none; color:#aaa; cursor:pointer;">[ CLOSE PANEL ]</button>
     </div>
 
     <script>
-        /* ADMIN PANEL CONTROLS - এখান থেকে আপনি মানগুলো পরিবর্তন করতে পারবেন */
-        const ADMIN_SETTINGS = {
-            totalDonation: 12500,     // কত ডলার কালেক্ট হয়েছে
-            treesPurchased: 8400,    // কতগুলো গাছ কেনা হয়েছে
-            treesDelivered: 5200     // কতগুলো গাছ বাচ্চাদের দেওয়া হয়েছে
+        // --- Admin Control Section ---
+        const adminData = {
+            donationAmount: 520, // ডলারের পরিমাণ
+            treesBought: 450,    // কেনা গাছের সংখ্যা
+            treesDelivered: 120  // বাচ্চাদের হাতে দেওয়া হয়েছে
         };
 
-        // এই ফাংশনটি অটোমেটিক ওয়েবসাইটের সংখ্যাগুলো আপডেট করবে
-        function updateLiveStats() {
-            document.getElementById('totalDonation').innerText = '$' + ADMIN_SETTINGS.totalDonation.toLocaleString();
-            document.getElementById('treesPurchased').innerText = ADMIN_SETTINGS.treesPurchased.toLocaleString();
-            document.getElementById('treesDelivered').innerText = ADMIN_SETTINGS.treesDelivered.toLocaleString();
+        // এই ফাংশনটি পেজ লোড হওয়ার পর সংখ্যাগুলো বসিয়ে দিবে
+        function updateStats() {
+            document.getElementById('stat-donation').innerText = '$' + adminData.donationAmount;
+            document.getElementById('stat-bought').innerText = adminData.treesBought;
+            document.getElementById('stat-handed').innerText = adminData.treesDelivered;
         }
 
-        window.onload = updateLiveStats;
+        window.onload = () => {
+            updateStats();
+            loadPlots(120);
+        };
 
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t).then(() => alert("Copied: " + t)); }
+        function copy(t) { 
+            navigator.clipboard.writeText(t).then(() => {
+                alert("Copied: " + t);
+            });
+        }
 
         function submitDonation() {
             const name = document.getElementById('custName').value;
             const qty = document.getElementById('treeQty').value;
             if(!name || !qty) return alert("Please enter name and tree quantity.");
             document.getElementById('payment-list').style.display = 'block';
+            document.getElementById('congrats-title').innerText = "Congratulations, " + name + "!";
+            document.getElementById('congrats-desc').innerText = "You've successfully requested to plant " + qty + " trees!";
+            document.getElementById('congrats-popup').classList.add('active');
             confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
         }
+        function closeCongrats() { document.getElementById('congrats-popup').classList.remove('active'); }
 
         const grid = document.getElementById('infiniteGrid');
         let plotCount = 0;
@@ -215,7 +294,12 @@
                 grid.innerHTML += `<div class="donor-circle"><i class="fas fa-tree" style="opacity:0.2; font-size:24px;"></i><span class="donor-name">Plot #${plotCount}</span></div>`;
             }
         }
-        loadPlots(80);
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                loadPlots(24);
+            }
+        });
     </script>
 </body>
 </html>
