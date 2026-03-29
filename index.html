@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 Billion Trees | One Child, One Tree, One Legacy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-green: #2D5A27;
+            --accent-gold: #C5A059;
+            --bg-dark: #0A0F0B;
+            --text-light: #F4F4F4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+
+        /* Hero Section with Meaningful Image */
+        .hero {
+            position: relative; height: 100vh; width: 100%;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
+                        url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px;
+        }
+
+        .hero h1 { font-family: 'Cinzel'; font-size: clamp(2rem, 5vw, 4rem); letter-spacing: 5px; margin-bottom: 20px; }
+        .hero p { max-width: 800px; font-size: 1.2rem; color: #ccc; margin-bottom: 40px; }
+
+        /* Live Counter from Admin Panel */
+        .live-counter {
+            display: flex; gap: 30px; margin-bottom: 50px; flex-wrap: wrap; justify-content: center;
+        }
+        .counter-box { background: rgba(255,255,255,0.05); padding: 20px 40px; border-top: 2px solid var(--primary-green); min-width: 200px; }
+        .counter-box h3 { font-size: 2rem; color: var(--accent-gold); }
+        .counter-box span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Navigation Button Styles */
+        .btn-group { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn { 
+            padding: 15px 40px; text-decoration: none; font-weight: bold; text-transform: uppercase; 
+            letter-spacing: 2px; transition: 0.4s; font-size: 0.9rem; border: 1px solid var(--primary-green);
+        }
+        .btn-primary { background: var(--primary-green); color: white; }
+        .btn-outline { background: transparent; color: white; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); background: white; color: black; }
+
+        /* Digital Forest Portal */
+        .portal-section { padding: 100px 5%; background: #0e140f; text-align: center; border-bottom: 1px solid #1a251b; }
+        .portal-card {
+            max-width: 1000px; margin: 0 auto; background: rgba(255,255,255,0.02); padding: 60px;
+            border: 1px solid rgba(45, 90, 39, 0.3); position: relative; overflow: hidden;
+        }
+        .portal-card::before {
+            content: 'ARK'; position: absolute; top: -50px; right: -20px; font-size: 15rem; 
+            font-family: 'Cinzel'; opacity: 0.03; font-weight: bold;
+        }
+
+        /* Information Grid */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; padding: 100px 5%; }
+        .info-item { padding: 30px; border-left: 2px solid var(--primary-green); }
+        .info-item h4 { font-family: 'Cinzel'; color: var(--accent-gold); margin-bottom: 15px; font-size: 1.5rem; }
+
+        footer { padding: 40px; text-align: center; font-size: 0.8rem; color: #555; letter-spacing: 2px; }
+
+        @media (max-width: 768px) { .hero h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1 style="color: var(--accent-gold);">ONE BILLION TREES</h1>
+        <p>"Our atmosphere is choking. As wars toxify the air, we plant life. One fruit tree for every child in Bangladesh, Class 1 to 10. A dual mission of reforestation and nutrition."</p>
+        
+        <div class="live-counter">
+            <div class="counter-box">
+                <h3 id="stat-donated">$1,420</h3>
+                <span>Funds Collected</span>
+            </div>
+            <div class="counter-box">
+                <h3 id="stat-purchased">1,420</h3>
+                <span>Trees Purchased</span>
+            </div>
+            <div class="counter-box">
+                <h3 id="stat-planted">850</h3>
+                <span>Trees Planted</span>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a href="#contribute" class="btn btn-primary">Contribute $1 per Tree</a>
+            <a href="#portal" class="btn btn-outline">Explore Digital Forest</a>
+        </div>
+    </section>
+
+    <section class="info-grid">
+        <div class="info-item">
+            <h4>The Silent Crisis</h4>
+            <p>War and industrial decline have filled our skies with toxic dust. We aren't just planting trees; we are building a natural filter for the lungs of the next generation.</p>
+        </div>
+        <div class="info-item">
+            <h4>Nutrition & Nature</h4>
+            <p>Many children cannot afford essential fruits. By giving them their own tree, we provide a lifetime of nutrition and teach them to protect the planet.</p>
+        </div>
+        <div class="info-item">
+            <h4>100% Transparency</h4>
+            <p>We take zero donor money for our operations. Every single dollar you give is converted directly into a sapling. Our team covers all logistics out-of-pocket.</p>
+        </div>
+    </section>
+
+    <section class="portal-section" id="portal">
+        <div class="portal-card">
+            <h2 style="font-family: 'Cinzel'; margin-bottom: 20px;">THE DIGITAL FOREST</h2>
+            <p style="margin-bottom: 30px; color: #888;">Step into the archive. Every donor's name is etched into the roots of this project forever.</p>
+            <a href="digital-forest.html" class="btn btn-primary" style="display: inline-block;">Enter Portal</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 ONE BILLION TREES PROJECT | SIRAJGANJ, BANGLADESH</p>
+    </footer>
+
+    <script>
+        // এই ভ্যালুগুলো ভবিষ্যতে আপনি Firebase Admin Panel থেকে অটোমেটিক আপডেট করতে পারবেন।
+        const adminData = {
+            donated: 12500,
+            purchased: 12500,
+            planted: 4200
+        };
+
+        document.getElementById('stat-donated').innerText = "$" + adminData.donated.toLocaleString();
+        document.getElementById('stat-purchased').innerText = adminData.purchased.toLocaleString();
+        document.getElementById('stat-planted').innerText = adminData.planted.toLocaleString();
+    </script>
+</body>
+</html>
