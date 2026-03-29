@@ -251,38 +251,19 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // Your Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
-            messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded",
-            measurementId: "G-6KEYY60YGG"
-        };
-
-        // Initialize
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // firebase-config.js থেকে ফাংশনগুলো ইম্পোর্ট করা হচ্ছে
+        import { listenToStats, saveDonation } from './firebase-config.js';
 
         // --- Stats Real-time Sync ---
-        function listenToStats() {
-            onSnapshot(doc(db, "system", "global_stats"), (docSnapshot) => {
-                if (docSnapshot.exists()) {
-                    const data = docSnapshot.data();
-                    document.getElementById('stat-donation').innerText = '$' + (data.funds || 0);
-                    document.getElementById('stat-bought').innerText = data.trees || 0;
-                    document.getElementById('stat-handed').innerText = data.delivered || 0;
-                }
+        function initStats() {
+            listenToStats((data) => {
+                document.getElementById('stat-donation').innerText = '$' + (data.funds || 0);
+                document.getElementById('stat-bought').innerText = data.trees || 0;
+                document.getElementById('stat-handed').innerText = data.delivered || 0;
             });
         }
 
-        // --- Submit to Firebase ---
+        // --- Submit Logic ---
         async function submitDonation() {
             const name = document.getElementById('custName').value;
             const qty = document.getElementById('treeQty').value;
@@ -294,12 +275,7 @@
             btn.innerText = "CONNECTING TO ARCHIVE...";
 
             try {
-                await addDoc(collection(db, "payment_requests"), {
-                    donorName: name,
-                    quantity: parseInt(qty),
-                    status: "pending",
-                    timestamp: serverTimestamp()
-                });
+                await saveDonation(name, qty);
 
                 document.getElementById('payment-list').style.display = 'block';
                 document.getElementById('congrats-title').innerText = "Congratulations, " + name + "!";
@@ -307,7 +283,7 @@
                 document.getElementById('congrats-popup').classList.add('active');
                 confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
             } catch (error) {
-                console.error("Error adding document: ", error);
+                console.error("Error: ", error);
                 alert("Submission failed. Check your internet connection.");
             } finally {
                 btn.disabled = false;
@@ -326,11 +302,11 @@
         }
 
         window.onload = () => {
-            listenToStats();
+            initStats();
             loadPlots(120);
         };
 
-        // Export functions to window for onclick usage
+        // Export to window
         window.submitDonation = submitDonation;
         window.toggleDrawer = () => document.getElementById('payment-drawer').classList.toggle('open');
         window.closeCongrats = () => document.getElementById('congrats-popup').classList.remove('active');
