@@ -11,180 +11,214 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
 
         :root {
-            --cyan: #00BFFF;
-            --pink: #FF1493;
-            --gold: #C5A059;
+            --cyan: #00BFFF; /* MrBeast Blue */
+            --pink: #FF1493; /* MrBeast Pink */
             --black: #000000;
+            --white: #ffffff;
+            --grey: #f4f4f4;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { 
+            background: var(--white); color: var(--black); 
+            font-family: 'Inter', sans-serif; overflow-x: hidden;
+        }
 
-        /* Navigation */
+        /* Perfectly Centered Main Wrapper */
+        .main-wrapper {
+            display: flex; flex-direction: column; align-items: center; width: 100%;
+        }
+
+        /* Header / Nav */
         .nav-bar {
-            width: 100%; height: 90px; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 5%; background: #fff; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            width: 100%; max-width: 1200px; height: 100px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; background: var(--white);
         }
-        .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-k { 
-            width: 50px; height: 50px; background: var(--black); color: var(--gold); 
-            display: flex; align-items: center; justify-content: center; 
-            font-family: 'Montserrat'; font-weight: 900; font-size: 30px; border-radius: 12px;
-            border: 2px solid var(--gold);
-        }
-        .logo-text { font-family: 'Montserrat'; font-weight: 900; font-size: 20px; line-height: 1; text-transform: uppercase; }
-        .logo-text span { color: var(--pink); font-size: 12px; display: block; letter-spacing: 1px; }
+        
+        /* Custom ARK Logo with "K" */
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { width: 50px; height: 50px; background: var(--black); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); font-size: 28px; border: 2px solid var(--cyan); }
+        .logo-text { font-family: 'Montserrat'; font-weight: 900; font-size: 22px; line-height: 1; }
+        .logo-text span { color: var(--pink); display: block; font-size: 14px; font-weight: 700; }
 
-        /* Section Styling */
-        .section { width: 100%; padding: 80px 5%; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        
-        #hero { background: var(--cyan); color: #fff; padding: 120px 5%; }
-        .hero-title { font-family: 'Montserrat'; font-weight: 900; font-size: clamp(32px, 6vw, 55px); text-transform: uppercase; margin-bottom: 20px; }
-        
-        /* Grid Section (Full Display) */
-        #archive { 
-            width: 100%; padding: 100px 0; 
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover; background-attachment: fixed; background-position: center;
-            color: #fff;
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-link { text-decoration: none; color: var(--black); font-weight: 700; font-size: 13px; text-transform: uppercase; font-family: 'Montserrat'; }
+        .donate-btn { background: var(--pink); color: #fff; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 13px; text-transform: uppercase; font-family: 'Montserrat'; transition: 0.3s; cursor: pointer; border: none; }
+        .donate-btn:hover { background: var(--black); }
+
+        /* Universal Section Styling */
+        .section {
+            width: 100%; display: flex; flex-direction: column; align-items: center;
+            padding: 80px 20px; text-align: center;
         }
+
+        #hero {
+            background: var(--cyan); color: #fff; padding: 100px 20px;
+        }
+        .hero-title { font-family: 'Montserrat'; font-weight: 900; font-size: clamp(30px, 6vw, 60px); text-transform: uppercase; margin-bottom: 20px; line-height: 1.1; }
+        .hero-desc { max-width: 800px; font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 40px; }
+
+        /* Section 4: Donor Grid (FULL WIDTH + BACKGROUND IMAGE) */
+        #archive { 
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover; background-attachment: fixed; background-position: center;
+            color: #fff; padding: 100px 0; width: 100%;
+        }
+        .archive-title { font-family: 'Montserrat'; font-weight: 900; font-size: 36px; text-transform: uppercase; margin-bottom: 50px; color: var(--cyan); }
+        
         .donor-grid { 
             display: grid; grid-template-columns: repeat(8, 1fr); 
-            width: 100%; padding: 0 2%; gap: 20px;
+            gap: 20px; padding: 0 40px; width: 100%;
         }
-        @media (max-width: 1200px) { .donor-grid { grid-template-columns: repeat(6, 1fr); } }
+        @media (max-width: 1024px) { .donor-grid { grid-template-columns: repeat(6, 1fr); } }
         @media (max-width: 768px) { .donor-grid { grid-template-columns: repeat(4, 1fr); } }
         @media (max-width: 480px) { .donor-grid { grid-template-columns: repeat(3, 1fr); } }
 
-        .donor-item { text-align: center; transition: 0.3s; }
+        .donor-item { text-align: center; color: inherit; text-decoration: none; }
         .donor-circle {
-            width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--cyan);
-            margin: 0 auto 10px; overflow: hidden; background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center;
+            width: clamp(65px, 9vw, 110px); height: clamp(65px, 9vw, 110px); border-radius: 50%; border: 2px solid var(--cyan);
+            display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0 auto;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); transition: 0.3s;
         }
         .donor-circle:hover { border-color: var(--pink); transform: scale(1.1); }
-        .donor-name { font-size: 10px; text-transform: uppercase; color: #fff; font-weight: bold; letter-spacing: 1px; }
+        .donor-name { font-size: 10px; margin-top: 8px; display: block; color: #fff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
         /* Congrats Overlay */
-        #congrats-msg {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
-            background: #fff; color: #000; padding: 50px; border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 5000; text-align: center;
-            display: none; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        #congrats-popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.7);
+            background: #fff; color: #000; padding: 40px; border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 5000; text-align: center;
+            display: none; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 90%; width: 400px;
         }
-        #congrats-msg.show { display: block; transform: translate(-50%, -50%) scale(1); }
-        .congrats-btn { background: var(--cyan); color: #fff; border: none; padding: 10px 30px; border-radius: 5px; margin-top: 20px; cursor: pointer; font-weight: bold; }
+        #congrats-popup.active { display: block; transform: translate(-50%, -50%) scale(1); }
+        .congrats-btn { background: var(--pink); color: #fff; border: none; padding: 12px 30px; border-radius: 5px; margin-top: 20px; cursor: pointer; font-weight: 900; }
 
         /* Payment Drawer */
         #payment-drawer {
-            position: fixed; top: 0; right: -100%; width: min(450px, 100%); height: 100vh;
+            position: fixed; top: 0; right: -100%; width: 450px; height: 100vh;
             background: #fff; border-left: 5px solid var(--cyan); z-index: 4000;
-            padding: 60px 30px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
+            padding: 80px 40px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; color: #000;
         }
         #payment-drawer.open { right: 0; }
-        .pay-input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-        .pay-card { background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; border: 1px solid #eee; }
+        .drawer-title { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); font-size: 24px; margin-bottom: 30px; text-transform: uppercase; }
+        .pay-input { width: 100%; padding: 15px; background: #f9f9f9; border: 1px solid #eee; color: #000; margin-bottom: 15px; outline: none; border-radius: 5px; }
+        .pay-card { background: var(--grey); padding: 15px; margin-bottom: 15px; border-radius: 5px; cursor: pointer; border: 1px solid #eee; }
+        .pay-card h4 { font-size: 14px; color: var(--black); }
 
-        .social-icon { width: 45px; height: 45px; border-radius: 50%; background: var(--pink); color: #fff; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; margin: 0 8px; }
+        .footer { width: 100%; background: var(--grey); padding: 60px 20px; display: flex; flex-direction: column; align-items: center; gap: 30px; }
+        .social-icon { width: 50px; height: 50px; border-radius: 50%; background: var(--pink); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 20px; transition: 0.3s; margin: 0 10px; }
+        .copyright { font-size: 12px; color: #777; text-align: center; }
     </style>
 </head>
 <body>
 
-    <header class="nav-bar">
-        <div class="logo-area">
-            <div class="logo-k">K</div>
-            <div class="logo-text">ARK ARCHIVE<span>Global Eternal Legacy</span></div>
-        </div>
-        <button onclick="toggleDrawer()" style="background:var(--pink); color:#fff; border:none; padding:12px 25px; border-radius:50px; font-weight:900; cursor:pointer;">DONATE</button>
-    </header>
+    <div class="main-wrapper">
+        <header class="nav-bar">
+            <div class="logo-area">
+                <div class="logo-icon">K</div>
+                <div class="logo-text">ARK ARCHIVE<span>Global Eternal Legacy</span></div>
+            </div>
+            <div class="nav-links">
+                <a href="#hero" class="nav-link">Home</a>
+                <button onclick="toggleDrawer()" class="donate-btn">Donate</button>
+            </div>
+        </header>
 
-    <section class="section" id="hero">
-        <h1 class="hero-title">1 BILLION FRUIT TREES MISSION</h1>
-        <p style="max-width:800px; font-size:18px; line-height:1.6; opacity:0.9;">One Child, One Tree, One Legacy. 100% of your donation buys trees. We cover the rest.</p>
-        <button onclick="toggleDrawer()" style="margin-top:30px; padding:18px 45px; background:#000; color:#fff; border:none; border-radius:50px; font-weight:900; cursor:pointer;">PLANT A TREE NOW</button>
-    </section>
+        <section class="section" id="hero">
+            <h1 class="hero-title">ONE BILLION FRUIT TREES MISSION</h1>
+            <p class="hero-desc">100% of your contribution is used strictly for purchasing trees. Every student in Bangladesh will receive a fruit tree to plant their legacy.</p>
+            <button onclick="toggleDrawer()" class="donate-btn" style="font-size: 16px; padding: 15px 40px;">Contribute $1 per Tree</button>
+        </section>
 
-    <section id="archive">
-        <div class="section">
-            <h2 style="font-family:'Montserrat'; font-weight:900; font-size:36px; margin-bottom:50px; color:var(--cyan);">THE LEGACY ARCHIVE</h2>
-            <div class="donor-grid" id="mainGrid">
-                </div>
-            <div id="grid-bottom" style="height:20px;"></div>
-        </div>
-    </section>
+        <section id="archive">
+            <div class="section">
+                <h2 class="archive-title">THE ARK ARCHIVE GRID</h2>
+                <div class="donor-grid" id="donorGrid">
+                    </div>
+                <div id="grid-loader" style="height: 50px;"></div>
+            </div>
+        </section>
 
-    <footer class="section" style="background:#f4f4f4; padding:60px 5%;">
-        <div style="margin-bottom:30px;">
-            <a href="https://facebook.com/arkarchiveofficial" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://instagram.com/arkarchiveofficial" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="https://youtube.com/@ArkArchiveOfficial" class="social-icon"><i class="fab fa-youtube"></i></a>
-        </div>
-        <p style="font-size:13px; color:#777;">© 2026 **ARK ARCHIVE** | Developed & Owned by **KAWSAR AHMED**</p>
-    </footer>
-
-    <div id="payment-drawer">
-        <h2 style="font-family:'Montserrat'; margin-bottom:25px; color:var(--cyan);">CONTRIBUTION</h2>
-        <input type="text" id="donorName" class="pay-input" placeholder="Your Full Name">
-        <input type="number" id="treeQty" class="pay-input" placeholder="Number of Trees">
-        <button onclick="handleSubmission()" style="width:100%; padding:18px; background:var(--pink); color:#fff; border:none; border-radius:8px; font-weight:900; cursor:pointer;">SUBMIT REQUEST</button>
-
-        <div id="payment-details" style="display:none; margin-top:30px;">
-            <p style="font-size:10px; color:var(--cyan); margin-bottom:15px; font-weight:bold;">COPY ADDRESS TO PAY:</p>
-            <div class="pay-card" onclick="copy('01756206213')"><h4>bKash: 01756206213</h4></div>
-            <div class="pay-card" onclick="copy('01576940717')"><h4>bKash: 01576940717</h4></div>
-            <div class="pay-card" onclick="copy('017562062134')"><h4>Rocket: 017562062134</h4></div>
-            <div class="pay-card" onclick="copy('912221034')"><h4>Binance UID: 912221034</h4></div>
-            <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><h4 style="font-size:10px;">USDT: TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</h4></div>
-            <div class="pay-card"><h4>BANK (USD): [Manual Info Needed]</h4></div>
-        </div>
+        <footer class="footer">
+            <div style="display:flex;">
+                <a href="https://facebook.com/arkarchiveofficial" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/arkarchiveofficial" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/@ArkArchiveOfficial" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="copyright">
+                © 2026 **ARK ARCHIVE**. All rights reserved.<br>
+                OWNED BY **KAWSAR AHMED**. A Global Eternal Legacy Project.
+            </div>
+        </footer>
     </div>
 
-    <div id="congrats-msg">
-        <h1 style="color:var(--pink); font-family:'Montserrat';">CONGRATULATIONS!</h1>
-        <h2 id="greet-name" style="margin:15px 0;">Dear Donor</h2>
-        <p id="greet-text">Thank you for contributing to the 1 Billion trees mission.</p>
-        <button class="congrats-btn" onclick="closeCongrats()">Close</button>
+    <div id="congrats-popup">
+        <i class="fas fa-check-circle" style="font-size: 50px; color: var(--cyan);"></i>
+        <h2 id="congrats-name" style="margin: 15px 0; font-family: 'Montserrat';"></h2>
+        <p id="congrats-text"></p>
+        <button class="congrats-btn" onclick="closeCongrats()">EXCELLENT!</button>
+    </div>
+
+    <div id="payment-drawer">
+        <h2 class="drawer-title">CONTRIBUTE</h2>
+        <input type="text" id="custName" placeholder="YOUR FULL NAME" class="pay-input">
+        <input type="number" id="treeQty" placeholder="NUMBER OF TREES" class="pay-input">
+        
+        <button onclick="submitRequest()" style="width:100%; padding:15px; background:var(--pink); color:#fff; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:30px;">SUBMIT & GET ADDRESS</button>
+
+        <div id="payment-addresses" style="display:none;">
+            <p style="font-size:9px; color:var(--cyan); font-weight:bold; margin-bottom:15px;">TAP TO COPY ADDRESS</p>
+            <div class="pay-card" onclick="copyV('01756206213')"><h4>bKash: 01756206213</h4></div>
+            <div class="pay-card" onclick="copyV('01576940717')"><h4>bKash: 01576940717</h4></div>
+            <div class="pay-card" onclick="copyV('017562062134')"><h4>Rocket: 017562062134</h4></div>
+            <div class="pay-card" onclick="copyV('912221034')"><h4>Binance UID: 912221034</h4></div>
+            <div class="pay-card" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><h4>USDT: TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</h4></div>
+            <div class="pay-card">
+                <h4>BANK TRANSFER (USD)</h4>
+                <p>Manual details will be set by Kawsar.</p>
+            </div>
+        </div>
+        <button onclick="toggleDrawer()" style="margin-top:30px; background:none; border:none; color:#555; cursor:pointer;">[ CLOSE ]</button>
     </div>
 
     <script>
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Copied: " + t); }
+        function copyV(t) { navigator.clipboard.writeText(t); alert("Copied: " + t); }
 
-        function handleSubmission() {
-            const name = document.getElementById('donorName').value;
+        function submitRequest() {
+            const name = document.getElementById('custName').value;
             const qty = document.getElementById('treeQty').value;
             if(!name || !qty) return alert("Please enter name and tree quantity.");
-
-            document.getElementById('payment-details').style.display = 'block';
-            document.getElementById('greet-name').innerText = "Congratulations, " + name + "!";
-            document.getElementById('greet-text').innerText = "Your request for " + qty + " trees has been registered. Please complete the payment to see your name in the archive.";
             
+            document.getElementById('payment-addresses').style.display = 'block';
+            document.getElementById('congrats-name').innerText = "Congratulations, " + name + "!";
+            document.getElementById('congrats-text').innerText = "You've successfully requested to plant " + qty + " trees! Please complete your donation using the addresses below.";
+            
+            document.getElementById('congrats-popup').classList.add('active');
             confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
-            document.getElementById('congrats-msg').classList.add('show');
         }
 
-        function closeCongrats() { document.getElementById('congrats-msg').classList.remove('show'); }
+        function closeCongrats() { document.getElementById('congrats-popup').classList.remove('active'); }
 
-        // Grid Auto Load
-        const grid = document.getElementById('mainGrid');
-        let c = 0;
-        function load(n) {
+        const grid = document.getElementById('donorGrid');
+        let count = 0;
+        function loadMore(n) {
             for(let i=0; i<n; i++) {
-                c++;
+                count++;
                 grid.innerHTML += `
                     <div class="donor-item">
-                        <div class="donor-circle"><i class="fas fa-tree" style="opacity:0.2;"></i></div>
-                        <div class="donor-name">Slot #${c}</div>
+                        <div class="donor-circle"><i class="fas fa-seedling" style="opacity:0.2;"></i></div>
+                        <span class="donor-name">Slot #${count}</span>
                     </div>`;
             }
         }
-        load(80); // Initial load (10 rows of 8)
+        loadMore(80); // Load first 10 rows (8x10)
 
-        // Simple infinite scroll for donor grid
         window.addEventListener('scroll', () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
-                load(16); // Load 2 more rows
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+                loadMore(16);
             }
         });
     </script>
