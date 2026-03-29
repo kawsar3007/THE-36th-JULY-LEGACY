@@ -23,16 +23,18 @@
         .nav-link { text-decoration: none; color: var(--black); font-weight: 700; font-size: 13px; text-transform: uppercase; font-family: 'Montserrat'; }
         .donate-btn { background: var(--pink); color: #fff; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 13px; text-transform: uppercase; cursor: pointer; border: none; }
 
-        /* Fixed Social Sidebar - Same Pink Color & Target Blank */
+        /* Fixed Social Sidebar - Bottom Aligned & Pink */
         .fixed-social-bar {
-            position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 15px; z-index: 9999;
+            position: fixed; right: 20px; bottom: 30px;
+            display: flex; flex-direction: column; gap: 10px; z-index: 9999;
+            align-items: center;
         }
         .side-icon {
-            width: 50px; height: 50px; border-radius: 50%; background: var(--pink);
+            width: 45px; height: 45px; border-radius: 50%; background: var(--pink);
             display: flex; align-items: center; justify-content: center; color: #fff;
-            text-decoration: none; font-size: 20px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-decoration: none; font-size: 18px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
+        .support-label { font-size: 9px; font-weight: 900; color: var(--pink); text-transform: uppercase; margin-top: -5px; margin-bottom: 5px; text-align: center; line-height: 1; }
         .side-icon:hover { transform: scale(1.1); background: var(--black); }
 
         .section { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 100px 20px; text-align: center; }
@@ -46,7 +48,7 @@
         .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 40px; margin-top: 50px; }
         @media (max-width: 768px) { .info-grid { grid-template-columns: 1fr; } }
         .info-card h3 { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); margin-bottom: 15px; text-transform: uppercase; }
-        .info-card p { line-height: 1.8; color: #444; font-size: 15px; }
+        .info-card p { line-height: 1.8; color: #444; font-size: 15px; margin-bottom: 10px; }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; max-width: 1200px; margin-top: 40px; }
         .gallery-item { width: 100%; height: 250px; background: #eee; border-radius: 15px; overflow: hidden; }
@@ -69,6 +71,7 @@
         .pay-input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; }
         .pay-card { background: var(--grey); padding: 20px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #eee; }
         .limit-tag { display: inline-block; padding: 4px 10px; background: var(--black); color: var(--cyan); font-size: 10px; font-weight: 900; border-radius: 4px; margin-top: 8px; text-transform: uppercase; }
+        .method-info { font-size: 11px; color: #666; margin-top: 10px; line-height: 1.4; display: block; border-top: 1px solid #ddd; padding-top: 8px; }
 
         #congrats-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: #fff; color: #000; padding: 40px; border-radius: 20px; z-index: 6000; text-align: center; display: none; width: 90%; max-width: 550px; box-shadow: 0 0 100px rgba(0,0,0,0.5); }
         #congrats-popup.active { display: block; transform: translate(-50%, -50%) scale(1); }
@@ -78,6 +81,7 @@
 
     <div class="fixed-social-bar">
         <a href="https://wa.me/8801576940717" target="_blank" class="side-icon" title="Support"><i class="fab fa-whatsapp"></i></a>
+        <span class="support-label">Customer Support<br>24/7</span>
         <a href="https://facebook.com/arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-facebook-f"></i></a>
         <a href="https://instagram.com/arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-instagram"></i></a>
         <a href="https://youtube.com/@ArkArchiveOfficial" target="_blank" class="side-icon"><i class="fab fa-youtube"></i></a>
@@ -95,14 +99,20 @@
 
         <section class="section" id="hero">
             <h1 class="hero-title">GLOBAL REFORESTATION PROJECT</h1>
-            <p class="hero-desc">One Child, One Fruit Tree, One Eternal Legacy. Our mission is simple yet absolute: to provide every student in Bangladesh, and eventually the world, with their own fruit-bearing tree.</p>
+            <p class="hero-desc">Defending our air, protecting our future. One Child, One Fruit Tree, One Eternal Legacy.</p>
             <button onclick="toggleDrawer()" class="donate-btn" style="padding: 20px 50px; font-size: 16px;">Contribute $1 per Tree</button>
         </section>
 
         <section class="section" id="philosophy">
             <div class="content-wrap">
-                <h2 style="font-family:'Montserrat'; font-weight:900; font-size:32px;">MISSION PHILOSOPHY</h2>
+                <h2 style="font-family:'Montserrat'; font-weight:900; font-size:32px;">MISSION PHILOSOPHY & DEFENSE</h2>
                 <div class="info-grid">
+                    <div class="info-card" style="grid-column: 1 / -1; border-bottom: 3px solid var(--pink); padding-bottom: 20px;">
+                        <h3>Environmental Shield Against War Impacts</h3>
+                        <p>Global conflicts do more than direct damage; they destroy the very air we breathe. Modern warfare releases toxic gases, chemical residues, and massive amounts of dust into the atmosphere. This can lead to environmental disasters like "oily rain" and severe respiratory issues for civilians. </p>
+                        <p>Nature is our only long-term defense. Trees act as massive biological filters, trapping toxic dust and absorbing harmful gases. By planting millions of trees, we are not just reforestation—we are building a natural shield for our children. Preparedness through nature is the only way to counteract the invisible damage of global instability. We must plant today to breathe tomorrow.</p>
+                    </div>
+
                     <div class="info-card">
                         <h3>Our Goal & Priority</h3>
                         <p>Our primary mission is absolute: to provide every student in Bangladesh from Class 1 to Class 10 with their own fruit-bearing tree. Once we have reached every student across the nation, we will expand our logistics and mission to other countries in need of environmental restoration.</p>
@@ -152,7 +162,7 @@
         <div style="text-align:left; background:#f9f9f9; padding:20px; border-radius:10px; font-size:14px; line-height:1.6; border-left:5px solid var(--cyan);">
             <strong>Next Steps:</strong><br>
             1. Complete your payment using the provided addresses.<br>
-            2. After payment, click the WhatsApp icon on the right to contact <strong>Customer Support</strong>.<br>
+            2. After payment, click the WhatsApp icon below to contact <strong>Customer Support</strong>.<br>
             3. Provide your <strong>Name, Photo, and Social Media/Website link</strong> for your plot.<br>
             4. Confirm the number of trees donated.
         </div>
@@ -167,25 +177,40 @@
 
         <div id="payment-list" style="display:none; margin-top:30px;">
             <p style="font-size:11px; font-weight:900; color:var(--cyan); margin-bottom:15px; letter-spacing:1px;">TAP ADDRESS TO COPY</p>
+            
             <div class="pay-card" onclick="copy('01756206213')">
                 <h4>bKash: 01756206213</h4>
-                <span class="limit-tag">Max Limit: $100 per donation</span>
+                <span class="limit-tag">Max: $100</span>
+                <span class="method-info">International donors: Look for "Remittance" or "Send Money" in your wallet to bKash.</span>
             </div>
             <div class="pay-card" onclick="copy('01576940717')">
                 <h4>bKash: 01576940717</h4>
-                <span class="limit-tag">Max Limit: $100 per donation</span>
+                <span class="limit-tag">Max: $100</span>
+                <span class="method-info">Use this secondary bKash for standard transfers up to $100.</span>
             </div>
             <div class="pay-card" onclick="copy('017562062134')">
                 <h4>Rocket: 017562062134</h4>
-                <span class="limit-tag">Large: Max $400 / Small Allowed</span>
+                <span class="limit-tag">Large: Max $400</span>
+                <span class="method-info">Suitable for larger contributions (up to $400) in a single transaction.</span>
             </div>
             <div class="pay-card" onclick="copy('912221034')">
                 <h4>Binance UID: 912221034</h4>
-                <span class="limit-tag" style="background:var(--cyan); color:#000;">No Limit - All Amounts</span>
+                <span class="limit-tag" style="background:var(--cyan); color:#000;">No Limit</span>
+                <span class="method-info">Internal Binance transfer. Instant and zero fees.</span>
             </div>
             <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
                 <h4 style="font-size:10px;">USDT TRC20: TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</h4>
-                <span class="limit-tag" style="background:var(--cyan); color:#000;">No Limit - All Amounts</span>
+                <span class="limit-tag" style="background:var(--cyan); color:#000;">No Limit</span>
+                <span class="method-info">Global crypto transfer. Preferred for any amount without restrictions.</span>
+            </div>
+
+            <div class="pay-card" style="border: 2px dashed var(--cyan);">
+                <h4 style="color:var(--cyan);">Bank Transfer (SWIFT)</h4>
+                <p style="font-size:12px; margin:5px 0;">Account Name: [ ]</p>
+                <p style="font-size:12px; margin:5px 0;">Account Number: [ ]</p>
+                <p style="font-size:12px; margin:5px 0;">Bank Name: [ ]</p>
+                <p style="font-size:12px; margin:5px 0;">SWIFT/Routing: [ ]</p>
+                <span class="method-info">Direct bank wire for official records. (Details coming soon)</span>
             </div>
         </div>
         <button onclick="toggleDrawer()" style="margin-top:30px; background:none; border:none; color:#aaa; cursor:pointer;">[ CLOSE PANEL ]</button>
