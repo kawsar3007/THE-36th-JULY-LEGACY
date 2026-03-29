@@ -5,6 +5,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
+// আপনার দেওয়া অরিজিনাল কনফিগারেশন (অপরিবর্তিত)
 const firebaseConfig = {
   apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
   authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -20,7 +21,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-// এক্সপোর্ট করা যাতে অন্য ফাইলে ব্যবহার করা যায়
+// এক্সপোর্ট করা যাতে অন্য ফাইলে (যেমন script.js) ব্যবহার করা যায়
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+
+// মূল অ্যাপটি ডিফল্ট হিসেবে এক্সপোর্ট করা হলো
+export default app;
