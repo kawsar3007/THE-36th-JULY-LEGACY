@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// আপনার Firebase কনফিগ
+// আপনার অরিজিনাল Firebase কনফিগ
 const firebaseConfig = {
     apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
     authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -18,7 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- Stats Real-time Sync (ডাটাবেস থেকে সংখ্যা আপডেট করা) ---
+// --- Stats Real-time Sync Function ---
 export function listenToStats(callback) {
     onSnapshot(doc(db, "system", "global_stats"), (docSnapshot) => {
         if (docSnapshot.exists()) {
@@ -27,18 +27,12 @@ export function listenToStats(callback) {
     });
 }
 
-// --- Submit Donation Request (ইউজার ডাটা সেভ করা) ---
-export async function saveDonationRequest(name, qty) {
-    try {
-        const docRef = await addDoc(collection(db, "payment_requests"), {
-            donorName: name,
-            quantity: parseInt(qty),
-            status: "pending",
-            timestamp: serverTimestamp()
-        });
-        return { success: true, id: docRef.id };
-    } catch (error) {
-        console.error("Firebase Error:", error);
-        return { success: false, error: error.message };
-    }
+// --- Submit Donation Function ---
+export async function saveDonation(name, qty) {
+    return await addDoc(collection(db, "payment_requests"), {
+        donorName: name,
+        quantity: parseInt(qty),
+        status: "pending",
+        timestamp: serverTimestamp()
+    });
 }
