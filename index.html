@@ -17,78 +17,72 @@
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { background: var(--white); color: var(--black); font-family: 'Inter', sans-serif; overflow-x: hidden; width: 100%; }
 
-        /* Navigation */
+        /* Navigation - Responsive */
         .nav-bar { width: 100%; max-width: 1200px; height: auto; min-height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; margin: 0 auto; flex-wrap: wrap; gap: 15px; }
         .nav-brand { font-family: 'Montserrat'; font-weight: 900; font-size: 22px; letter-spacing: 1px; }
         .nav-links { display: flex; gap: 15px; align-items: center; }
         .nav-link { text-decoration: none; color: var(--black); font-weight: 700; font-size: 11px; text-transform: uppercase; font-family: 'Montserrat'; }
         .donate-btn { background: var(--pink); color: #fff; padding: 10px 25px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 11px; text-transform: uppercase; cursor: pointer; border: none; white-space: nowrap; }
 
-        /* Fixed Social Bar - Horizontal Row at Bottom */
+        /* Fixed Social Sidebar - Optimized for Mobile/Desktop */
         .fixed-social-bar {
-            position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
-            display: flex; flex-direction: row; gap: 12px; z-index: 9999;
-            align-items: center; background: rgba(255, 255, 255, 0.9); padding: 10px 20px;
-            border-radius: 50px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); border: 1px solid rgba(255, 20, 147, 0.2);
-            width: max-content; max-width: 95%; overflow-x: auto;
+            position: fixed; right: 15px; bottom: 25px;
+            display: flex; flex-direction: column; gap: 10px; z-index: 9999;
+            align-items: center;
         }
         .side-icon {
-            width: 40px; height: 40px; border-radius: 50%; background: var(--pink);
+            width: 45px; height: 45px; border-radius: 50%; background: var(--pink);
             display: flex; align-items: center; justify-content: center; color: #fff;
-            text-decoration: none; font-size: 18px; transition: 0.3s; flex-shrink: 0;
+            text-decoration: none; font-size: 18px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        .support-label { font-size: 8px; font-weight: 900; color: var(--pink); text-transform: uppercase; text-align: center; line-height: 1.1; margin-right: 5px; white-space: nowrap; }
-        .side-icon:hover { transform: translateY(-5px); background: var(--black); }
+        .support-label { font-size: 8px; font-weight: 900; color: var(--pink); text-transform: uppercase; margin-bottom: 5px; text-align: center; line-height: 1.1; background: rgba(255,255,255,0.8); padding: 2px 5px; border-radius: 4px; }
+        .side-icon:hover { transform: scale(1.1); background: var(--black); }
 
-        /* General Section Scaling */
-        .section { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 60px 15px; text-align: center; }
+        /* Hero Scaling */
+        .section { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 80px 15px; text-align: center; }
+        #hero { background: var(--cyan); color: #fff; }
+        .hero-title { font-family: 'Montserrat'; font-weight: 900; font-size: clamp(30px, 7vw, 70px); text-transform: uppercase; margin-bottom: 20px; line-height: 1.1; }
+        .hero-desc { max-width: 900px; font-size: clamp(16px, 4vw, 20px); line-height: 1.6; opacity: 0.9; margin-bottom: 40px; }
 
-        #hero { background: var(--cyan); color: #fff; padding: 80px 20px; }
-        .hero-title { font-family: 'Montserrat'; font-weight: 900; font-size: clamp(28px, 6vw, 70px); text-transform: uppercase; margin-bottom: 20px; line-height: 1.1; }
-        .hero-desc { max-width: 800px; font-size: clamp(14px, 4vw, 18px); line-height: 1.6; opacity: 0.9; margin-bottom: 30px; }
-
-        /* Philosophy Info Grid */
+        /* Info Grid Responsive */
         #philosophy { background: var(--white); text-align: left; }
         .content-wrap { max-width: 1100px; width: 100%; }
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
         .info-card h3 { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); margin-bottom: 12px; text-transform: uppercase; font-size: 18px; }
-        .info-card p { line-height: 1.7; color: #444; font-size: 14px; margin-bottom: 15px; }
+        .info-card p { line-height: 1.7; color: #444; font-size: 14px; margin-bottom: 10px; }
 
-        /* Archive Grid */
+        /* Archive Grid Responsive */
         #archive { 
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=2000');
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=2000');
             background-size: cover; background-attachment: fixed; color: #fff; width: 100%; padding: 80px 0;
         }
         .donor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); width: 100%; padding: 0 15px; gap: 15px; margin-top: 40px; justify-items: center; }
-        .donor-circle { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--cyan); display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); backdrop-filter: blur(5px); }
+        .donor-circle { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--cyan); display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
         .donor-name { font-size: 8px; margin-top: 3px; font-weight: bold; text-transform: uppercase; }
 
-        /* Drawer */
-        #payment-drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh; background: #fff; border-left: 5px solid var(--cyan); z-index: 10000; padding: 40px 20px; transition: 0.4s ease-in-out; overflow-y: auto; color: #000; }
+        /* Drawer - Responsive */
+        #payment-drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh; background: #fff; border-left: 5px solid var(--cyan); z-index: 10000; padding: 40px 20px; transition: 0.5s; overflow-y: auto; color: #000; }
         #payment-drawer.open { right: 0; }
-        .pay-card { background: var(--grey); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #eee; cursor: pointer; position: relative; }
         .pay-input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
-
-        /* Bank Info Text Style */
-        .bank-info-label { font-size: 12px; font-weight: bold; color: #555; display: block; margin-top: 5px; }
-        .bank-info-value { font-size: 14px; color: #000; margin-bottom: 8px; display: block; min-height: 18px; border-bottom: 1px solid #eee; }
+        .pay-card { background: var(--grey); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #eee; cursor: pointer; }
+        .bank-field { display: block; font-size: 13px; margin: 5px 0; border-bottom: 1px solid #eee; padding-bottom: 5px; }
 
         /* Popup */
-        #congrats-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 30px 20px; border-radius: 15px; z-index: 11000; text-align: center; display: none; width: 90%; max-width: 400px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        #congrats-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 30px 20px; border-radius: 15px; z-index: 11000; text-align: center; display: none; width: 90%; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
         #congrats-popup.active { display: block; }
 
         @media (max-width: 480px) {
-            .nav-bar { justify-content: center; text-align: center; }
+            .nav-bar { justify-content: center; }
             .donor-grid { grid-template-columns: repeat(3, 1fr); }
-            .fixed-social-bar { bottom: 10px; padding: 8px 15px; }
-            .side-icon { width: 35px; height: 35px; font-size: 16px; }
+            .fixed-social-bar { right: 10px; bottom: 15px; }
+            .side-icon { width: 40px; height: 40px; }
         }
     </style>
 </head>
 <body>
 
     <div class="fixed-social-bar">
-        <span class="support-label">Support<br>24/7</span>
+        <span class="support-label">Support 24/7</span>
         <a href="https://wa.me/8801576940717" target="_blank" class="side-icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <a href="https://facebook.com/arkarchiveofficial" target="_blank" class="side-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="https://instagram.com/arkarchiveofficial" target="_blank" class="side-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -101,30 +95,34 @@
         <header class="nav-bar">
             <div class="nav-brand">ARK ARCHIVE</div>
             <nav class="nav-links">
-                <a href="#philosophy" class="nav-link">About</a>
+                <a href="#philosophy" class="nav-link">Philosophy</a>
                 <a href="#archive" class="nav-link">Archive</a>
-                <button onclick="toggleDrawer()" class="donate-btn">Donate Now</button>
+                <button onclick="toggleDrawer()" class="donate-btn">Donate</button>
             </nav>
         </header>
 
         <section class="section" id="hero">
             <h1 class="hero-title">GLOBAL REFORESTATION PROJECT</h1>
             <p class="hero-desc">Defending our air, protecting our future. One Child, One Fruit Tree, One Eternal Legacy.</p>
-            <button onclick="toggleDrawer()" class="donate-btn" style="padding: 15px 40px; font-size: 14px;">Donate $1 per Tree</button>
+            <button onclick="toggleDrawer()" class="donate-btn" style="padding: 15px 40px; font-size: 15px;">Donate $1 per Tree</button>
         </section>
 
         <section class="section" id="philosophy">
             <div class="content-wrap">
-                <h2 style="font-family:'Montserrat'; font-weight:900; font-size:26px; margin-bottom:20px;">MISSION & DEFENSE</h2>
+                <h2 style="font-family:'Montserrat'; font-weight:900; font-size:26px; margin-bottom:20px;">MISSION PHILOSOPHY & DEFENSE</h2>
                 <div class="info-grid">
-                    <div class="info-card" style="grid-column: 1 / -1; background: #fff5f9; padding: 20px; border-radius: 10px; border-left: 5px solid var(--pink);">
-                        <h3>Shield Against Environmental Impact</h3>
+                    <div class="info-card" style="grid-column: 1 / -1; border-bottom: 3px solid var(--pink); padding-bottom: 20px;">
+                        <h3>Environmental Shield Against War Impacts</h3>
                         <p>Modern global instability releases toxic gases, chemical residues, and massive dust into the atmosphere. This leads to disasters like "oily rain" and respiratory threats.</p>
                         <p>Our trees act as biological filters. By planting millions, we build a natural shield for our children. Preparedness through nature is the only way to counteract the invisible damage of global instability.</p>
                     </div>
                     <div class="info-card">
                         <h3>Our Goal & Priority</h3>
-                        <p>We aim to provide every student in Bangladesh from Class 1 to 10 with their own fruit tree. Once achieved, we expand globally to restore ecological balance.</p>
+                        <p>We provide every student in Bangladesh from Class 1 to 10 with their own fruit tree. Once achieved, we expand globally to restore ecological balance.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Why Fruit Trees?</h3>
+                        <p>Fruit trees provide both nutrition and ecosystem restoration—a dual-purpose investment in the planet and the next generation.</p>
                     </div>
                 </div>
             </div>
@@ -132,7 +130,7 @@
 
         <section id="archive">
             <div class="section">
-                <h2 style="font-family:'Montserrat'; font-weight:900; font-size:28px; text-transform:uppercase; color:var(--cyan);">The Legacy Grid</h2>
+                <h2 style="font-family:'Montserrat'; font-weight:900; font-size:32px; text-transform:uppercase; color:var(--cyan);">The Legacy Archive Grid</h2>
                 <div class="donor-grid" id="infiniteGrid"></div>
                 <div id="grid-bottom" style="height: 50px;"></div>
             </div>
@@ -140,60 +138,55 @@
     </div>
 
     <div id="congrats-popup">
-        <h3 id="congrats-title" style="color:var(--pink);"></h3>
-        <p id="congrats-desc" style="margin:15px 0; font-size:14px; font-weight:bold;"></p>
-        <button onclick="closeCongrats()" class="donate-btn" style="width:100%;">SHOW DONATION OPTIONS</button>
+        <h2 id="congrats-title" style="color:var(--pink); font-family:'Montserrat'; font-size:22px;"></h2>
+        <p id="congrats-desc" style="margin:15px 0; font-weight:bold; font-size:14px;"></p>
+        <div style="text-align:left; background:#f9f9f9; padding:15px; border-radius:10px; font-size:13px; line-height:1.5; border-left:5px solid var(--cyan);">
+            <strong>Next Steps:</strong><br>
+            1. Complete your donation via provided addresses.<br>
+            2. After payment, tap the WhatsApp icon to contact <strong>Support</strong>.<br>
+            3. Send your <strong>Name, Photo, and Link</strong> for your plot.
+        </div>
+        <button onclick="closeCongrats()" class="donate-btn" style="margin-top:20px; width:100%;">OK, SHOW ADDRESSES</button>
     </div>
 
     <div id="payment-drawer">
         <h2 style="font-family:'Montserrat'; margin-bottom:20px;">DONATION PORTAL</h2>
-        <input type="text" id="custName" class="pay-input" placeholder="Donor Full Name">
-        <input type="number" id="treeQty" class="pay-input" placeholder="Number of Trees">
-        <button onclick="submitDonation()" style="width:100%; padding:15px; background:var(--pink); color:#fff; border:none; border-radius:8px; font-weight:900; cursor:pointer; font-size:16px;">PROCEED TO DONATE</button>
+        <input type="text" id="custName" class="pay-input" placeholder="DONOR FULL NAME">
+        <input type="number" id="treeQty" class="pay-input" placeholder="NUMBER OF TREES">
+        <button onclick="submitDonation()" style="width:100%; padding:15px; background:var(--pink); color:#fff; border:none; border-radius:8px; font-weight:900; cursor:pointer;">SUBMIT & VIEW ADDRESSES</button>
 
         <div id="payment-list" style="display:none; margin-top:25px;">
-            <p style="font-size:10px; font-weight:900; color:var(--cyan); margin-bottom:10px;">TAP TO COPY ADDRESS</p>
+            <p style="font-size:10px; font-weight:900; color:var(--cyan); margin-bottom:10px;">TAP ADDRESS TO COPY</p>
             
             <div class="pay-card" onclick="copy('01756206213')">
                 <strong>bKash: 01756206213</strong><br>
-                <small>Max: $100. Foreigners: Use "Remittance" or "Send Money" to bKash.</small>
+                <small>Max: $100. Remittance/Send Money allowed.</small>
             </div>
             <div class="pay-card" onclick="copy('017562062134')">
                 <strong>Rocket: 017562062134</strong><br>
-                <small>Large Donation: Up to $400 allowed.</small>
+                <small>Large: Up to $400 allowed.</small>
             </div>
             <div class="pay-card" onclick="copy('912221034')">
                 <strong>Binance UID: 912221034</strong><br>
-                <small>Recommended for instant global transfers.</small>
+                <small>Instant and zero fees.</small>
             </div>
             <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
                 <strong style="font-size:11px;">USDT TRC20: TTapBkTqrDnz...</strong><br>
-                <small>Preferred crypto method for all amounts.</small>
+                <small>Global crypto transfer (No Limit).</small>
             </div>
 
             <div class="pay-card" style="border: 2px dashed var(--cyan); cursor: default;">
                 <h4 style="color:var(--cyan); margin-bottom:10px;">Bank Transfer (International)</h4>
-                
-                <span class="bank-info-label">Account Holder:</span>
-                <span class="bank-info-value"></span> <span class="bank-info-label">Account Number:</span>
-                <span class="bank-info-value"></span>
-
-                <span class="bank-info-label">Bank Name:</span>
-                <span class="bank-info-value"></span>
-
-                <span class="bank-info-label">Branch:</span>
-                <span class="bank-info-value"></span>
-
-                <span class="bank-info-label">Routing No:</span>
-                <span class="bank-info-value"></span>
-
-                <span class="bank-info-label">SWIFT Code:</span>
-                <span class="bank-info-value"></span>
-                
-                <small style="color:#888;">*Use these details for direct bank wire.</small>
+                <span class="bank-field"><strong>Account Holder:</strong> </span>
+                <span class="bank-field"><strong>Account Number:</strong> </span>
+                <span class="bank-field"><strong>Bank Name:</strong> </span>
+                <span class="bank-field"><strong>Branch:</strong> </span>
+                <span class="bank-field"><strong>Routing No:</strong> </span>
+                <span class="bank-field"><strong>SWIFT Code:</strong> </span>
+                <small style="color:#888; margin-top:5px; display:block;">Direct bank wire for official records. (Details coming soon)</small>
             </div>
         </div>
-        <button onclick="toggleDrawer()" style="margin-top:20px; width:100%; background:#eee; border:none; padding:10px; border-radius:5px; cursor:pointer;">CLOSE PANEL</button>
+        <button onclick="toggleDrawer()" style="margin-top:20px; background:none; border:none; color:#aaa; cursor:pointer; width:100%;">[ CLOSE PANEL ]</button>
     </div>
 
     <script>
@@ -203,10 +196,10 @@
         function submitDonation() {
             const name = document.getElementById('custName').value;
             const qty = document.getElementById('treeQty').value;
-            if(!name || !qty) return alert("Please fill in your name and tree count.");
+            if(!name || !qty) return alert("Enter name and tree quantity.");
             document.getElementById('payment-list').style.display = 'block';
-            document.getElementById('congrats-title').innerText = "Thank You, " + name + "!";
-            document.getElementById('congrats-desc').innerText = "You are donating " + qty + " trees to the legacy.";
+            document.getElementById('congrats-title').innerText = "Hero: " + name;
+            document.getElementById('congrats-desc').innerText = "You are planting " + qty + " trees!";
             document.getElementById('congrats-popup').classList.add('active');
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         }
@@ -217,7 +210,7 @@
         function loadPlots(count) {
             for(let i=0; i<count; i++) {
                 plotCount++;
-                grid.innerHTML += `<div class="donor-circle"><i class="fas fa-tree" style="opacity:0.2; font-size:18px;"></i><span class="donor-name">#${plotCount}</span></div>`;
+                grid.innerHTML += `<div class="donor-circle"><i class="fas fa-tree" style="opacity:0.2; font-size:22px;"></i><span class="donor-name">Plot #${plotCount}</span></div>`;
             }
         }
         loadPlots(60);
