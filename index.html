@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARK ARCHIVE | Global Reforestation</title>
+    <title>ARK ARCHIVE | One Billion Trees Mission</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,6 +15,7 @@
             --white: #ffffff;
             --gold: #C5A059;
             --green: #1E5128;
+            --soft-grey: #bbbbbb;
         }
 
         html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
@@ -23,7 +24,9 @@
             font-family: 'Inter', sans-serif; overflow-x: hidden; cursor: none;
         }
 
-        /* Custom Cursor */
+        /* Centering & Layout */
+        .main-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        
         #cursor-outline { 
             position: fixed; width: 15px; height: 15px; border: 1px solid var(--gold); 
             border-radius: 50%; pointer-events: none; z-index: 10000; 
@@ -33,74 +36,87 @@
 
         /* Navigation */
         .nav-bar {
-            position: fixed; top: 0; width: 100%; height: 100px;
+            position: fixed; top: 0; width: 100%; height: 90px;
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 50px; z-index: 2000; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            padding: 0 5%; z-index: 3000; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
         }
-        .acq-trigger { font-size: 10px; letter-spacing: 4px; font-weight: bold; border-bottom: 1px solid var(--gold); cursor: pointer; color: var(--gold); }
-        .logo-text { font-family: 'Cinzel'; font-size: 20px; letter-spacing: 5px; }
+        .logo-text { font-family: 'Cinzel'; font-size: 22px; letter-spacing: 6px; color: var(--gold); }
+        .payment-btn { font-size: 10px; letter-spacing: 3px; font-weight: bold; border: 1px solid var(--gold); padding: 10px 20px; cursor: pointer; color: var(--gold); transition: 0.3s; }
+        .payment-btn:hover { background: var(--gold); color: #000; }
 
-        /* Universal Section Styling */
+        /* Snap Sections */
         .snap-section { 
             height: 100vh; width: 100%; scroll-snap-align: start; 
-            position: relative; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; text-align: center;
-            overflow: hidden; padding: 0 10%;
+            display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; padding: 0 10%; position: relative;
         }
 
         /* Section 1: Hero */
         #hero {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)), 
                         url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=2000');
             background-size: cover; background-position: center;
         }
 
-        /* Section 3: Updates Grid */
-        .update-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
-            width: 100%; max-width: 900px; margin-top: 30px;
+        /* Section 2: Expanded Philosophy */
+        .philosophy-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1100px; margin-top: 40px; text-align: left;
         }
-        .update-box { width: 100%; height: 200px; background: #111; border: 1px solid #222; overflow: hidden; }
-        .update-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
-        .update-box:hover img { opacity: 1; transform: scale(1.05); }
+        .phil-card { background: rgba(255,255,255,0.03); padding: 30px; border: 1px solid #111; transition: 0.3s; }
+        .phil-card:hover { border-color: var(--gold); background: rgba(255,255,255,0.05); }
+        .phil-card h3 { font-family: 'Cinzel'; color: var(--gold); font-size: 16px; margin-bottom: 15px; letter-spacing: 2px; }
+        .phil-card p { font-size: 12px; color: var(--soft-grey); line-height: 1.8; }
+
+        /* Section 3: 6 Image Gallery */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+            width: 100%; max-width: 1000px; margin-top: 30px;
+        }
+        @media (max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+        .gallery-item { width: 100%; height: 200px; background: #111; overflow: hidden; border: 1px solid #222; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.6s; filter: grayscale(100%); }
+        .gallery-item:hover img { opacity: 1; filter: grayscale(0%); transform: scale(1.08); }
 
         /* Section 4: Archive Grid */
-        .archive-scroll { 
-            width: 100%; height: 60vh; overflow-y: auto; 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
-            gap: 20px; padding: 20px; margin-top: 20px;
+        .archive-box { width: 100%; max-width: 1100px; height: 55vh; overflow-y: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 25px; }
+        .donor-slot { text-align: center; color: inherit; text-decoration: none; display: block; }
+        .donor-avatar { width: 100px; height: 100px; border-radius: 50%; border: 1px solid var(--green); margin: 0 auto 10px; overflow: hidden; background: #080808; display: flex; align-items: center; justify-content: center; transition: 0.4s; }
+        .donor-slot:hover .donor-avatar { border-color: var(--gold); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(197,160,89,0.15); }
+        .donor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .donor-label { font-size: 10px; color: var(--gold); font-weight: bold; letter-spacing: 1px; }
+
+        /* Payment Drawer */
+        #payment-drawer {
+            position: fixed; top: 0; right: -100%; width: 420px; height: 100vh;
+            background: #050505; border-left: 1px solid var(--gold); z-index: 4000;
+            padding: 80px 40px; transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
         }
-        .donor-circle {
-            width: 90px; height: 90px; border-radius: 50%; border: 1px solid var(--green);
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-            margin: 0 auto; background: rgba(255,255,255,0.03);
+        #payment-drawer.open { right: 0; }
+        .method-card { background: #111; padding: 20px; border: 1px solid #222; margin-bottom: 20px; cursor: pointer; transition: 0.3s; }
+        .method-card:hover { border-color: var(--gold); }
+        .method-card h4 { font-size: 13px; color: var(--white); margin-bottom: 5px; }
+        .method-card p { font-size: 10px; color: #777; }
+
+        /* Request Portal Modal */
+        #request-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #fff; color: #000; width: 90%; max-width: 400px;
+            padding: 40px; border-radius: 4px; z-index: 5000; display: none;
         }
-        .donor-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .input-group { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; font-family: 'Inter'; }
+
+        /* Floating Controls */
+        .floating-action { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 11px; letter-spacing: 2px; cursor: pointer; z-index: 2000; }
+        .social-bar { position: fixed; bottom: 30px; right: 40px; display: flex; flex-direction: column; gap: 15px; z-index: 2000; }
+        .social-link { width: 45px; height: 45px; border: 1px solid #222; border-radius: 50%; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; transition: 0.3s; }
+        .social-link:hover { border-color: var(--gold); color: var(--gold); }
 
         /* Typography */
-        .label { font-size: 9px; letter-spacing: 8px; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; }
-        .title { font-family: 'Cinzel'; font-size: clamp(24px, 4vw, 42px); margin-bottom: 20px; }
-        .desc { font-size: 13px; line-height: 1.8; color: #bbb; max-width: 750px; }
-
-        /* Drawer & Modals */
-        #payment-drawer {
-            position: fixed; top: 0; left: -100%; width: 400px; height: 100vh;
-            background: #050505; border-right: 1px solid var(--green); z-index: 3000;
-            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 60px 40px;
-        }
-        #payment-drawer.open { left: 0; }
-        .pay-card { background: #111; padding: 15px; margin-bottom: 15px; border-left: 3px solid var(--green); cursor: pointer; }
-        .pay-card small { color: #ff4444; font-size: 10px; display: block; margin-top: 5px; }
-
-        #success-modal {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: #fff; color: #000; padding: 40px; border-radius: 2px;
-            z-index: 10000; text-align: center; display: none; width: 90%; max-width: 450px;
-        }
-
-        /* Buttons */
-        .btn-gold { padding: 15px 40px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 10px; letter-spacing: 4px; transition: 0.4s; }
-        .btn-gold:hover { background: var(--gold); color: #000; }
+        .label { font-size: 9px; letter-spacing: 8px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+        .title { font-family: 'Cinzel'; font-size: clamp(26px, 5vw, 42px); margin-bottom: 25px; letter-spacing: 4px; }
+        .desc-text { max-width: 800px; font-size: 14px; line-height: 1.8; color: #ccc; }
     </style>
 </head>
 <body>
@@ -109,130 +125,148 @@
 
     <header class="nav-bar">
         <div class="logo-text">ARK ARCHIVE</div>
-        <div class="acq-trigger" onclick="toggleDrawer()">ACQUISITION</div>
+        <div class="payment-btn" onclick="toggleDrawer()">ACQUISITION CHANNELS</div>
     </header>
 
-    <section class="snap-section" id="hero">
-        <span class="label">One Child, One Tree</span>
-        <h1 class="title">GLOBAL REFORESTATION PROJECT</h1>
-        <p class="desc">In an era of environmental decline, we provide the seeds of nutrition and nature. Our mission is to provide every student in Bangladesh with their own fruit-bearing tree.</p>
-        <div style="margin-top: 40px;">
-            <a href="javascript:void(0)" onclick="toggleDrawer()" class="btn-gold">CONTRIBUTE $1 PER TREE</a>
-        </div>
-    </section>
-
-    <section class="snap-section" style="background: #080808;">
-        <span class="label">Our Philosophy</span>
-        <h2 class="title">WHY FRUIT TREES?</h2>
-        <p class="desc">Traditional reforestation often ignores human needs. By planting fruit trees, we provide children with a sustainable source of nutrition while restoring the ecosystem. 100% of your contribution goes strictly to purchasing trees. We cover all logistical and travel costs out of our own pockets.</p>
-    </section>
-
-    <section class="snap-section" style="background: #050505;">
-        <span class="label">Live Updates</span>
-        <h2 class="title">MISSION IN PROGRESS</h2>
-        <div class="update-grid">
-            <div class="update-box"><img src="https://via.placeholder.com/500?text=Planting+Update+1"></div>
-            <div class="update-box"><img src="https://via.placeholder.com/500?text=Planting+Update+2"></div>
-            <div class="update-box"><img src="https://via.placeholder.com/500?text=Planting+Update+3"></div>
-            <div class="update-box"><img src="https://via.placeholder.com/500?text=Planting+Update+4"></div>
-        </div>
-    </section>
-
-    <section class="snap-section" style="background: #000;">
-        <span class="label">Digital Record</span>
-        <h2 class="title">THE SILENT WITNESS</h2>
-        <div class="archive-scroll" id="donorGrid">
+    <div class="main-container">
+        <section class="snap-section" id="hero">
+            <span class="label">One Child, One Tree</span>
+            <h1 class="title">GLOBAL REFORESTATION PROJECT</h1>
+            <p class="desc-text">Our mission is absolute: providing every student in Bangladesh with their own fruit tree. Planting seeds of nutrition and nature for an eternal legacy.</p>
+            <div style="margin-top: 40px;">
+                <button onclick="openRequest()" class="floating-action" style="position: static; transform: none;">CONTRIBUTE $1 PER TREE</button>
             </div>
-        <div id="grid-loader"></div>
-    </section>
+        </section>
 
-    <div id="payment-drawer">
-        <h3 style="letter-spacing: 5px; margin-bottom: 40px;">ACQUISITION</h3>
-        
-        <input type="text" id="donorName" placeholder="YOUR NAME" style="width:100%; padding:15px; background:#111; border:1px solid #222; color:#fff; margin-bottom:10px;">
-        <input type="number" id="treeQty" placeholder="NUMBER OF TREES" style="width:100%; padding:15px; background:#111; border:1px solid #222; color:#fff; margin-bottom:30px;">
-        
-        <button onclick="submitDonation()" style="width:100%; padding:15px; background:var(--gold); border:none; color:#000; font-weight:bold; letter-spacing:2px; cursor:pointer; margin-bottom:40px;">SUBMIT REQUEST</button>
+        <section class="snap-section" style="background: #080808;">
+            <span class="label">Our Philosophy</span>
+            <h2 class="title">ROOTED IN TRANSPARENCY</h2>
+            <div class="philosophy-grid">
+                <div class="phil-card">
+                    <h3>Why Fruit Trees?</h3>
+                    <p>Traditional reforestation ignores human needs. Fruit trees provide children with sustainable nutrition while restoring the ecosystem. It is an investment in both the planet and people.</p>
+                </div>
+                <div class="phil-card">
+                    <h3>Where Does It Go?</h3>
+                    <p>100% of your capital is used to purchase saplings. Zero donor money is used for operations, web hosting, or our team's travel. We pay for everything out of pocket.</p>
+                </div>
+                <div class="phil-card">
+                    <h3>Global Scalability</h3>
+                    <p>Starting in climate-vulnerable Bangladesh, we aim for 1 Billion trees. Once achieved, our architecture will expand to restore balance in other nations globally.</p>
+                </div>
+                <div class="phil-card">
+                    <h3>The Silent Witness</h3>
+                    <p>Every tree is etched into the Ark Archive. By claiming a plot, your name becomes part of the digital record—a testament to your contribution to a greener world.</p>
+                </div>
+            </div>
+        </section>
 
-        <div class="pay-card" onclick="copyV('01756206213')">
-            <h4 style="font-size:11px;">BKASH: 01756206213</h4>
-            <small>Limit: Max $100 per transaction.</small>
-        </div>
-        <div class="pay-card" onclick="copyV('01576940717')">
-            <h4 style="font-size:11px;">BKASH: 01576940717</h4>
-            <small>Limit: Max $100 per transaction.</small>
-        </div>
-        <div class="pay-card" onclick="copyV('017562062134')">
-            <h4 style="font-size:11px;">ROCKET: 017562062134</h4>
-            <small>Large Scale: Max $400 once.</small>
-        </div>
-        <div class="pay-card" onclick="copyV('912221034')">
-            <h4 style="font-size:11px;">BINANCE UID: 912221034</h4>
-            <small style="color:var(--green)">No limit - Global access.</small>
-        </div>
-        <div class="pay-card" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-            <h4 style="font-size:10px;">USDT TRC20: TTapBkTqr...Ws6</h4>
-            <small style="color:var(--green)">No limit - Fast processing.</small>
-        </div>
-        
-        <p style="font-size:10px; color:#555; margin-top:20px;">Support: +8801576940717 (WhatsApp)</p>
-        <button onclick="toggleDrawer()" style="margin-top:20px; background:none; border:none; color:var(--gold); cursor:pointer;">[ CLOSE ]</button>
+        <section class="snap-section" style="background: #050505;">
+            <span class="label">Field Reports</span>
+            <h2 class="title">MISSION UPDATES</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Report+1"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Report+2"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Report+3"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Report+4"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Report+5"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300?text=Report+6"></div>
+            </div>
+        </section>
+
+        <section class="snap-section" style="background: #000;">
+            <span class="label">Digital Legacy</span>
+            <h2 class="title">THE ARCHIVE GRID</h2>
+            <div class="archive-box" id="donorGrid">
+                <a href="https://your-donor-website.com" target="_blank" class="donor-slot">
+                    <div class="donor-avatar"><img src="https://via.placeholder.com/100" alt="Donor"></div>
+                    <span class="donor-label">DONOR NAME</span>
+                    <div style="font-size:8px; color:#555;">500 Trees</div>
+                </a>
+            </div>
+            <div id="scroll-anchor" style="height: 10px;"></div>
+        </section>
     </div>
 
-    <div id="success-modal">
-        <h2 id="greetUser" style="font-family:'Cinzel';">THANK YOU!</h2>
-        <p style="margin:20px 0; font-size:13px; color:#666;">Your request has been registered. Please send your transaction screenshot, name, and photo to our WhatsApp support to finalize your plot.</p>
-        <a href="https://wa.me/8801576940717" target="_blank" style="display:block; background:#25D366; color:#fff; padding:15px; text-decoration:none; font-weight:bold;">WHATSAPP SUPPORT</a>
-        <button onclick="closeModal()" style="margin-top:20px; border:none; background:none; color:#999; cursor:pointer;">BACK TO HOME</button>
+    <div class="floating-action" onclick="openRequest()">SUBMIT DONATION REQUEST</div>
+
+    <div id="payment-drawer">
+        <h3 style="font-family:'Cinzel'; color:var(--gold); margin-bottom:40px;">SECURE CHANNELS</h3>
+        <div class="method-card" onclick="copyText('01756206213')">
+            <h4>bKash (Personal): 01756206213</h4>
+            <p>Limit: Max $100 per donation.</p>
+        </div>
+        <div class="method-card" onclick="copyText('01576940717')">
+            <h4>bKash (Personal): 01576940717</h4>
+            <p>Limit: Max $100 per donation.</p>
+        </div>
+        <div class="method-card" onclick="copyText('017562062134')">
+            <h4>Rocket (12-Digit): 017562062134</h4>
+            <p>Bulk Limit: $400 allowed per request.</p>
+        </div>
+        <div class="method-card" onclick="copyText('912221034')">
+            <h4>Binance UID: 912221034</h4>
+            <p style="color:var(--gold)">No Limit - Globally Preferred.</p>
+        </div>
+        <div class="method-card" onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+            <h4>USDT (TRC20): TTapBkTqr...Ws6</h4>
+            <p style="color:var(--gold)">No Limit - Fast Syncing.</p>
+        </div>
+        <button onclick="toggleDrawer()" style="background:none; border:none; color:#444; cursor:pointer; font-size:10px; border-bottom:1px solid #444;">[ CLOSE ACQUISITION ]</button>
+    </div>
+
+    <div id="request-modal">
+        <h2 style="font-family:'Cinzel'; margin-bottom:20px;">Plant Hope</h2>
+        <input type="text" id="custName" placeholder="Full Name" class="input-group">
+        <input type="number" id="treeQty" placeholder="Number of Trees" class="input-group">
+        <button onclick="submitDone()" style="width:100%; padding:15px; background:#000; color:#fff; border:none; cursor:pointer; font-weight:bold;">REGISTER CONTRIBUTION</button>
+        <button onclick="closeRequest()" style="width:100%; margin-top:10px; background:none; border:none; color:#888; cursor:pointer; font-size:11px;">Cancel</button>
+    </div>
+
+    <div class="social-bar">
+        <a href="https://wa.me/8801576940717" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://facebook.com/yourpage" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
     </div>
 
     <script>
-        // Custom Cursor
+        // Custom Cursor Logic
         const cursor = document.getElementById('cursor-outline');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Toggle Drawer
+        // Drawer & Modal Logic
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copyV(t) { navigator.clipboard.writeText(t); alert("Copied: " + t); }
+        function openRequest() { document.getElementById('request-modal').style.display = 'block'; }
+        function closeRequest() { document.getElementById('request-modal').style.display = 'none'; }
+        
+        function copyText(t) { navigator.clipboard.writeText(t); alert("Address Copied: " + t); }
+
+        function submitDone() {
+            const name = document.getElementById('custName').value;
+            if(!name) return alert("Please enter your name.");
+            closeRequest();
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+            toggleDrawer(); // Automatically open payment after submission
+        }
 
         // Infinite Grid Generation
         const grid = document.getElementById('donorGrid');
-        let plotCount = 0;
-        function loadPlots(num) {
-            for(let i=0; i<num; i++) {
-                plotCount++;
-                const div = document.createElement('div');
-                div.innerHTML = `<div class="donor-circle"><i class="fas fa-leaf" style="opacity:0.1"></i></div><p style="font-size:8px; margin-top:5px; color:#444;">Plot #${plotCount}</p>`;
-                grid.appendChild(div);
+        let plotIdx = 0;
+        function fillGrid(n) {
+            for(let i=0; i<n; i++) {
+                plotIdx++;
+                grid.innerHTML += `
+                    <div class="donor-slot">
+                        <div class="donor-avatar"><i class="fas fa-seedling" style="opacity:0.1"></i></div>
+                        <span class="donor-label">PLATED #${plotIdx}</span>
+                    </div>`;
             }
         }
-        loadPlots(100);
-
-        // Grid Auto-Reload on scroll
-        grid.addEventListener('scroll', () => {
-            if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 10) {
-                loadPlots(50);
-            }
-        });
-
-        // Submit Logic
-        function submitDonation() {
-            const name = document.getElementById('donorName').value;
-            if(!name) return alert("Enter your name");
-            
-            document.getElementById('greetUser').innerText = "WELCOME, " + name.toUpperCase() + "!";
-            document.getElementById('success-modal').style.display = 'block';
-            
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        }
-
-        function closeModal() {
-            document.getElementById('success-modal').style.display = 'none';
-            toggleDrawer();
-        }
+        fillGrid(100);
+        grid.addEventListener('scroll', () => { if(grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 10) fillGrid(40); });
     </script>
 </body>
 </html>
