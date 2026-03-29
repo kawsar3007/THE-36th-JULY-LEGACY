@@ -20,7 +20,6 @@
         .nav-bar { width: 100%; max-width: 1200px; height: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; margin: 0 auto; }
         .nav-brand { font-family: 'Montserrat'; font-weight: 900; font-size: 24px; letter-spacing: 1px; flex-shrink: 0; }
         
-        /* New Counting System Style */
         .nav-stats {
             display: flex;
             gap: 20px;
@@ -37,7 +36,6 @@
         .nav-link { text-decoration: none; color: var(--black); font-weight: 700; font-size: 13px; text-transform: uppercase; font-family: 'Montserrat'; }
         .donate-btn { background: var(--pink); color: #fff; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 13px; text-transform: uppercase; cursor: pointer; border: none; }
 
-        /* Fixed Social Sidebar */
         .fixed-social-bar {
             position: fixed; right: 20px; bottom: 30px;
             display: flex; flex-direction: column; gap: 10px; z-index: 9999;
@@ -228,9 +226,17 @@
                 <span class="method-info">Suitable for larger contributions in a single transaction.</span>
             </div>
             
-            <div class="pay-card" onclick="copy('arkarchiveofficial')">
-                <h4>Social Support: TikTok / X (Twitter)</h4>
-                <span class="method-info">Contact support via WhatsApp to donate via social platform tips/gifts.</span>
+            <div class="pay-card" style="border: 2px dashed var(--cyan); cursor: default;">
+                <h4 style="color:var(--cyan); margin-bottom:10px;">Bank Transfer (SWIFT)</h4>
+                <div style="font-size:12px; text-align: left; line-height: 1.6;">
+                    <p><strong>Account Holder:</strong> [ Enter Name ]</p>
+                    <p><strong>Account Number:</strong> [ Enter Number ]</p>
+                    <p><strong>Bank:</strong> [ Enter Bank Name ]</p>
+                    <p><strong>Branch:</strong> [ Enter Branch ]</p>
+                    <p><strong>Routing No:</strong> [ Enter Routing ]</p>
+                    <p><strong>SWIFT Code:</strong> [ Enter SWIFT ]</p>
+                </div>
+                <span class="method-info" style="margin-top:10px; border-top: 1px solid #ddd; padding-top: 5px;">Direct bank wire for official records. (Details coming soon)</span>
             </div>
 
             <div class="pay-card" onclick="copy('912221034')">
@@ -248,14 +254,12 @@
     </div>
 
     <script>
-        // --- Admin Control Section ---
         const adminData = {
-            donationAmount: 520, // ডলারের পরিমাণ
-            treesBought: 450,    // কেনা গাছের সংখ্যা
-            treesDelivered: 120  // বাচ্চাদের হাতে দেওয়া হয়েছে
+            donationAmount: 0,
+            treesBought: 0,
+            treesDelivered: 0
         };
 
-        // এই ফাংশনটি পেজ লোড হওয়ার পর সংখ্যাগুলো বসিয়ে দিবে
         function updateStats() {
             document.getElementById('stat-donation').innerText = '$' + adminData.donationAmount;
             document.getElementById('stat-bought').innerText = adminData.treesBought;
