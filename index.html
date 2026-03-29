@@ -3,137 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1 Billion Trees | One Child, One Tree, One Legacy</title>
+    <title>ARK ARCHIVE | Global Reforestation</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap');
 
         :root {
-            --primary-green: #2D5A27;
-            --accent-gold: #C5A059;
-            --bg-dark: #0A0F0B;
-            --text-light: #F4F4F4;
+            --black: #000000;
+            --white: #ffffff;
+            --gold: #C5A059;
+            --green: #1E5128;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg-dark); color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        body { 
+            margin: 0; padding: 0; background: var(--black); color: var(--white); 
+            font-family: 'Inter', sans-serif; overflow-x: hidden; cursor: none;
+        }
 
-        /* Hero Section with Meaningful Image */
-        .hero {
-            position: relative; height: 100vh; width: 100%;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
+        /* Custom Cursor */
+        #cursor-outline { 
+            position: fixed; width: 15px; height: 15px; border: 1px solid var(--gold); 
+            border-radius: 50%; pointer-events: none; z-index: 10000; 
+            transform: translate(-50%, -50%); transition: transform 0.1s ease;
+        }
+        @media (max-width: 768px) { #cursor-outline { display: none; } body { cursor: auto; } }
+
+        /* Navigation */
+        .nav-bar {
+            position: fixed; top: 0; width: 100%; height: 100px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 50px; z-index: 2000; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+        .acq-trigger { font-size: 10px; letter-spacing: 4px; font-weight: bold; border-bottom: 1px solid var(--gold); cursor: pointer; color: var(--gold); }
+        .logo-text { font-family: 'Cinzel'; font-size: 20px; letter-spacing: 5px; }
+
+        /* Universal Section Styling */
+        .snap-section { 
+            height: 100vh; width: 100%; scroll-snap-align: start; 
+            position: relative; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; text-align: center;
+            overflow: hidden; padding: 0 10%;
+        }
+
+        /* Section 1: Hero */
+        #hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
                         url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=2000');
             background-size: cover; background-position: center;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px;
         }
 
-        .hero h1 { font-family: 'Cinzel'; font-size: clamp(2rem, 5vw, 4rem); letter-spacing: 5px; margin-bottom: 20px; }
-        .hero p { max-width: 800px; font-size: 1.2rem; color: #ccc; margin-bottom: 40px; }
-
-        /* Live Counter from Admin Panel */
-        .live-counter {
-            display: flex; gap: 30px; margin-bottom: 50px; flex-wrap: wrap; justify-content: center;
+        /* Section 3: Updates Grid */
+        .update-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+            width: 100%; max-width: 900px; margin-top: 30px;
         }
-        .counter-box { background: rgba(255,255,255,0.05); padding: 20px 40px; border-top: 2px solid var(--primary-green); min-width: 200px; }
-        .counter-box h3 { font-size: 2rem; color: var(--accent-gold); }
-        .counter-box span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
+        .update-box { width: 100%; height: 200px; background: #111; border: 1px solid #222; overflow: hidden; }
+        .update-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
+        .update-box:hover img { opacity: 1; transform: scale(1.05); }
 
-        /* Navigation Button Styles */
-        .btn-group { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-        .btn { 
-            padding: 15px 40px; text-decoration: none; font-weight: bold; text-transform: uppercase; 
-            letter-spacing: 2px; transition: 0.4s; font-size: 0.9rem; border: 1px solid var(--primary-green);
+        /* Section 4: Archive Grid */
+        .archive-scroll { 
+            width: 100%; height: 60vh; overflow-y: auto; 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
+            gap: 20px; padding: 20px; margin-top: 20px;
         }
-        .btn-primary { background: var(--primary-green); color: white; }
-        .btn-outline { background: transparent; color: white; }
-        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); background: white; color: black; }
-
-        /* Digital Forest Portal */
-        .portal-section { padding: 100px 5%; background: #0e140f; text-align: center; border-bottom: 1px solid #1a251b; }
-        .portal-card {
-            max-width: 1000px; margin: 0 auto; background: rgba(255,255,255,0.02); padding: 60px;
-            border: 1px solid rgba(45, 90, 39, 0.3); position: relative; overflow: hidden;
+        .donor-circle {
+            width: 90px; height: 90px; border-radius: 50%; border: 1px solid var(--green);
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            margin: 0 auto; background: rgba(255,255,255,0.03);
         }
-        .portal-card::before {
-            content: 'ARK'; position: absolute; top: -50px; right: -20px; font-size: 15rem; 
-            font-family: 'Cinzel'; opacity: 0.03; font-weight: bold;
+        .donor-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Typography */
+        .label { font-size: 9px; letter-spacing: 8px; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; }
+        .title { font-family: 'Cinzel'; font-size: clamp(24px, 4vw, 42px); margin-bottom: 20px; }
+        .desc { font-size: 13px; line-height: 1.8; color: #bbb; max-width: 750px; }
+
+        /* Drawer & Modals */
+        #payment-drawer {
+            position: fixed; top: 0; left: -100%; width: 400px; height: 100vh;
+            background: #050505; border-right: 1px solid var(--green); z-index: 3000;
+            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); padding: 60px 40px;
+        }
+        #payment-drawer.open { left: 0; }
+        .pay-card { background: #111; padding: 15px; margin-bottom: 15px; border-left: 3px solid var(--green); cursor: pointer; }
+        .pay-card small { color: #ff4444; font-size: 10px; display: block; margin-top: 5px; }
+
+        #success-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #fff; color: #000; padding: 40px; border-radius: 2px;
+            z-index: 10000; text-align: center; display: none; width: 90%; max-width: 450px;
         }
 
-        /* Information Grid */
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; padding: 100px 5%; }
-        .info-item { padding: 30px; border-left: 2px solid var(--primary-green); }
-        .info-item h4 { font-family: 'Cinzel'; color: var(--accent-gold); margin-bottom: 15px; font-size: 1.5rem; }
-
-        footer { padding: 40px; text-align: center; font-size: 0.8rem; color: #555; letter-spacing: 2px; }
-
-        @media (max-width: 768px) { .hero h1 { font-size: 2rem; } }
+        /* Buttons */
+        .btn-gold { padding: 15px 40px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 10px; letter-spacing: 4px; transition: 0.4s; }
+        .btn-gold:hover { background: var(--gold); color: #000; }
     </style>
 </head>
 <body>
 
-    <section class="hero">
-        <h1 style="color: var(--accent-gold);">ONE BILLION TREES</h1>
-        <p>"Our atmosphere is choking. As wars toxify the air, we plant life. One fruit tree for every child in Bangladesh, Class 1 to 10. A dual mission of reforestation and nutrition."</p>
+    <div id="cursor-outline"></div>
+
+    <header class="nav-bar">
+        <div class="logo-text">ARK ARCHIVE</div>
+        <div class="acq-trigger" onclick="toggleDrawer()">ACQUISITION</div>
+    </header>
+
+    <section class="snap-section" id="hero">
+        <span class="label">One Child, One Tree</span>
+        <h1 class="title">GLOBAL REFORESTATION PROJECT</h1>
+        <p class="desc">In an era of environmental decline, we provide the seeds of nutrition and nature. Our mission is to provide every student in Bangladesh with their own fruit-bearing tree.</p>
+        <div style="margin-top: 40px;">
+            <a href="javascript:void(0)" onclick="toggleDrawer()" class="btn-gold">CONTRIBUTE $1 PER TREE</a>
+        </div>
+    </section>
+
+    <section class="snap-section" style="background: #080808;">
+        <span class="label">Our Philosophy</span>
+        <h2 class="title">WHY FRUIT TREES?</h2>
+        <p class="desc">Traditional reforestation often ignores human needs. By planting fruit trees, we provide children with a sustainable source of nutrition while restoring the ecosystem. 100% of your contribution goes strictly to purchasing trees. We cover all logistical and travel costs out of our own pockets.</p>
+    </section>
+
+    <section class="snap-section" style="background: #050505;">
+        <span class="label">Live Updates</span>
+        <h2 class="title">MISSION IN PROGRESS</h2>
+        <div class="update-grid">
+            <div class="update-box"><img src="https://via.placeholder.com/500?text=Planting+Update+1"></div>
+            <div class="update-box"><img src="https://via.placeholder.com/500?text=Planting+Update+2"></div>
+            <div class="update-box"><img src="https://via.placeholder.com/500?text=Planting+Update+3"></div>
+            <div class="update-box"><img src="https://via.placeholder.com/500?text=Planting+Update+4"></div>
+        </div>
+    </section>
+
+    <section class="snap-section" style="background: #000;">
+        <span class="label">Digital Record</span>
+        <h2 class="title">THE SILENT WITNESS</h2>
+        <div class="archive-scroll" id="donorGrid">
+            </div>
+        <div id="grid-loader"></div>
+    </section>
+
+    <div id="payment-drawer">
+        <h3 style="letter-spacing: 5px; margin-bottom: 40px;">ACQUISITION</h3>
         
-        <div class="live-counter">
-            <div class="counter-box">
-                <h3 id="stat-donated">$1,420</h3>
-                <span>Funds Collected</span>
-            </div>
-            <div class="counter-box">
-                <h3 id="stat-purchased">1,420</h3>
-                <span>Trees Purchased</span>
-            </div>
-            <div class="counter-box">
-                <h3 id="stat-planted">850</h3>
-                <span>Trees Planted</span>
-            </div>
-        </div>
+        <input type="text" id="donorName" placeholder="YOUR NAME" style="width:100%; padding:15px; background:#111; border:1px solid #222; color:#fff; margin-bottom:10px;">
+        <input type="number" id="treeQty" placeholder="NUMBER OF TREES" style="width:100%; padding:15px; background:#111; border:1px solid #222; color:#fff; margin-bottom:30px;">
+        
+        <button onclick="submitDonation()" style="width:100%; padding:15px; background:var(--gold); border:none; color:#000; font-weight:bold; letter-spacing:2px; cursor:pointer; margin-bottom:40px;">SUBMIT REQUEST</button>
 
-        <div class="btn-group">
-            <a href="#contribute" class="btn btn-primary">Contribute $1 per Tree</a>
-            <a href="#portal" class="btn btn-outline">Explore Digital Forest</a>
+        <div class="pay-card" onclick="copyV('01756206213')">
+            <h4 style="font-size:11px;">BKASH: 01756206213</h4>
+            <small>Limit: Max $100 per transaction.</small>
         </div>
-    </section>
+        <div class="pay-card" onclick="copyV('01576940717')">
+            <h4 style="font-size:11px;">BKASH: 01576940717</h4>
+            <small>Limit: Max $100 per transaction.</small>
+        </div>
+        <div class="pay-card" onclick="copyV('017562062134')">
+            <h4 style="font-size:11px;">ROCKET: 017562062134</h4>
+            <small>Large Scale: Max $400 once.</small>
+        </div>
+        <div class="pay-card" onclick="copyV('912221034')">
+            <h4 style="font-size:11px;">BINANCE UID: 912221034</h4>
+            <small style="color:var(--green)">No limit - Global access.</small>
+        </div>
+        <div class="pay-card" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+            <h4 style="font-size:10px;">USDT TRC20: TTapBkTqr...Ws6</h4>
+            <small style="color:var(--green)">No limit - Fast processing.</small>
+        </div>
+        
+        <p style="font-size:10px; color:#555; margin-top:20px;">Support: +8801576940717 (WhatsApp)</p>
+        <button onclick="toggleDrawer()" style="margin-top:20px; background:none; border:none; color:var(--gold); cursor:pointer;">[ CLOSE ]</button>
+    </div>
 
-    <section class="info-grid">
-        <div class="info-item">
-            <h4>The Silent Crisis</h4>
-            <p>War and industrial decline have filled our skies with toxic dust. We aren't just planting trees; we are building a natural filter for the lungs of the next generation.</p>
-        </div>
-        <div class="info-item">
-            <h4>Nutrition & Nature</h4>
-            <p>Many children cannot afford essential fruits. By giving them their own tree, we provide a lifetime of nutrition and teach them to protect the planet.</p>
-        </div>
-        <div class="info-item">
-            <h4>100% Transparency</h4>
-            <p>We take zero donor money for our operations. Every single dollar you give is converted directly into a sapling. Our team covers all logistics out-of-pocket.</p>
-        </div>
-    </section>
-
-    <section class="portal-section" id="portal">
-        <div class="portal-card">
-            <h2 style="font-family: 'Cinzel'; margin-bottom: 20px;">THE DIGITAL FOREST</h2>
-            <p style="margin-bottom: 30px; color: #888;">Step into the archive. Every donor's name is etched into the roots of this project forever.</p>
-            <a href="digital-forest.html" class="btn btn-primary" style="display: inline-block;">Enter Portal</a>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 ONE BILLION TREES PROJECT | SIRAJGANJ, BANGLADESH</p>
-    </footer>
+    <div id="success-modal">
+        <h2 id="greetUser" style="font-family:'Cinzel';">THANK YOU!</h2>
+        <p style="margin:20px 0; font-size:13px; color:#666;">Your request has been registered. Please send your transaction screenshot, name, and photo to our WhatsApp support to finalize your plot.</p>
+        <a href="https://wa.me/8801576940717" target="_blank" style="display:block; background:#25D366; color:#fff; padding:15px; text-decoration:none; font-weight:bold;">WHATSAPP SUPPORT</a>
+        <button onclick="closeModal()" style="margin-top:20px; border:none; background:none; color:#999; cursor:pointer;">BACK TO HOME</button>
+    </div>
 
     <script>
-        // এই ভ্যালুগুলো ভবিষ্যতে আপনি Firebase Admin Panel থেকে অটোমেটিক আপডেট করতে পারবেন।
-        const adminData = {
-            donated: 12500,
-            purchased: 12500,
-            planted: 4200
-        };
+        // Custom Cursor
+        const cursor = document.getElementById('cursor-outline');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
-        document.getElementById('stat-donated').innerText = "$" + adminData.donated.toLocaleString();
-        document.getElementById('stat-purchased').innerText = adminData.purchased.toLocaleString();
-        document.getElementById('stat-planted').innerText = adminData.planted.toLocaleString();
+        // Toggle Drawer
+        function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
+        function copyV(t) { navigator.clipboard.writeText(t); alert("Copied: " + t); }
+
+        // Infinite Grid Generation
+        const grid = document.getElementById('donorGrid');
+        let plotCount = 0;
+        function loadPlots(num) {
+            for(let i=0; i<num; i++) {
+                plotCount++;
+                const div = document.createElement('div');
+                div.innerHTML = `<div class="donor-circle"><i class="fas fa-leaf" style="opacity:0.1"></i></div><p style="font-size:8px; margin-top:5px; color:#444;">Plot #${plotCount}</p>`;
+                grid.appendChild(div);
+            }
+        }
+        loadPlots(100);
+
+        // Grid Auto-Reload on scroll
+        grid.addEventListener('scroll', () => {
+            if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 10) {
+                loadPlots(50);
+            }
+        });
+
+        // Submit Logic
+        function submitDonation() {
+            const name = document.getElementById('donorName').value;
+            if(!name) return alert("Enter your name");
+            
+            document.getElementById('greetUser').innerText = "WELCOME, " + name.toUpperCase() + "!";
+            document.getElementById('success-modal').style.display = 'block';
+            
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+
+        function closeModal() {
+            document.getElementById('success-modal').style.display = 'none';
+            toggleDrawer();
+        }
     </script>
 </body>
 </html>
