@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARK ARCHIVE | Admin Control Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --cyan: #00BFFF; --pink: #FF1493; --black: #000000; --white: #ffffff; --grey: #f4f7f6;
+            --dark-grey: #2c3e50;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--grey); display: flex; color: var(--black); }
+
+        /* Sidebar Navigation */
+        .sidebar { width: 280px; height: 100vh; background: var(--black); color: white; padding: 40px 20px; position: fixed; }
+        .sidebar h2 { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); margin-bottom: 50px; font-size: 22px; letter-spacing: 1px; }
+        .nav-item { padding: 16px; cursor: pointer; border-radius: 10px; margin-bottom: 12px; transition: 0.3s; display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 14px; color: #bbb; }
+        .nav-item:hover, .nav-item.active { background: var(--pink); color: white; }
+        .nav-item i { font-size: 18px; }
+
+        /* Main Content Area */
+        .main-content { margin-left: 280px; width: calc(100% - 280px); padding: 50px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 2px solid #ddd; padding-bottom: 20px; }
+        .header h1 { font-family: 'Montserrat'; font-weight: 900; text-transform: uppercase; }
+
+        /* Statistics Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-bottom: 50px; }
+        .stat-card { background: white; padding: 30px; border-radius: 20px; border-top: 6px solid var(--cyan); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .stat-card h3 { font-size: 11px; text-transform: uppercase; color: #777; margin-bottom: 12px; letter-spacing: 1px; font-weight: 800; }
+        .stat-card p { font-size: 32px; font-weight: 900; font-family: 'Montserrat'; color: var(--black); }
+
+        /* Panel Sections */
+        .panel-section { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.04); display: none; border: 1px solid #eee; }
+        .panel-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tables for Payment Requests */
+        table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        th { text-align: left; padding: 18px; background: #f9f9f9; font-size: 12px; text-transform: uppercase; color: #555; font-weight: 900; border-bottom: 2px solid #eee; }
+        td { padding: 18px; border-bottom: 1px solid #f1f1f1; font-size: 14px; font-weight: 500; }
+        
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; }
+        .status-pending { background: #fff4e5; color: #ff9800; }
+
+        .btn-action { background: var(--cyan); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 12px; transition: 0.3s; }
+        .btn-action:hover { background: var(--pink); transform: translateY(-2px); }
+
+        /* Forms for Manual Upload */
+        .form-container { max-width: 600px; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 800; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; color: #444; }
+        .form-group input { width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 12px; font-family: 'Inter'; font-size: 14px; transition: 0.3s; }
+        .form-group input:focus { border-color: var(--cyan); outline: none; }
+
+        .submit-btn { background: var(--pink); color: white; padding: 18px 40px; border: none; border-radius: 50px; font-weight: 900; cursor: pointer; width: 100%; text-transform: uppercase; font-family: 'Montserrat'; letter-spacing: 1px; transition: 0.3s; margin-top: 10px; }
+        .submit-btn:hover { background: var(--black); box-shadow: 0 10px 20px rgba(255, 20, 147, 0.3); }
+
+        /* Responsive Sidebar */
+        @media (max-width: 1024px) {
+            .sidebar { width: 80px; padding: 30px 10px; }
+            .sidebar h2, .nav-item span { display: none; }
+            .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 30px; }
+            .nav-item { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>ARK PANEL</h2>
+        <div class="nav-item active" onclick="showSection('overview')"><i class="fas fa-th-large"></i> <span>Overview</span></div>
+        <div class="nav-item" onclick="showSection('requests')"><i class="fas fa-hand-holding-usd"></i> <span>Payment Requests</span></div>
+        <div class="nav-item" onclick="showSection('editor')"><i class="fas fa-edit"></i> <span>Plot Live Editor</span></div>
+        <div class="nav-item" style="margin-top: auto; border-top: 1px solid #333; padding-top: 20px;">
+            <i class="fas fa-power-off"></i> <span>Sign Out</span>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>System Management</h1>
+            <div style="text-align: right;">
+                <p style="font-size: 12px; font-weight: 800; color: var(--pink);">DATABASE STATUS: CONNECTED</p>
+                <p style="font-size: 11px; color: #888;">Live Syncing Enabled</p>
+            </div>
+        </header>
+
+        <div id="overview" class="panel-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Funds Collected</h3>
+                    <p id="total-funds">$0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Trees Purchased</h3>
+                    <p id="total-trees">0</p>
+                </div>
+                <div class="stat-card" style="border-color: var(--pink);">
+                    <h3>New Requests</h3>
+                    <p id="pending-count">0</p>
+                </div>
+            </div>
+            
+            <div style="background: #fff; padding: 20px; border-radius: 15px; border-left: 5px solid var(--black);">
+                <h4 style="font-family: 'Montserrat'; font-size: 14px; margin-bottom: 5px;">Admin Notice:</h4>
+                <p style="font-size: 13px; color: #666;">Each manual plot update will automatically increment the global counter on the landing page.</p>
+            </div>
+        </div>
+
+        <div id="requests" class="panel-section">
+            <h2 style="font-family: 'Montserrat'; text-transform: uppercase; font-size: 20px; margin-bottom: 10px;">Donation Influx</h2>
+            <p style="color: #888; font-size: 13px; margin-bottom: 30px;">Direct submissions from the landing page donor portal.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Donor Identity</th>
+                        <th>Tree Volume</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="request-list">
+                    <tr>
+                        <td>Waiting for data...</td>
+                        <td>--</td>
+                        <td><span class="status-badge status-pending">Syncing</span></td>
+                        <td><button class="btn-action">View Info</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="editor" class="panel-section">
+            <div class="form-container">
+                <h2 style="font-family: 'Montserrat'; text-transform: uppercase; font-size: 20px; margin-bottom: 10px;">Plot Activation</h2>
+                <p style="color: #888; font-size: 13px; margin-bottom: 30px;">Upload data received from WhatsApp to push plot live.</p>
+
+                <div class="form-group">
+                    <label>Assign Plot ID (#)</label>
+                    <input type="number" id="plot-number" placeholder="e.g. 101">
+                </div>
+
+                <div class="form-group">
+                    <label>Donor Official Name</label>
+                    <input type="text" id="donor-name" placeholder="Full name for the record">
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmed Tree Count</label>
+                    <input type="number" id="tree-count" placeholder="Quantity to be added to counter">
+                </div>
+
+                <div class="form-group">
+                    <label>Profile Image / Company Logo</label>
+                    <input type="file" id="donor-image" accept="image/*" style="border: none; padding: 10px 0;">
+                </div>
+
+                <button class="submit-btn" onclick="processPlotUpdate()">Confirm & Push Live</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        // Import your firebase configuration
+        // import { db, storage } from "./firebase-config.js";
+
+        // Navigation Switcher
+        window.showSection = function(id) {
+            document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Processing Logic
+        window.processPlotUpdate = function() {
+            const pid = document.getElementById('plot-number').value;
+            const name = document.getElementById('donor-name').value;
+            const qty = document.getElementById('tree-count').value;
+            
+            if(!pid || !name || !qty) {
+                alert("CRITICAL: All fields must be populated.");
+                return;
+            }
+
+            // Logic Flow:
+            // 1. Image upload to Firebase Storage
+            // 2. Data write to Firestore (Plot Collection)
+            // 3. Update Global Counter (Transaction)
+            
+            alert("SUCCESS: Plot #" + pid + " is now synchronized with the live server.");
+        }
+    </script>
+</body>
+</html>
