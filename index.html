@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARK ARCHIVE | Global Eternal Legacy</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> </head>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
     <div class="fixed-social-bar">
@@ -57,15 +59,15 @@
                 <div class="info-grid">
                     <div class="info-card" style="grid-column: 1 / -1; border-bottom: 3px solid var(--pink); padding-bottom: 20px;">
                         <h3>Environmental Shield Against War Impacts</h3>
-                        <p>Nature is our only long-term defense. Trees act as massive biological filters, trapping toxic dust and absorbing harmful gases.</p>
+                        <p>Modern warfare releases toxic gases. Trees act as biological filters. We are building a natural shield for our children.</p>
                     </div>
                     <div class="info-card">
                         <h3>Our Goal & Priority</h3>
-                        <p>Providing every student in Bangladesh from Class 1 to 10 with their own fruit-bearing tree.</p>
+                        <p>Every student in Bangladesh from Class 1 to 10 will receive a fruit-bearing tree.</p>
                     </div>
                     <div class="info-card">
-                        <h3>Where Does Your Money Go?</h3>
-                        <p>100% transparency. Every dollar is converted directly into a sapling.</p>
+                        <h3>Transparency</h3>
+                        <p>Zero donor capital is spent on operations. 100% of your money goes to saplings.</p>
                     </div>
                 </div>
             </div>
@@ -74,10 +76,14 @@
         <section id="archive">
             <div class="section">
                 <h2 style="font-family:'Montserrat'; font-weight:900; font-size:40px; text-transform:uppercase; color:var(--cyan);">The Legacy Archive Grid</h2>
-                <p style="color: #ccc; margin-bottom: 30px;">Total Plots Allocated: <span id="allocated-count">0</span> / 100</p>
+                <p style="margin-bottom: 30px; opacity: 0.7;">Plots Allocated: <span id="allocated-count">0</span> / 100</p>
+                
                 <div class="donor-grid" id="infiniteGrid">
                     </div>
-                <div id="grid-bottom" style="height: 50px;"></div>
+                
+                <div id="grid-loader" style="margin-top: 50px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--cyan); display: none;"></i>
+                </div>
             </div>
         </section>
     </div>
@@ -85,35 +91,52 @@
     <div id="congrats-popup">
         <h2 id="congrats-title" style="color:var(--pink); font-family:'Montserrat';"></h2>
         <p id="congrats-desc" style="margin:20px 0; font-weight:bold;"></p>
-        <div style="text-align:left; background:#f9f9f9; padding:20px; border-radius:10px; font-size:14px; border-left:5px solid var(--cyan);">
+        <div style="text-align:left; background:#f9f9f9; padding:20px; border-radius:10px; font-size:14px; line-height:1.6; border-left:5px solid var(--cyan);">
             <strong>Next Steps:</strong><br>
-            1. Complete payment to the provided addresses.<br>
-            2. Contact Support via WhatsApp with your <strong>Photo & Name</strong>.<br>
-            3. Your plot will be live within 24 hours.
+            1. Complete payment using bKash/Binance/Rocket.<br>
+            2. Send a screenshot to WhatsApp with your <strong>Photo</strong>.<br>
+            3. Provide your <strong>Name and Social Link</strong> for the archive.
         </div>
-        <button onclick="closeCongrats()" class="donate-btn" style="margin-top:25px; width:100%;">EXCELLENT!</button>
+        <button onclick="closeCongrats()" class="donate-btn" style="margin-top:25px; width:100%;">DONE</button>
     </div>
 
     <div id="payment-drawer">
         <h2 style="font-family:'Montserrat'; margin-bottom:25px;">DONATION PORTAL</h2>
-        <input type="text" id="custName" class="pay-input" placeholder="DONOR FULL NAME">
-        <input type="number" id="treeQty" class="pay-input" placeholder="NUMBER OF TREES">
-        <button onclick="handleDonationRequest()" style="width:100%; padding:18px; background:var(--pink); color:#fff; border:none; border-radius:8px; font-weight:900; cursor:pointer;">SUBMIT & VIEW ADDRESSES</button>
+        <input type="text" id="custName" class="pay-input" placeholder="YOUR FULL NAME">
+        <input type="number" id="treeQty" class="pay-input" placeholder="HOW MANY TREES?">
+        <button id="submitRequestBtn" style="width:100%; padding:18px; background:var(--pink); color:#fff; border:none; border-radius:8px; font-weight:900; cursor:pointer;">SUBMIT REQUEST</button>
 
         <div id="payment-list" style="display:none; margin-top:30px;">
-            <p style="font-size:11px; font-weight:900; color:var(--cyan); margin-bottom:15px;">TAP ADDRESS TO COPY</p>
-            <div class="pay-card" onclick="copy('01756206213')"><h4>bKash: 01756206213</h4></div>
-             <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><h4>USDT TRC20 (Copy)</h4></div>
+            <p style="font-size:11px; font-weight:900; color:var(--cyan); margin-bottom:15px; letter-spacing:1px;">TAP ADDRESS TO COPY</p>
+            
+            <div class="pay-card" onclick="copyToClipboard('01756206213', 'bKash')">
+                <h4>bKash: 01756206213</h4>
+                <span class="limit-tag">Personal</span>
+            </div>
+
+            <div class="pay-card" onclick="copyToClipboard('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6', 'USDT')">
+                <h4 style="font-size: 10px;">USDT (TRC20): TTapBkTqrDnzHbWzek...</h4>
+                <span class="limit-tag" style="background:var(--cyan); color:#000;">Global</span>
+            </div>
+
+            <div class="pay-card" onclick="copyToClipboard('912221034', 'Binance')">
+                <h4>Binance UID: 912221034</h4>
+            </div>
         </div>
-        <button onclick="toggleDrawer()" style="margin-top:30px; background:none; border:none; color:#aaa; cursor:pointer;">[ CLOSE PANEL ]</button>
+        <button onclick="toggleDrawer()" style="margin-top:30px; background:none; border:none; color:#aaa; cursor:pointer;">[ CLOSE ]</button>
     </div>
 
     <script type="module" src="script.js"></script>
+    
     <script>
-        // Basic UI Toggles
+        // UI helper functions
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
         function closeCongrats() { document.getElementById('congrats-popup').classList.remove('active'); }
-        function copy(t) { navigator.clipboard.writeText(t).then(() => alert("Copied: " + t)); }
+        function copyToClipboard(text, method) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert(method + " address copied!");
+            });
+        }
     </script>
 </body>
 </html>
