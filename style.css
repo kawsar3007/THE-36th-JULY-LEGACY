@@ -1,0 +1,315 @@
+/* ARK ARCHIVE - GLOBAL LEGACY STYLESHEET
+   Theme: Cyber-Reforestation (Pink & Cyan)
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+    --cyan: #00BFFF;
+    --pink: #FF1493;
+    --black: #000000;
+    --dark-grey: #0a0a0a;
+    --glass: rgba(255, 255, 255, 0.05);
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+/* --- Navigation Bar --- */
+.nav-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    z-index: 1000;
+    border-bottom: 1px solid var(--glass);
+}
+
+.nav-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-transform: uppercase;
+}
+
+.nav-stats {
+    display: flex;
+    gap: 40px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    color: var(--white);
+    font-size: 20px;
+}
+
+.stat-text {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    letter-spacing: 1px;
+}
+
+/* --- Hero Section --- */
+#hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+    padding: 20px;
+}
+
+.hero-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(35px, 8vw, 85px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    background: linear-gradient(to right, var(--cyan), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+    max-width: 800px;
+    font-size: 18px;
+    color: #888;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+/* --- Global Buttons --- */
+.donate-btn {
+    background: var(--white);
+    color: var(--black);
+    padding: 16px 45px;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.donate-btn:hover {
+    transform: scale(1.08);
+    background: var(--cyan);
+    box-shadow: 0 0 35px rgba(0, 191, 255, 0.4);
+}
+
+/* --- Archive Grid --- */
+.donor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 40px;
+    padding: 80px 5%;
+    justify-items: center;
+}
+
+.donor-card {
+    transition: 0.4s;
+    text-align: center;
+}
+
+.donor-circle {
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    border: 2px solid var(--cyan);
+    padding: 6px;
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.donor-circle img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: 0.5s;
+}
+
+.donor-hover {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 20, 147, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 0.4s;
+    color: white;
+}
+
+.donor-card:hover .donor-circle {
+    border-color: var(--pink);
+    transform: translateY(-12px) rotate(3deg);
+    box-shadow: 0 15px 30px rgba(255, 20, 147, 0.3);
+}
+
+.donor-card:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.1);
+}
+
+.donor-card:hover .donor-hover {
+    opacity: 1;
+}
+
+.donor-name {
+    margin-top: 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ccc;
+}
+
+/* --- Sliding Payment Drawer --- */
+#payment-drawer {
+    position: fixed;
+    right: -450px;
+    top: 0;
+    width: 420px;
+    height: 100vh;
+    background: #0d0d0d;
+    z-index: 2000;
+    padding: 50px 30px;
+    transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    box-shadow: -25px 0 60px rgba(0,0,0,0.9);
+    border-left: 1px solid #222;
+}
+
+#payment-drawer.open {
+    right: 0;
+}
+
+.pay-input {
+    width: 100%;
+    background: #181818;
+    border: 1px solid #333;
+    padding: 16px;
+    color: white;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.pay-input:focus { border-color: var(--pink); }
+
+.pay-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    border-left: 4px solid var(--cyan);
+    transition: 0.3s;
+}
+
+.pay-card:hover { 
+    background: #252525; 
+    transform: translateX(5px);
+}
+
+/* --- Social Side Bar --- */
+.fixed-social-bar {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 999;
+}
+
+.side-icon {
+    width: 52px;
+    height: 52px;
+    background: var(--white);
+    color: var(--black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 22px;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.side-icon:hover {
+    background: var(--pink);
+    color: white;
+    transform: translateX(-8px);
+}
+
+/* --- Congrats/Success Popup --- */
+#congrats-popup {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    width: 90%; max-width: 480px;
+    background: var(--white);
+    color: var(--black);
+    padding: 45px;
+    border-radius: 25px;
+    z-index: 3000;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#congrats-popup.active {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 768px) {
+    .nav-stats { display: none; }
+    #payment-drawer { width: 100%; right: -100%; }
+    .hero-title { font-size: 40px; }
+    .donor-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .donor-circle { width: 130px; height: 130px; }
+}
