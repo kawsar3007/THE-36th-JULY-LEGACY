@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | ACCESS DENIED - ARK ARCHIVE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;700&display=swap');
+
+        :root {
+            --cyan: #00BFFF;
+            --pink: #FF1493;
+            --black: #000000;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .error-container {
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .error-code {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(80px, 15vw, 150px);
+            font-weight: 900;
+            line-height: 1;
+            color: var(--cyan);
+            text-shadow: 5px 5px var(--pink);
+            margin-bottom: 20px;
+            animation: glitch 1s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-2deg); text-shadow: -5px 0 var(--pink); }
+            40% { transform: skew(2deg); text-shadow: 5px 0 var(--cyan); }
+            100% { transform: skew(0deg); }
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-size: 24px;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 16px;
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .redirect-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 1px solid var(--cyan);
+            display: inline-block;
+        }
+
+        #timer {
+            color: var(--pink);
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .home-btn {
+            margin-top: 25px;
+            display: inline-block;
+            text-decoration: none;
+            color: var(--black);
+            background: var(--white);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .home-btn:hover {
+            background: var(--cyan);
+            transform: scale(1.05);
+        }
+
+        .bg-icon {
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.03;
+            z-index: -1;
+            color: var(--cyan);
+        }
+    </style>
+</head>
+<body>
+
+    <i class="fas fa-tree bg-icon"></i>
+
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h2>Coordinates Not Found</h2>
+        <p>The legacy plot or page you are looking for does not exist in the <strong>ARK ARCHIVE</strong> database. You might have taken a wrong turn in the reforestation grid.</p>
+        
+        <div class="redirect-box">
+            Returning to Mission Control in <span id="timer">5</span>s
+        </div>
+
+        <br>
+        <a href="index.html" class="home-btn">Go to Homepage Now</a>
+    </div>
+
+    <script>
+        let timeLeft = 5;
+        const timerElement = document.getElementById('timer');
+
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timerElement.innerText = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                window.location.href = "index.html"; // আপনার মেইন ফাইলের নাম এখানে দিন
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
