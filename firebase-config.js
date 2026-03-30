@@ -21,4 +21,4 @@ const db = getDatabase(app);
 const analytics = getAnalytics(app);
 
 // অন্যান্য ফাইল থেকে ব্যবহারের জন্য এক্সপোর্ট করা হচ্ছে
-export { db, ref, set, update, onValue, push, serverTimestamp };
+export { db, ref, set, update, onValue, push, serverTimestamp }; 
