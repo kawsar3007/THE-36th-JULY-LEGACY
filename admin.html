@@ -3,168 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARK ADMIN | Mission Control</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>ARK ADMIN | Global Control Panel</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;600&display=swap');
+        :root { --cyan: #00BFFF; --pink: #FF1493; --dark: #1a1a1a; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { background: var(--dark); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
         
-        :root { --cyan: #00BFFF; --pink: #FF1493; --black: #1a1a1a; }
-        body { font-family: 'Inter', sans-serif; background: #f0f2f5; margin: 0; display: flex; }
-
-        /* Sidebar Design */
-        .sidebar { width: 260px; background: var(--black); height: 100vh; color: white; padding: 30px 20px; position: fixed; }
-        .sidebar h2 { font-family: 'Montserrat'; font-size: 20px; color: var(--cyan); margin-bottom: 40px; }
-        .nav-item { padding: 15px; cursor: pointer; border-radius: 8px; margin-bottom: 10px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .nav-item:hover { background: rgba(255,255,255,0.1); }
-        .nav-item.active { background: var(--pink); color: white; }
-
-        /* Main Content */
-        .main-content { margin-left: 260px; padding: 40px; width: 100%; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .card h3 { font-family: 'Montserrat'; margin-bottom: 20px; font-size: 18px; border-left: 4px solid var(--cyan); padding-left: 10px; }
-
-        .input-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; font-size: 14px; }
-        input:focus { border-color: var(--cyan); }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        h2 { border-left: 5px solid var(--cyan); padding-left: 15px; margin-bottom: 20px; color: #333; font-size: 20px; }
         
-        button { padding: 12px 25px; background: var(--cyan); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        button:hover { background: var(--pink); transform: translateY(-2px); }
-
-        /* Table Style */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; background: #f8f9fa; padding: 12px; font-size: 13px; text-transform: uppercase; color: #666; }
-        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
-        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; background: #e1f5fe; color: #01579b; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { cursor: pointer; padding: 12px 20px; border: none; border-radius: 6px; font-weight: bold; transition: 0.3s; }
+        .btn-save { background: var(--cyan); color: white; width: 100%; }
+        .btn-add { background: var(--pink); color: white; margin-top: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+        th, td { padding: 12px; border: 1px solid #eee; text-align: left; font-size: 14px; }
+        th { background: #f8f9fa; }
+        .req-card { border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between; }
+        .delete-btn { color: red; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <h2>ARK ARCHIVE</h2>
-        <div class="nav-item active"><i class="fas fa-chart-line"></i> Dashboard</div>
-        <div class="nav-item"><i class="fas fa-history"></i> Order History</div>
-        <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+<div class="container">
+    <header>
+        <h1>ARK ARCHIVE ADMIN</h1>
+        <div id="status-indicator" style="color: #00ff00;">● Database Connected</div>
+    </header>
+
+    <div class="card">
+        <h2>Section 1: Live Stats Control</h2>
+        <div class="grid-3">
+            <div>
+                <label>Collected ($)</label>
+                <input type="number" id="input-collected" placeholder="0">
+            </div>
+            <div>
+                <label>Trees Bought</label>
+                <input type="number" id="input-bought" placeholder="0">
+            </div>
+            <div>
+                <label>Handed Over</label>
+                <input type="number" id="input-delivered" placeholder="0">
+            </div>
+        </div>
+        <button class="btn-save" onclick="updateStats()">UPDATE LIVE STATS</button>
     </div>
 
-    <div class="main-content">
-        <div class="card">
-            <h3>Manual Update (Live Stats)</h3>
-            <div class="input-group">
-                <input type="number" id="stats-collected" placeholder="Collected Amount ($)">
-                <input type="number" id="stats-bought" placeholder="Trees Bought">
-                <input type="number" id="stats-delivered" placeholder="Handed Over">
-            </div>
-            <button onclick="updateStats()">Update Public Counters</button>
-        </div>
-
-        <div class="card">
-            <h3>Manual Plot Upload (Customer Info)</h3>
-            <div class="input-group">
-                <input type="text" id="plot-name" placeholder="Donor Full Name">
-                <input type="text" id="plot-image" placeholder="Image URL (Direct Link)">
-                <input type="text" id="plot-social" placeholder="Social Media/Website Link">
-                <input type="number" id="plot-qty" placeholder="Trees Donated">
-            </div>
-            <button onclick="uploadPlot()" style="background: var(--pink);">Publish to Grid</button>
-        </div>
-
-        <div class="card">
-            <h3>Recent Donation Requests</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Donor Name</th>
-                        <th>Trees</th>
-                        <th>Status</th>
-                        <th>Time</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="request-table">
-                    </tbody>
-            </table>
-        </div>
+    <div class="card">
+        <h2>Section 2: Mission Gallery (Image Links)</h2>
+        <input type="text" id="gallery-url" placeholder="Paste Image URL here...">
+        <button class="btn-add" onclick="addToGallery()">ADD TO GALLERY</button>
+        <div id="gallery-list" style="margin-top:15px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, update, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    <div class="card">
+        <h2>Section 3: Add Donor to Legacy Archive</h2>
+        <div class="grid-3">
+            <input type="text" id="donor-name" placeholder="Donor Name">
+            <input type="text" id="donor-photo" placeholder="Photo URL">
+            <input type="text" id="donor-link" placeholder="Social/Web Link">
+        </div>
+        <input type="number" id="donor-trees" placeholder="Number of Trees">
+        <button class="btn-add" style="background: var(--cyan);" onclick="addToArchive()">ADD TO LEGACY GRID</button>
+        
+        <table id="archive-table">
+            <thead>
+                <tr><th>Name</th><th>Trees</th><th>Action</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
-            messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded",
-            measurementId: "G-6KEYY60YGG"
-        };
+    <div class="card">
+        <h2>Section 4: Recent Donation Requests</h2>
+        <div id="request-list">
+            <p>Loading requests...</p>
+        </div>
+    </div>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+        authDomain: "the-5k-elite-legacy.firebaseapp.com",
+        databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+        projectId: "the-5k-elite-legacy",
+        storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+        messagingSenderId: "440824313752",
+        appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        // 1. Update Live Stats
-        window.updateStats = function() {
-            const collected = document.getElementById('stats-collected').value;
-            const bought = document.getElementById('stats-bought').value;
-            const delivered = document.getElementById('stats-delivered').value;
+    // ১. Stats Logic
+    db.ref('stats').on('value', snap => {
+        const data = snap.val() || { collected: 0, bought: 0, delivered: 0 };
+        document.getElementById('input-collected').value = data.collected;
+        document.getElementById('input-bought').value = data.bought;
+        document.getElementById('input-delivered').value = data.delivered;
+    });
 
-            if(!collected || !bought || !delivered) return alert("Fill all stats!");
+    function updateStats() {
+        db.ref('stats').set({
+            collected: parseInt(document.getElementById('input-collected').value),
+            bought: parseInt(document.getElementById('input-bought').value),
+            delivered: parseInt(document.getElementById('input-delivered').value)
+        }).then(() => alert("Stats Updated!"));
+    }
 
-            update(ref(db, 'liveStats'), {
-                collected: collected,
-                bought: bought,
-                delivered: delivered
-            }).then(() => alert("Stats Updated Live!"));
+    // ২. Gallery Logic
+    function addToGallery() {
+        const url = document.getElementById('gallery-url').value;
+        if(url) {
+            db.ref('gallery').push(url);
+            document.getElementById('gallery-url').value = '';
         }
+    }
 
-        // 2. Upload Manual Plot
-        window.uploadPlot = function() {
-            const name = document.getElementById('plot-name').value;
-            const img = document.getElementById('plot-image').value;
-            const link = document.getElementById('plot-social').value;
-            const qty = document.getElementById('plot-qty').value;
-
-            if(!name || !img) return alert("Name and Image are required!");
-
-            const newPlotRef = push(ref(db, 'publishedPlots'));
-            set(newPlotRef, {
-                name: name,
-                image: img,
-                social: link,
-                qty: qty,
-                timestamp: Date.now()
-            }).then(() => {
-                alert("Plot is now LIVE on the website!");
-                document.querySelectorAll('.input-group input').forEach(i => i.value = "");
-            });
-        }
-
-        // 3. Load Donation Requests
-        onValue(ref(db, 'donationRequests'), (snapshot) => {
-            const table = document.getElementById('request-table');
-            table.innerHTML = "";
-            const data = snapshot.val();
-            for (let id in data) {
-                const req = data[id];
-                table.innerHTML += `
-                    <tr>
-                        <td><strong>${req.name}</strong></td>
-                        <td>${req.treeQty} Trees</td>
-                        <td><span class="status-badge">Pending</span></td>
-                        <td>${new Date(req.timestamp).toLocaleDateString()}</td>
-                        <td><button onclick="copyInfo('${req.name}', ${req.treeQty})" style="padding:5px 10px; font-size:11px;">Copy</button></td>
-                    </tr>
-                `;
-            }
+    db.ref('gallery').on('value', snap => {
+        const list = document.getElementById('gallery-list');
+        list.innerHTML = '';
+        snap.forEach(child => {
+            list.innerHTML += `<div style="position:relative">
+                <img src="${child.val()}" width="80" height="60" style="border-radius:5px">
+                <span class="delete-btn" style="position:absolute; top:0; right:0; background:white;" onclick="deleteItem('gallery/${child.key}')">×</span>
+            </div>`;
         });
+    });
 
-        window.copyInfo = (name, qty) => {
-            document.getElementById('plot-name').value = name;
-            document.getElementById('plot-qty').value = qty;
-            alert("Name and Quantity copied to Uploader!");
+    // ৩. Legacy Archive Logic
+    function addToArchive() {
+        const name = document.getElementById('donor-name').value;
+        const photo = document.getElementById('donor-photo').value;
+        const link = document.getElementById('donor-link').value;
+        const trees = document.getElementById('donor-trees').value;
+
+        if(name) {
+            db.ref('legacy_archive').push({ name, photo, link, trees });
+            alert("Added to Archive!");
         }
-    </script>
+    }
+
+    db.ref('legacy_archive').on('value', snap => {
+        const tbody = document.querySelector('#archive-table tbody');
+        tbody.innerHTML = '';
+        snap.forEach(child => {
+            const d = child.val();
+            tbody.innerHTML += `<tr>
+                <td>${d.name}</td>
+                <td>${d.trees}</td>
+                <td><span class="delete-btn" onclick="deleteItem('legacy_archive/${child.key}')">Delete</span></td>
+            </tr>`;
+        });
+    });
+
+    // ৪. Donation Requests Logic
+    db.ref('donation_requests').on('value', snap => {
+        const reqList = document.getElementById('request-list');
+        reqList.innerHTML = '';
+        if(!snap.exists()) reqList.innerHTML = '<p>No requests found.</p>';
+        
+        snap.forEach(child => {
+            const r = child.val();
+            reqList.innerHTML += `
+                <div class="req-card">
+                    <div>
+                        <strong>${r.name}</strong> wants to plant <strong>${r.qty} trees</strong>
+                        <br><small>${new Date(r.timestamp).toLocaleString()}</small>
+                    </div>
+                    <span class="delete-btn" onclick="deleteItem('donation_requests/${child.key}')">Complete/Remove</span>
+                </div>`;
+        });
+    });
+
+    // Universal Delete Function
+    function deleteItem(path) {
+        if(confirm("Are you sure?")) db.ref(path).remove();
+    }
+</script>
+
 </body>
 </html>
