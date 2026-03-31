@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARK | Manual Update Panel</title>
+
+    <script>
+        function checkAccess() {
+            const pass = "KAWSARahmed22@@";
+            let enteredPass = prompt("Please enter Admin Password to access Update Panel:");
+            
+            if (enteredPass !== pass) {
+                alert("Incorrect Password! Access Denied.");
+                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:50px;'>UNAUTHORIZED ACCESS</h1>";
+                window.stop();
+            } else {
+                document.getElementById('secure-content').style.display = 'block';
+            }
+        }
+    </script>
+
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -42,69 +58,72 @@
         }
     </style>
 </head>
-<body>
 
-    <div class="nav">
-        <h2><i class="fas fa-tools"></i> ARK Update Panel</h2>
-        <div id="db-status" style="font-size: 10px;"><i class="fas fa-circle"></i> Online</div>
-    </div>
+<body onload="checkAccess()">
 
-    <div class="container">
-        
-        <div class="card">
-            <h3><i class="fas fa-chart-line"></i> Live Stats (Website Header)</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                <div class="input-group">
-                    <label>Collected ($)</label>
-                    <input type="number" id="s-coll">
-                </div>
-                <div class="input-group">
-                    <label>Trees Bought</label>
-                    <input type="number" id="s-bought">
-                </div>
-                <div class="input-group">
-                    <label>Handed Over</label>
-                    <input type="number" id="s-deliv">
-                </div>
-            </div>
-            <button class="btn btn-update" onclick="saveStats()">Update Main Stats</button>
+    <div id="secure-content" style="display:none;">
+        <div class="nav">
+            <h2><i class="fas fa-tools"></i> ARK Update Panel</h2>
+            <div id="db-status" style="font-size: 10px;"><i class="fas fa-circle"></i> Online</div>
         </div>
 
-        <div class="card pink">
-            <h3><i class="fas fa-images"></i> Add Mission Photo</h3>
-            <div class="input-group">
-                <label>Image URL (Direct Link)</label>
-                <input type="text" id="img-url" placeholder="https://example.com/photo.jpg">
+        <div class="container">
+            
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Live Stats (Website Header)</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <div class="input-group">
+                        <label>Collected ($)</label>
+                        <input type="number" id="s-coll">
+                    </div>
+                    <div class="input-group">
+                        <label>Trees Bought</label>
+                        <input type="number" id="s-bought">
+                    </div>
+                    <div class="input-group">
+                        <label>Handed Over</label>
+                        <input type="number" id="s-deliv">
+                    </div>
+                </div>
+                <button class="btn btn-update" onclick="saveStats()">Update Main Stats</button>
             </div>
-            <button class="btn btn-add" onclick="addPhoto()">Push to Gallery</button>
-            <div id="gallery-preview" class="data-list"></div>
-        </div>
 
-        <div class="card">
-            <h3><i class="fas fa-user-tag"></i> Add New Donor Plot</h3>
-            <div class="input-group">
-                <label>Donor Full Name</label>
-                <input type="text" id="d-name" placeholder="Ex: John Doe">
+            <div class="card pink">
+                <h3><i class="fas fa-images"></i> Add Mission Photo</h3>
+                <div class="input-group">
+                    <label>Image URL (Direct Link)</label>
+                    <input type="text" id="img-url" placeholder="https://example.com/photo.jpg">
+                </div>
+                <button class="btn btn-add" onclick="addPhoto()">Push to Gallery</button>
+                <div id="gallery-preview" class="data-list"></div>
             </div>
-            <div class="input-group">
-                <label>Photo URL (Square size preferred)</label>
-                <input type="text" id="d-photo" placeholder="Link to profile photo">
-            </div>
-            <div class="input-group">
-                <label>Website / Social Link</label>
-                <input type="text" id="d-link" placeholder="https://fb.com/username">
-            </div>
-            <div class="input-group">
-                <label>Total Trees Donated</label>
-                <input type="number" id="d-trees" placeholder="Ex: 50">
-            </div>
-            <button class="btn btn-update" onclick="addDonor()">Create Legacy Plot</button>
-        </div>
 
+            <div class="card">
+                <h3><i class="fas fa-user-tag"></i> Add New Donor Plot</h3>
+                <div class="input-group">
+                    <label>Donor Full Name</label>
+                    <input type="text" id="d-name" placeholder="Ex: John Doe">
+                </div>
+                <div class="input-group">
+                    <label>Photo URL (Square size preferred)</label>
+                    <input type="text" id="d-photo" placeholder="Link to profile photo">
+                </div>
+                <div class="input-group">
+                    <label>Website / Social Link</label>
+                    <input type="text" id="d-link" placeholder="https://fb.com/username">
+                </div>
+                <div class="input-group">
+                    <label>Total Trees Donated</label>
+                    <input type="number" id="d-trees" placeholder="Ex: 50">
+                </div>
+                <button class="btn btn-update" onclick="addDonor()">Create Legacy Plot</button>
+            </div>
+
+        </div>
     </div>
 
     <script>
-        // Firebase Config (একদম অক্ষত রাখা হয়েছে)
+        // Firebase Config (অক্ষত রাখা হয়েছে)
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
