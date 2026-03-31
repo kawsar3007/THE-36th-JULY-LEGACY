@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARK ADMIN | Global Control Panel</title>
+    
+    <script>
+        function checkAccess() {
+            const pass = "KAWSARahmed22@@";
+            let enteredPass = prompt("Please enter Admin Password to access:");
+            
+            if (enteredPass !== pass) {
+                alert("Incorrect Password! Access Denied.");
+                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:50px;'>UNAUTHORIZED ACCESS</h1>";
+                window.stop(); // পেজ লোডিং বন্ধ করে দিবে
+            } else {
+                // পাসওয়ার্ড ঠিক থাকলে কন্টেন্ট দেখাবে
+                document.getElementById('admin-content').style.display = 'block';
+            }
+        }
+    </script>
+
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
@@ -28,68 +45,71 @@
         .delete-btn { color: red; cursor: pointer; font-weight: bold; }
     </style>
 </head>
-<body>
 
-<div class="container">
-    <header>
-        <h1>ARK ARCHIVE ADMIN</h1>
-        <div id="status-indicator" style="color: #00ff00;">● Database Connected</div>
-    </header>
+<body onload="checkAccess()">
 
-    <div class="card">
-        <h2>Section 1: Live Stats Control</h2>
-        <div class="grid-3">
-            <div>
-                <label>Collected ($)</label>
-                <input type="number" id="input-collected" placeholder="0">
+<div id="admin-content" style="display:none;">
+    <div class="container">
+        <header>
+            <h1>ARK ARCHIVE ADMIN</h1>
+            <div id="status-indicator" style="color: #00ff00;">● Database Connected</div>
+        </header>
+
+        <div class="card">
+            <h2>Section 1: Live Stats Control</h2>
+            <div class="grid-3">
+                <div>
+                    <label>Collected ($)</label>
+                    <input type="number" id="input-collected" placeholder="0">
+                </div>
+                <div>
+                    <label>Trees Bought</label>
+                    <input type="number" id="input-bought" placeholder="0">
+                </div>
+                <div>
+                    <label>Handed Over</label>
+                    <input type="number" id="input-delivered" placeholder="0">
+                </div>
             </div>
-            <div>
-                <label>Trees Bought</label>
-                <input type="number" id="input-bought" placeholder="0">
-            </div>
-            <div>
-                <label>Handed Over</label>
-                <input type="number" id="input-delivered" placeholder="0">
-            </div>
+            <button class="btn-save" onclick="updateStats()">UPDATE LIVE STATS</button>
         </div>
-        <button class="btn-save" onclick="updateStats()">UPDATE LIVE STATS</button>
-    </div>
 
-    <div class="card">
-        <h2>Section 2: Mission Gallery (Image Links)</h2>
-        <input type="text" id="gallery-url" placeholder="Paste Image URL here...">
-        <button class="btn-add" onclick="addToGallery()">ADD TO GALLERY</button>
-        <div id="gallery-list" style="margin-top:15px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
-    </div>
-
-    <div class="card">
-        <h2>Section 3: Add Donor to Legacy Archive</h2>
-        <div class="grid-3">
-            <input type="text" id="donor-name" placeholder="Donor Name">
-            <input type="text" id="donor-photo" placeholder="Photo URL">
-            <input type="text" id="donor-link" placeholder="Social/Web Link">
+        <div class="card">
+            <h2>Section 2: Mission Gallery (Image Links)</h2>
+            <input type="text" id="gallery-url" placeholder="Paste Image URL here...">
+            <button class="btn-add" onclick="addToGallery()">ADD TO GALLERY</button>
+            <div id="gallery-list" style="margin-top:15px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
         </div>
-        <input type="number" id="donor-trees" placeholder="Number of Trees">
-        <button class="btn-add" style="background: var(--cyan);" onclick="addToArchive()">ADD TO LEGACY GRID</button>
-        
-        <table id="archive-table">
-            <thead>
-                <tr><th>Name</th><th>Trees</th><th>Action</th></tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
 
-    <div class="card">
-        <h2>Section 4: Recent Donation Requests</h2>
-        <div id="request-list">
-            <p>Loading requests...</p>
+        <div class="card">
+            <h2>Section 3: Add Donor to Legacy Archive</h2>
+            <div class="grid-3">
+                <input type="text" id="donor-name" placeholder="Donor Name">
+                <input type="text" id="donor-photo" placeholder="Photo URL">
+                <input type="text" id="donor-link" placeholder="Social/Web Link">
+            </div>
+            <input type="number" id="donor-trees" placeholder="Number of Trees">
+            <button class="btn-add" style="background: var(--cyan);" onclick="addToArchive()">ADD TO LEGACY GRID</button>
+            
+            <table id="archive-table">
+                <thead>
+                    <tr><th>Name</th><th>Trees</th><th>Action</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Section 4: Recent Donation Requests</h2>
+            <div id="request-list">
+                <p>Loading requests...</p>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Firebase Configuration
+    // Firebase Configuration (অক্ষত রাখা হয়েছে)
     const firebaseConfig = {
         apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
         authDomain: "the-5k-elite-legacy.firebaseapp.com",
