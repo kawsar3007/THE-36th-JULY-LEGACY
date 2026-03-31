@@ -65,9 +65,11 @@
         .info-card h3 { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); margin-bottom: 15px; text-transform: uppercase; }
         .info-card p { line-height: 1.8; color: #444; font-size: 15px; margin-bottom: 10px; }
 
+        /* গ্যালারি ডিজাইন ইমপ্রুভমেন্ট */
         .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; max-width: 1200px; margin-top: 40px; }
-        .gallery-item { width: 100%; height: 250px; background: #eee; border-radius: 15px; overflow: hidden; }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-item { width: 100%; aspect-ratio: 1/1; background: #eee; border-radius: 15px; overflow: hidden; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .gallery-item:hover img { transform: scale(1.05); }
         @media (max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
 
         #archive { 
@@ -76,11 +78,14 @@
         }
         .donor-grid { display: grid; grid-template-columns: repeat(8, 1fr); width: 100%; padding: 0 5%; gap: 20px; margin-top: 50px; }
         @media (max-width: 1200px) { .donor-grid { grid-template-columns: repeat(6, 1fr); } }
-        @media (max-width: 768px) { .donor-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 768px) { .donor-grid { grid-template-columns: repeat(3, 1fr); } }
+        
+        .donor-container { text-align: center; }
         .donor-circle { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--cyan); margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); transition: 0.3s; overflow: hidden;}
         .donor-circle img { width: 100%; height: 100%; object-fit: cover; }
         .donor-circle:hover { border-color: var(--pink); transform: scale(1.1); }
-        .donor-name { font-size: 10px; margin-top: 5px; font-weight: bold; text-transform: uppercase; }
+        .donor-name { display: block; font-size: 11px; margin-top: 8px; font-weight: 900; text-transform: uppercase; color: var(--white); line-height: 1.2; }
+        .donor-qty { display: block; font-size: 9px; color: var(--cyan); font-weight: 700; margin-top: 2px; }
 
         #payment-drawer { position: fixed; top: 0; right: -100%; width: 450px; height: 100vh; background: #fff; border-left: 5px solid var(--cyan); z-index: 5000; padding: 60px 40px; transition: 0.5s; overflow-y: auto; color: #000; }
         #payment-drawer.open { right: 0; }
@@ -172,14 +177,14 @@
         <section class="section" id="mission-gallery">
             <h2 style="font-family:'Montserrat'; font-weight:900; text-transform:uppercase; margin-bottom:40px;">Mission in Progress</h2>
             <div class="gallery-grid" id="main-gallery">
-                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+1"></div>
-                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+2"></div>
-                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+3"></div>
-                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+4"></div>
-                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+5"></div>
-                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+6"></div>
-                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+7"></div>
-                <div class="gallery-item"><img src="https://via.placeholder.com/500x400?text=Activity+8"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x500?text=Activity+1"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x500?text=Activity+2"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x500?text=Activity+3"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x500?text=Activity+4"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x500?text=Activity+5"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x500?text=Activity+6"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x500?text=Activity+7"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/500x500?text=Activity+8"></div>
             </div>
         </section>
 
@@ -258,7 +263,7 @@
     </div>
 
     <script>
-        // --- Firebase Configuration (অক্ষত রাখা হয়েছে) ---
+        // --- Firebase Configuration ---
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -271,7 +276,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ১. স্ট্যাটাস লোড (collected, bought, delivered)
+        // ১. স্ট্যাটাস লোড
         db.ref('stats').on('value', snapshot => {
             const data = snapshot.val() || { collected: 0, bought: 0, delivered: 0 };
             document.getElementById('stat-donation').innerText = '$' + data.collected;
@@ -279,7 +284,7 @@
             document.getElementById('stat-handed').innerText = data.delivered;
         });
 
-        // ২. গ্যালারি লোড (Firebase থেকে ছবি থাকলে পরিবর্তন হবে, না থাকলে placeholders থাকবে)
+        // ২. গ্যালারি লোড (Square Crop Support)
         db.ref('gallery').on('value', snapshot => {
             const data = snapshot.val();
             if(data) {
@@ -291,7 +296,7 @@
             }
         });
 
-        // ৩. লিগ্যাসি গ্রিড ও Infinite Scroll (অক্ষত ডিজাইন)
+        // ৩. লিগ্যাসি গ্রিড (Link Support & Tree Quantity Support)
         const grid = document.getElementById('infiniteGrid');
         let plotCount = 0;
 
@@ -304,23 +309,33 @@
                 if(donors) {
                     Object.values(donors).forEach(d => {
                         plotCount++;
+                        // লিঙ্ক এবং ডোনেশন পরিমাণ এখানে যোগ করা হয়েছে
                         grid.innerHTML += `
                         <div class="donor-container">
-                            <div class="donor-circle">
-                                <img src="${d.photo || 'https://via.placeholder.com/100'}">
-                            </div>
-                            <span class="donor-name">${d.name}</span>
+                            <a href="${d.link || '#'}" target="_blank" style="text-decoration:none;">
+                                <div class="donor-circle">
+                                    <img src="${d.photo || 'https://via.placeholder.com/100'}">
+                                </div>
+                                <span class="donor-name">${d.name}</span>
+                                <span class="donor-qty">${d.trees || 0} Trees</span>
+                            </a>
                         </div>`;
                     });
                 }
-                addDemoPlots(120); // আপনার চাহিদা মতো শুরুতে ১২০টি প্লট দেখানো
+                addDemoPlots(120); 
             });
         }
 
         function addDemoPlots(count) {
             for(let i=0; i<count; i++) {
                 plotCount++;
-                grid.innerHTML += `<div class="donor-circle"><i class="fas fa-tree" style="opacity:0.2; font-size:24px;"></i><span class="donor-name">Plot #${plotCount}</span></div>`;
+                grid.innerHTML += `
+                <div class="donor-container">
+                    <div class="donor-circle">
+                        <i class="fas fa-tree" style="opacity:0.2; font-size:24px;"></i>
+                    </div>
+                    <span class="donor-name" style="opacity:0.3;">Plot #${plotCount}</span>
+                </div>`;
             }
         }
 
@@ -332,7 +347,6 @@
             }
         });
 
-        // ৪. ফাংশনস (অক্ষত)
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
         function closeCongrats() { document.getElementById('congrats-popup').classList.remove('active'); }
         function copy(t) { navigator.clipboard.writeText(t).then(() => alert("Copied: " + t)); }
@@ -342,7 +356,6 @@
             const qty = document.getElementById('treeQty').value;
             if(!name || !qty) return alert("Please enter name and tree quantity.");
             
-            // ডাটাবেসে রিকোয়েস্ট সেভ করা
             db.ref('donation_requests').push({
                 name: name,
                 qty: qty,
